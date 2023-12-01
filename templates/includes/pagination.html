@@ -1,0 +1,30 @@
+<nav class="pagination">
+    <ul>
+    {% if page_obj.has_previous %}
+        {% if 'home' in request.resolver_match.view_name %}
+            <li><a class="page_link icon-svg small" title="Back to home" href="/">{% inline_svg 'img/start.svg' %}</a></li>
+            <li><a class="page_link icon-svg small" title="Back to page {{ page_obj.previous_page_number }}" href="/page/{{ page_obj.previous_page_number }}">{% inline_svg 'img/previous.svg' %}</a></li>
+        {% else %}
+            <li><a class="page_link icon-svg small" title="Back to first page" href="{% url request.resolver_match.view_name page=1 %}">{% inline_svg 'img/start.svg' %}</a></li>
+            <li><a class="page_link icon-svg small" title="Back to page {{ page_obj.previous_page_number }}" href="{% url request.resolver_match.view_name page=page_obj.previous_page_number %}">{% inline_svg 'img/previous.svg' %}</a></li>
+        {% endif %}
+    {% else %}
+        <li><span class="page_link icon-svg small disabled" title="No earlier pages">{% inline_svg 'img/start.svg' %}</span></li>
+        <li><span class="page_link icon-svg small disabled" title="No earlier pages">{% inline_svg 'img/previous.svg' %}</span></li>
+    {% endif %}
+        <li><span class="page_current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+    {% if page_obj.has_next %}
+        {% if 'home' in request.resolver_match.view_name %}
+            <li><a class="page_link icon-svg small" title="Forward to page {{ page_obj.next_page_number }}" href="/page/{{ page_obj.next_page_number }}">{% inline_svg 'img/next.svg' %}</a></li>
+            <li><a class="page_link icon-svg small" title="Forward to last page" href="/page/{{ page_obj.paginator.num_pages }}">{% inline_svg 'img/end.svg' %}</a></li>
+        {% else %}
+            <li><a class="page_link icon-svg small" title="Forward to page {{ page_obj.next_page_number }}" href="{% url request.resolver_match.view_name page=page_obj.next_page_number %}">{% inline_svg 'img/next.svg' %}</a></li>
+            <li><a class="page_link icon-svg small" title="Forward to last page" href="{% url request.resolver_match.view_name page=page_obj.paginator.num_pages %}">{% inline_svg 'img/end.svg' %}</a></li>
+        {% endif %}
+    {% else %}
+        <li><span class="page_link icon-svg small disabled" title="No following pages">{% inline_svg 'img/next.svg' %}</span></li>
+        <li><span class="page_link icon-svg small disabled" title="No following pages">{% inline_svg 'img/end.svg' %}</span></li>
+    {% endif %}
+    </ul>
+</nav>
+

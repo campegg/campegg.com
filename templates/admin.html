@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% with "admin/"|add:request.resolver_match.view_name|add:".html" as template %}
+        {% include template %}
+    {% endwith %}
+
+{% endblock %}

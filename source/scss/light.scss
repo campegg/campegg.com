@@ -1,0 +1,32 @@
+/* ---------- light theme ---------- */
+@import 'modules/colors';
+@import 'modules/mixins';
+
+:root {
+    --c-text:           #{shade($grey, 60%)};
+    --c-text-muted:     #{tint($grey, 20%)};
+    --c-text-heading:   #{shade($grey, 40%)};
+
+    --c-link-lv:        #{shade($blue, 10%)};
+    --c-link-ha:        #{shade($red, 10%)};
+
+    --c-background:     #{$white };
+    --c-background-alt: #{tint($grey, 0%, 0.05)};
+    --c-background-admin:#{tint($grey, 97.5%, 1)};
+    --c-borders:        #{tint($grey, 0%, 0.1)};
+    --c-shadow:         var(--c-borders);
+
+    --c-code-literal:   #{shade($blue, 15%)};
+    --c-code-name:      var(--c-text);
+    --c-code-attr:      #{shade($orange, 15%)};
+    --c-code-comment:   #{shade($green, 10%)};
+    --c-code-keyword:   #{$purple};
+    --c-code-string:    #{shade($red, 10%)};
+    --c-code-hl-bg:     #{tint($yellow, 0%, 0.66)};
+    --c-code-linenos-bg:var(--c-background-alt);
+
+    --f-weight-light:   300;
+    --f-weight-regular: 400;
+    --f-weight-semi:    500;
+    --f-weight-bold:    700;
+}

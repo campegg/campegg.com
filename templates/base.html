@@ -1,0 +1,47 @@
+{% load webmentions %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name=”robots” content="noindex, nofollow, noimageindex">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        {% if page_meta.desc %}<meta name="description" content="{{ page_meta.desc }}">{% endif %}
+
+        <title>Cam Pegg: {% if page_meta.title %}{{ page_meta.title }}{% else %}Digital product and strategy guy{% endif %}</title>
+
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+        <link rel="mask-icon" href="{% static 'img/favicon-pinned.svg' %}" color="#333333">
+
+        <link rel="me" href="https://github.com/campegg">
+        <link rel="me" href="https://linkedin.com/in/campegg">
+        <link rel="me" href="https://mastodon.social/@campegg">
+        <link rel="me" href="https://indieweb.social/@campegg">
+
+        {% if post %}<link rel="canonical" href="{{ request.scheme }}://{{ request.get_host }}{{ post.get_absolute_url }}">{% endif %}
+        <link rel="webmention" href="/webmentions/">
+
+        <link rel="alternate" type="application/atom+xml" href="{% url 'feed_atom' %}">
+        <link rel="sitemap" type="application/xml" href="{% url 'sitemap' %}">
+
+        <link rel="stylesheet" href="{% static 'css/light.css' %}" id="theme">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        {% if user.is_authenticated %}<link rel="stylesheet" href="{% static 'css/admin-styles.css' %}">{% endif %}
+
+        <script src="{% static 'js/scripts.js' %}"></script>
+        {% if user.is_authenticated %}<script src="{% static 'js/admin_scripts.js' %}"></script>{% endif %}
+        {% if "campegg.com" in request.get_host and not "admin_" in request.resolver_match.view_name %}
+        <script async src="https://umami.campegg.net/script.js" data-website-id="931542a1-0e3d-45b5-ba3d-105ab7fe8f1e" data-do-not-track="true"></script>
+        {% endif %}
+    </head>
+
+    <body{% if page_meta.body_class %} class="{{ page_meta.body_class }}"{% endif %}>
+        {% include "includes/header.html" %}
+
+        <main>{% block content %}{% endblock %}</main>
+
+        {% include "includes/footer.html" %}
+    </body>
+</html>

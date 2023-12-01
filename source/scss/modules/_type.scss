@@ -1,0 +1,27 @@
+/* ---------- inter typeface ---------- */
+@font-face {
+    font-family: 'inter';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'regular';
+    src: url("/assets/fonts/inter.woff2?v=4.0") format("woff2");
+}
+
+@font-face {
+    font-family: 'inter';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: italic;
+    font-named-instance: 'italic';
+    src: url("/assets/fonts/inter-italic.woff2?v=4.0") format("woff2");
+}
+
+@font-face {
+    font-family: 'monaspace neon';
+    font-weight: 100 900;
+    font-display: swap;
+    font-style: normal;
+    font-named-instance: 'regular';
+    src: url("/assets/fonts/monaspace-neon.var.woff2?v=1.0") format("woff2");
+}

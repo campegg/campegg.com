@@ -1,0 +1,21 @@
+{% include 'includes/search_form.html' %}
+
+{% if request.GET.q %}
+    {% if results %}
+    <h2>{{ results|length }} results for &#8220;{{ request.GET.q }}&#8221;:</h2>
+    <ol class="search-result summary-list">
+        {% for result in results %}
+            <li data-search-rank="{{ result.final_ranking }}">
+                <p>
+                    <a href="{{ result.get_absolute_url }}"><b>{% if result.title %}{{ result.title }}{% else %}Note: {{ result.publish_date|date:"F j, Y" }}{% endif %}</b></a>:
+                    {{ result.result_summary|safe }}
+                </p>
+            </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+        <p>No results, sorry! I guess I haven't written anything relating to &#8220;{{ request.GET.q }}&#8221;. Are you sure that you spelled it right (or that you misspelled it the same way I do)?</p>
+    {% endif %}
+{% else %}
+    <p>You gotta search for something to get some results, yo.</p>
+{% endif %}

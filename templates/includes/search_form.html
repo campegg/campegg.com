@@ -1,0 +1,7 @@
+<form class="search-form" method="get" action="{% url 'search' %}">
+    <input type="text" name="{{ search_form.q.name }}" placeholder="{{ search_form.q.label }}" id="{{ search_form.q.id_for_label }}" {% if search_form.q.field.required %}required{% endif %}>
+    <button type="submit" title="Search">
+        {% inline_svg 'img/search.svg' %}
+    </button>
+</form>
+

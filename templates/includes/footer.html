@@ -1,0 +1,26 @@
+<footer>
+    {% if 'admin_' not in  request.resolver_match.view_name %}
+        {% if request.resolver_match.view_name != 'home' %}
+            {% include 'includes/h-card.html' %}
+        {% endif %}
+        {% if request.resolver_match.view_name != "search" %}
+            {% include 'includes/search_form.html' %}
+        {% endif %}
+        <nav class="footer-links">
+            <ul>
+                <li><a href="{% url 'archive' %}">Archive</a></li>
+                {% for page in pages %}
+                <li><a href="{% url 'page_detail' path=page.full_path %}">{{ page.title }}</a></li>
+                {% endfor %}
+                <li><a href="{% url 'feed_atom' %}">Feed</a></li>
+            </ul>
+        </nav>
+        <p><a href="https://xn--sr8hvo.ws/%F0%9F%91%9D%F0%9F%88%B9%E2%9A%96/previous">←</a> <a href="https://🕸💍.ws/">IndieWeb Webring</a> <a href="https://xn--sr8hvo.ws/%F0%9F%91%9D%F0%9F%88%B9%E2%9A%96/next">→</a></p>
+    {% endif %}
+    <p>&copy; Cam Pegg. You seem nice.{% if user.is_authenticated %} Want to <a href="{% url 'admin_logout' %}">log out</a>?{% endif %}</p>
+</footer>
+{% if user.is_authenticated and request.resolver_match.view_name != "admin_create" %}
+<div>
+    <a id="admin-post-link" href="{% url 'admin_create' %}">{% inline_svg 'img/new.svg' %}</a>
+</div>
+{% endif %}

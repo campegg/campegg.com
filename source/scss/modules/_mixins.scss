@@ -1,0 +1,42 @@
+/* ---------- scss functions, mixins & variables ---------- */
+@function tint($color, $percentage, $opacity: 1) {
+    $shadedColor: mix(#ffffff, $color, $percentage);
+    $red: red($shadedColor);
+    $green: green($shadedColor);
+    $blue: blue($shadedColor);
+    @return rgba($red, $green, $blue, $opacity);
+}
+
+@function shade($color, $percentage, $opacity: 1) {
+    $shadedColor: mix(#000000, $color, $percentage);
+    $red: red($shadedColor);
+    $green: green($shadedColor);
+    $blue: blue($shadedColor);
+    @return rgba($red, $green, $blue, $opacity);
+}
+
+@mixin link-style($color: var(--c-link-lv), $hoverColor: var(--c-link-ha), $underline: true) {
+    &:link, &:visited {
+        color: $color;
+        @if $underline == true {
+            text-decoration-line: underline;
+            text-decoration-style: solid;
+            text-decoration-thickness: 0.05em;
+            text-decoration-color: var(--c-borders);
+        } @else {
+            text-decoration: none;
+        }
+    }
+
+    &:hover, &:active {
+        color: $hoverColor;
+        @if $underline == true {
+            text-decoration-line: underline;
+            text-decoration-style: solid;
+            text-decoration-thickness: 0.05em;
+            text-decoration-color: $hoverColor;
+        } @else {
+            text-decoration: none;
+        }
+    }
+}

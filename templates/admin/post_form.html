@@ -1,0 +1,66 @@
+<div id="admin-post-form">
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% if request.resolver_match.view_name == 'admin_edit' %}
+            <input type="hidden" name="post_form-slug" id="id_post_form-slug" value="{{ post_form.instance.slug }}">
+        {% endif %}
+        {{ post_form.non_field_errors }}
+        <div id="admin-post-form-text">
+            {{ post_form.text.errors }}
+            {{ post_form.text|placeholder:"Markdown text" }}
+        </div>
+        <details id="admin-post-form-meta">
+            <summary>
+                <div id="admin-text-chars"></div>
+                Post Meta
+            </summary>
+            <div id="admin-note-meta-content">
+                <div id="admin-note-meta-title">
+                    {{ post_form.title.errors }}
+                    {{ post_form.title|placeholder:"Title (Optional)" }}
+                </div>
+                <div id="admin-note-meta-photo">
+                    <div>
+                        {{ post_form.photo.errors }}
+                        <input type="file" name="{{ post_form.photo.name }}" id="{{ post_form.photo.id_for_label }}">
+                        <label id="custom-upload" for="{{ post_form.photo.id_for_label }}">Choose Photo</label>
+                        <span id="custom-upload-display"></span>
+                    </div>
+                    <div>
+                        {{ post_form.photo_alt_text.errors }}
+                        {{ post_form.photo_alt_text|placeholder:"Alt Text (Optional)" }}
+                    </div>
+                </div>
+                <div id="admin-note-meta-content-status">
+                    <div>
+                        {{ post_form.status }}
+                    </div>
+                    <div>
+                        {{ post_form.publish_date|placeholder:"yyyy-mm-dd hh:mm:ss (Optional)" }}
+                    </div>
+                </div>
+            </div>
+        </details>
+        <div id="admin-post-form-options">
+            <div id="admin-post-form-options-external">
+                <div>
+                    {{ post_form.send_to_fediverse }}
+                    <label for="{{ post_form.send_to_fediverse.id_for_label }}">Federate</label>
+                </div>
+                <div>
+                    {{ post_form.send_to_archive }}
+                    <label for="{{ post_form.send_to_archive.id_for_label }}">web.archive</label>
+                </div>
+                <div>
+                    {{ post_form.rss_only }}
+                    <label for="{{ post_form.rss_only.id_for_label }}">RSS only</label>
+                </div>
+            </div>
+            <div>
+                <button class="primary" type="submit">
+                    {% if request.resolver_match.view_name == 'admin_edit' %}Update{% else %}Save{% endif %}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

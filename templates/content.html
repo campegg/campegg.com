@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% with "content/"|add:request.resolver_match.view_name|cut:"_index"|cut:"_detail"|cut:"_all"|cut:"_paginated"|cut:"_year"|cut:"_month"|cut:"_day"|add:".html" as template %}
+        {% include template %}
+    {% endwith %}
+
+{% endblock %}

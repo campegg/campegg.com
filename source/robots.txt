@@ -1,0 +1,201 @@
+# here's the sitemap:
+Sitemap: /sitemap.xml
+
+# let the internet archive go nuts
+User-Agent: ia_archiver
+Allow: /
+
+# let marginalia in, too
+User-Agent: search.marginalia.nu
+Allow: /
+
+# disallow some explicitly named bots...
+User-Agent: 360spider
+Disallow: /
+
+User-Agent: adidxbot
+Disallow: /
+
+User-Agent: adsbot-google
+Disallow: /
+
+User-Agent: ahrefsbot
+Disallow: /
+
+User-Agent: aihitbot
+Disallow: /
+
+User-Agent: aolbuild
+Disallow: /
+
+User-Agent: baidu bookmark search
+Disallow: /
+
+User-Agent: baidu business search
+Disallow: /
+
+User-Agent: baidu image search
+Disallow: /
+
+User-Agent: baidu mobile search
+Disallow: /
+
+User-Agent: baidu news search
+Disallow: /
+
+User-Agent: baidu union search
+Disallow: /
+
+User-Agent: baidu video search
+Disallow: /
+
+User-Agent: baidu web search
+Disallow: /
+
+User-Agent: baiduspider
+Disallow: /
+
+User-Agent: baiduspider-ads
+Disallow: /
+
+User-Agent: baiduspider-cpro
+Disallow: /
+
+User-Agent: baiduspider-favo
+Disallow: /
+
+User-Agent: baiduspider-image
+Disallow: /
+
+User-Agent: baiduspider-mobile
+Disallow: /
+
+User-Agent: baiduspider-news
+Disallow: /
+
+User-Agent: baiduspider-video
+Disallow: /
+
+User-Agent: bingbot
+Disallow: /
+
+User-Agent: bingpreview
+Disallow: /
+
+User-Agent: ccbot
+Disallow: /
+
+User-Agent: chatgpt-user
+Disallow: /
+
+User-Agent: duckduckbot
+Disallow: /
+
+User-agent: facebookbot
+Disallow: /
+
+User-Agent: google-extended
+Disallow: /
+
+User-Agent: googlebot
+Disallow: /
+
+User-Agent: googlebot-image
+Disallow: /
+
+User-Agent: gptbot
+Disallow: /
+
+User-Agent: mediapartners-google
+Disallow: /
+
+User-Agent: msnbot
+Disallow: /
+
+User-Agent: msnbot-media
+Disallow: /
+
+User-Agent: netestate ne crawler
+Disallow: /
+
+User-Agent: npbot
+Disallow: /
+
+User-agent: omgilibot
+Disallow: /
+
+User-Agent: pinterestbot
+Disallow: /
+
+User-Agent: slurp
+Disallow: /
+
+User-Agent: slysearch
+Disallow: /
+
+User-Agent: teoma
+Disallow: /
+
+User-Agent: the knowledge ai
+Disallow: /
+
+User-Agent: turnitinbot
+Disallow: /
+
+User-Agent: yadirectfetcher
+Disallow: /
+
+User-Agent: yandexaccessibilitybot
+Disallow: /
+
+User-Agent: yandexantivirus
+Disallow: /
+
+User-Agent: yandexblogs
+Disallow: /
+
+User-Agent: yandexbot
+Disallow: /
+
+User-Agent: yandexcalendar
+Disallow: /
+
+User-Agent: yandexdirectdyn
+Disallow: /
+
+User-Agent: yandexfavicons
+Disallow: /
+
+User-Agent: yandeximageresizer
+Disallow: /
+
+User-Agent: yandeximages
+Disallow: /
+
+User-Agent: yandexmedia
+Disallow: /
+
+User-Agent: yandexmetrika
+Disallow: /
+
+User-Agent: yandexmobilebot
+Disallow: /
+
+User-Agent: yandexpagechecker
+Disallow: /
+
+User-Agent: yandexsitelinks
+Disallow: /
+
+User-Agent: yandexvertis
+Disallow: /
+
+User-Agent: yandexvideo
+Disallow: /
+
+User-Agent: yandexwebmaster
+Disallow: /
+
+# ...but also just block all crawlers by default
+User-Agent: *
+Disallow: /

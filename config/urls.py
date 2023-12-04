@@ -25,7 +25,6 @@ from django.contrib.auth import views
 
 from siteadmin.views import AdminLogin
 from content.views import Home
-from activitypub.views import Actor
 
 
 def route_request(request):

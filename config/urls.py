@@ -65,12 +65,16 @@ urlpatterns = [
     path("feed/", RedirectView.as_view(pattern_name="feed_atom", permanent=True)),
     path("sitemap/", RedirectView.as_view(url="/sitemap.xml")),
     path(
+        "github/",
+        RedirectView.as_view(url="https://github.com/campegg", permanent=True),
+    ),
+    path(
         "linkedin/",
-        RedirectView.as_view(url="https://linkedin.com/in/campegg, permanent=True"),
+        RedirectView.as_view(url="https://linkedin.com/in/campegg", permanent=True),
     ),
     path(
         "mastodon/",
-        RedirectView.as_view(url="https://mastodon.social/@campegg, permanent=True"),
+        RedirectView.as_view(url="https://mastodon.social/@campegg", permanent=True),
     ),
     path(
         "strava/",

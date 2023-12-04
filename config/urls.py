@@ -54,7 +54,6 @@ urlpatterns = [
     ),
     path("django/", admin.site.urls),
     path("webmentions/", include("mentions.urls")),
-    path("", include("activitypub.urls")),
     path("", include("siteadmin.urls")),
     path("", include("content.urls")),
     path("", route_request, name="home"),

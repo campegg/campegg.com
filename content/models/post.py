@@ -203,6 +203,8 @@ class Post(MentionableMixin, models.Model):
             print(f"GPS Lon: {gps_longitude}")
             print(f"GPS Lon Ref: {gps_longitude_ref}")
 
+            coordinates = None
+
             if (
                 gps_latitude
                 and gps_latitude_ref
@@ -220,7 +222,8 @@ class Post(MentionableMixin, models.Model):
                 img_data["lat"] = None
                 img_data["lon"] = None
 
-            print(f"Coords: {coordinates}")
+            if coordinates:
+                print(f"Coords: {coordinates}")
 
             # Step 3: Resize, rename and save the temp file to the media directory using Pillow
             img = Image.open(temp_path)

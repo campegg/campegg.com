@@ -955,8 +955,10 @@ table {
 
                     img {
                         width: var(--f-size-xlarge);
+                        aspect-ratio: 1 / 1;
                         border: 1px solid var(--c-borders);
                         border-radius: 50%;
+                        object-fit: cover;
                     }
                 }
             }

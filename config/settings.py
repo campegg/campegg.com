@@ -26,6 +26,7 @@ SITE_ID = int(os.getenv("DJANGO_SITE_ID"))
 # Application definition
 
 INSTALLED_APPS = [
+    "admin_reorder",
     "admin_interface",
     "colorfield",
     "django.contrib.admin",
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "mentions.middleware.WebmentionHeadMiddleware",
+    "admin_reorder.middleware.ModelAdminReorder",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -165,3 +167,49 @@ WEBMENTIONS_ALLOW_OUTGOING_DEFAULT = True
 # Admin interface
 X_FRAME_OPTIONS = "SAMEORIGIN"
 SILENCED_SYSTEM_CHECKS = ["security.W019"]
+
+# Admin reorder
+ADMIN_REORDER = (
+    {
+        "app": "content",
+        "label": "Content",
+        "models": (
+            "content.Post",
+            "content.Page",
+        ),
+    },
+    {
+        "app": "mentions",
+        "label": "Webmentions",
+        "models": (
+            {
+                "model": "mentions.Webmention",
+                "label": "Incoming webmentions",
+            },
+            {
+                "model": "mentions.PendingIncomingWebmention",
+                "label": "Pending incoming webmentions",
+            },
+            {
+                "model": "mentions.OutgoingWebmentionStatus",
+                "label": "Outgoing webmentions",
+            },
+            {
+                "model": "mentions.PendingOutgoingContent",
+                "label": "Pending outgoing webmentions",
+            },
+            "mentions.SimpleMention",
+            "mentions.HCard",
+        ),
+    },
+    {
+        "app": "auth",
+        "label": "Administration",
+        "models": (
+            "auth.User",
+            "auth.Group",
+            "sites.Site",
+            "admin_interface.Theme",
+        ),
+    },
+)

@@ -3,6 +3,10 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // color scheme switcher
+    const isDaytime = () => { // maybe update this to more accurately detect sunrise/sunset at some point?
+        const hour = new Date().getHours();
+        return hour >= 7 && hour < 19;
+    };
     const themeToggle = document.getElementById("theme-toggle");
     const themeIcon = document.getElementById("theme-icon");
     let currentTheme = localStorage.getItem("theme") || "auto";
@@ -15,19 +19,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const applyTheme = async (theme) => {
         let newTheme = theme;
+        let iconTheme = theme; // Separate variable for the icon theme
+    
         if (theme === "auto") {
             newTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        } else if (theme === "time") {
+            newTheme = isDaytime() ? "light" : "dark";
+            // Keep iconTheme as 'time' to fetch the time icon
         }
+    
         document.querySelector('link[id="theme"]').href = `/assets/css/${newTheme}.css`;
-        const svgText = await fetchSVG(theme);
+        const svgText = await fetchSVG(iconTheme); // Fetch the SVG for the iconTheme
         themeIcon.innerHTML = svgText;
     };
-
+    
     themeToggle.addEventListener("click", async () => {
         if (currentTheme === "dark") {
             currentTheme = "light";
         } else if (currentTheme === "light") {
             currentTheme = "auto";
+        } else if (currentTheme === "auto") {
+            currentTheme = "time";
         } else {
             currentTheme = "dark";
         }

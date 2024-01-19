@@ -278,6 +278,11 @@ i, em {
 
 img {
     border-radius: var(--s-border-radius);
+    max-width: 100%;
+    
+    &.full-width {
+        width: 100%;
+    }
 }
 
 nav {

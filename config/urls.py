@@ -19,43 +19,18 @@ from django.urls import path, include, re_path
 from django.views.generic import RedirectView
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LogoutView
-from django.contrib.auth import views
 
 
-from siteadmin.views import AdminLogin
 from content.views import Home
-
-
-def route_request(request):
-    accept_header = request.META.get("HTTP_ACCEPT", "")
-
-    if "json" in accept_header:
-        return Actor.as_view()(request)
-    else:
-        return Home.as_view()(request)
 
 
 urlpatterns = [
     # ---------- main patterns ----------#
-    path("logout/", LogoutView.as_view(next_page="/login"), name="admin_logout"),
-    path(
-        "login/",
-        views.LoginView.as_view(
-            template_name="admin.html",
-            extra_context={
-                "page_meta": {"title": "Login", "body_class": "admin admin-login"}
-            },
-            next_page="/",
-            authentication_form=AdminLogin,
-        ),
-        name="admin_login",
-    ),
     path("django/", admin.site.urls),
     path("webmentions/", include("mentions.urls")),
     path("", include("siteadmin.urls")),
     path("", include("content.urls")),
-    path("", route_request, name="home"),
+    path("", Home.as_view(), name="home"),
     # ---------- simple redirects ----------#
     path("about/", RedirectView.as_view(url="/about.html")),
     path("about/changelog/", RedirectView.as_view(url="/about/changelog.html")),

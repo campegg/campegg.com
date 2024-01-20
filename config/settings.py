@@ -222,7 +222,11 @@ ADMIN_REORDER = (
 
 
 # CSP directives
-CSP_DEFAULT_SRC = ("'none'",)
+CSP_INCLUDE_NONCE_IN = [
+    "script-src",
+    "style-src",
+]
+CSP_DEFAULT_SRC = ("'self'",)
 CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_ANCESTORS = ("'self'",)
 CSP_CONNECT_SRC = ("'self'",)
@@ -230,14 +234,16 @@ CSP_FONT_SRC = ("'self'",)
 CSP_IMG_SRC = (
     "'self'",
     "'unsafe-inline'",
-    "'unsafe-eval'",
+    "https:",
 )
 CSP_STYLE_SRC = (
     "'self'",
+    "nonce",
     "'unsafe-inline'",
 )
 CSP_SCRIPT_SRC = (
     "'self'",
+    "nonce",
     "https://umami.campegg.net",
 )
 CSP_FRAME_SRC = (

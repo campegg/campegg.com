@@ -17,7 +17,7 @@
 </article>
 
 {% if request.resolver_match.view_name == 'post_detail' %}
-<script>
+<script nonce="{{ request.csp_nonce }}">
 document.addEventListener("DOMContentLoaded", () => {
     async function getMentions() {
         try {

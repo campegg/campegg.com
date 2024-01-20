@@ -51,6 +51,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "csp.middleware.CSPMiddleware",
     "mentions.middleware.WebmentionHeadMiddleware",
     "admin_reorder.middleware.ModelAdminReorder",
 ]
@@ -218,3 +219,28 @@ ADMIN_REORDER = (
         ),
     },
 )
+
+
+# CSP directives
+CSP_DEFAULT_SRC = ("'none'",)
+CSP_FORM_ACTION = ("'self'",)
+CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_IMG_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+    "'unsafe-eval'",
+)
+CSP_STYLE_SRC = (
+    "'self'",
+    "'unsafe-inline'",
+)
+CSP_SCRIPT_SRC = (
+    "'self'",
+    "https://umami.campegg.net",
+)
+CSP_FRAME_SRC = (
+    "'self'",
+    "https://www.youtube.com",
+    "https://youtu.be",
+)
+CSP_BASE_URI = ("'none'",)

@@ -225,6 +225,8 @@ ADMIN_REORDER = (
 CSP_DEFAULT_SRC = ("'none'",)
 CSP_FORM_ACTION = ("'self'",)
 CSP_FRAME_ANCESTORS = ("'self'",)
+CSP_CONNECT_SRC = ("'self'",)
+CSP_FONT_SRC = ("'self'",)
 CSP_IMG_SRC = (
     "'self'",
     "'unsafe-inline'",

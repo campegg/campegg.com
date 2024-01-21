@@ -20,19 +20,19 @@ document.addEventListener("DOMContentLoaded", () => {
     const applyTheme = async (theme) => {
         let newTheme = theme;
         let iconTheme = theme; // Separate variable for the icon theme
-    
+
         if (theme === "auto") {
             newTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         } else if (theme === "time") {
             newTheme = isDaytime() ? "light" : "dark";
             // Keep iconTheme as 'time' to fetch the time icon
         }
-    
+
         document.querySelector('link[id="theme"]').href = `/assets/css/${newTheme}.css`;
         const svgText = await fetchSVG(iconTheme); // Fetch the SVG for the iconTheme
         themeIcon.innerHTML = svgText;
     };
-    
+
     themeToggle.addEventListener("click", async () => {
         if (currentTheme === "dark") {
             currentTheme = "light";
@@ -57,15 +57,22 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(currentTheme);
     localStorage.setItem("theme", currentTheme);
 
-
-    // open external links in new tabs
-    let links = document.querySelectorAll("a")
-    for(let i = 0; i < links.length; i++) {
-        if(links[i].hostname != window.location.hostname) {
-            links[i].setAttribute("target", "_blank")
-            links[i].setAttribute("rel", "noopener")
+    let links = document.querySelectorAll("a");
+    for (let i = 0; i < links.length; i++) {
+        if (links[i].hostname !== window.location.hostname) {
+            links[i].setAttribute("target", "_blank");
+            let currentRel = links[i].getAttribute("rel");
+            if (currentRel) {
+                if (!currentRel.includes("noopener")) {
+                    links[i].setAttribute("rel", currentRel + " noopener");
+                }
+            } else {
+                links[i].setAttribute("rel", "noopener");
+            }
         }
     }
+
+
 
 
     // set table cell spacing and padding

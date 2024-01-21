@@ -37,7 +37,7 @@ class PostFeed(Feed):
         return (
             item.title
             if item.title
-            else f"{ datetime.strftime(item.publish_date, '%B %-d %Y, %-I:%M %p') }"
+            else f"{datetime.strftime(item.publish_date, '%B %-d %Y, %-I:%M %p')}"
         )
 
     def item_pubdate(self, item):
@@ -66,10 +66,10 @@ class JsonFeed(View):
             "version": "https://jsonfeed.org/version/1",
             "title": "Cam Pegg",
             "home_page_url": base_url,
-            "feed_url": f"{ base_url }/feed.json",
+            "feed_url": f"{base_url}/feed.json",
             "description": "The most recent posts to campegg.com",
             "author": {"name": "Cam Pegg"},
-            "icon": f"{ base_url }/assets/img/favicon-256x256.png",
+            "icon": f"{base_url}/assets/img/favicon-256x256.png",
         }
 
         # fetch posts

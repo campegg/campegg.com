@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<opml version="2.0">
+
+    <head>
+        <title></title>
+        <dateCreated>{{ times.created }}</dateCreated>
+        <dateModified>{{ times.modified }}</dateModified>
+        <ownerName>Cam Pegg</ownerName>
+        <ownerEmail>cam@campegg.com</ownerEmail>
+        <ownerId>https://campegg.com/</ownerId>
+        <docs>http://opml.org/spec2.opml</docs>
+    </head>
+
+    <body>{% regroup feeds by category as feed_list %}
+        {% for category in feed_list %}
+        <outline title="{{ category.grouper }}" text="{{ category.grouper }}">
+            {% for feed in category.list %}
+            <outline title="{{ feed.title }}" text="{{ feed.title }}" xmlUrl="{{ feed.feed_url }}" htmlUrl="{{ feed.site_url }}" type="rss" />
+            {% endfor %}
+        </outline>{% endfor %}
+    </body>
+
+</opml>

@@ -373,7 +373,7 @@ ol, ul {
     }
 }
 
-p, ol, ul, blockquote {
+p, ol, ul, blockquote, section {
     margin-block-start: var(--s-base-margin);
 
     &:first-child {
@@ -408,7 +408,6 @@ pre {
     }
 }
 
-
 sub, sup {
     font-size: var(--f-size-xsmall);
     line-height: 0;
@@ -429,6 +428,22 @@ time {
 }
 
 ul {
+    &.list-blogroll {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        columns: 3;
+        column-gap: calc(var(--s-base-margin) * 1);
+        column-width: calc(calc(var(--s-max-content) - calc(var(--s-base-margin) * 2)) / 3);
+
+        li {
+            text-indent: calc(var(--s-base-margin) * -0.75);
+            margin-inline-start: calc(var(--s-base-margin) * 0.75);
+            padding: 0;
+            display: inline-block;
+            min-width: calc(calc(var(--s-max-content) - calc(var(--s-base-margin) * 2)) / 3);
+        }
+    }
 }
 
 ul ul, ol ol, ul ol, ol ul {

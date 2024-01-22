@@ -12,6 +12,7 @@
                 {% for page in pages %}
                 <li><a href="{% url 'page_detail' path=page.full_path %}">{{ page.title }}</a></li>
                 {% endfor %}
+                <li><a href="{% url 'blogroll' %}">Blogroll</a></li>
                 <li><a href="{% url 'feed_atom' %}">Feed</a></li>
             </ul>
         </nav>

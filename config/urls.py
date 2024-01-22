@@ -60,7 +60,6 @@ urlpatterns = [
         RedirectView.as_view(url="/2023/07/31/its-done-i.html", permanent=True),
     ),
     # ---------- wildcard redirects ----------#
-    re_path(r"^activities/.*$", RedirectView.as_view(pattern_name="home")),
     re_path(r"^activitypub/.*$", RedirectView.as_view(pattern_name="home")),
     re_path(r"^bookmarks/.*$", RedirectView.as_view(pattern_name="home")),
     re_path(r"^books/.*$", RedirectView.as_view(pattern_name="home")),

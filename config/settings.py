@@ -234,17 +234,29 @@ CSP_FONT_SRC = ("'self'",)
 CSP_IMG_SRC = (
     "'self'",
     "'unsafe-inline'",
+    "data:",
     "https:",
 )
 CSP_STYLE_SRC = (
     "'self'",
     "nonce",
     "'unsafe-inline'",
+    "https://api.mapbox.com",
 )
 CSP_SCRIPT_SRC = (
     "'self'",
     "nonce",
     "https://umami.campegg.net",
+    "https://api.mapbox.com",
+)
+CSP_WORKER_SRC = (
+    "'self'",
+    "blob:",
+)
+CSP_CONNECT_SRC = (
+    "'self'",
+    "https://api.mapbox.com",
+    "https://events.mapbox.com",
 )
 CSP_FRAME_SRC = (
     "'self'",

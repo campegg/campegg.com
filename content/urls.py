@@ -9,6 +9,8 @@ from content.models import Post
 from content.views import (
     Home,
     Archive,
+    ActivityIndex,
+    ActivityDetail,
     PostDetail,
     PageDetail,
     SearchView,
@@ -34,11 +36,6 @@ urlpatterns = [
     path("<int:year>/", YearArchive.as_view(), name="archive_year"),
     path("<int:year>/<int:month>/", MonthArchive.as_view(), name="archive_month"),
     path("<int:year>/<int:month>/<int:day>/", DayArchive.as_view(), name="archive_day"),
-    # path(
-    #     "<int:year>/<int:month>/<int:day>/<slug:slug>.html",
-    #     PostDetail.as_view(),
-    #     name="post_detail",
-    # ),
     mentions_path(
         "<int:year>/<int:month>/<int:day>/<slug:slug>.html",
         PostDetail.as_view(),
@@ -51,6 +48,13 @@ urlpatterns = [
             "slug": "slug",
         },
     ),
+    path("activities/", ActivityIndex.as_view(), name="activity_index"),
+    path(
+        "activities/page/<int:page>/",
+        ActivityIndex.as_view(),
+        name="activity_index",
+    ),
+    path("activities/<int:id>.html", ActivityDetail.as_view(), name="activity_detail"),
     path("search.html", SearchView.as_view(), name="search"),
     path("<path:path>.html", PageDetail.as_view(), name="page_detail"),
     path("feed.xml", PostFeed(), name="feed_atom"),

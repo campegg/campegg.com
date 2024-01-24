@@ -4,7 +4,7 @@
     {% endif %}
     <div class="e-content">
         {% if post.post_type == 2 %}
-        <p><img src="{{ request.scheme }}://{{ request.get_host }}{{ post.photo.url }}" alt="{{ post.photo_alt_text|escape }}" loading="lazy"></p>
+        <p><img class="u-photo" src="{{ request.scheme }}://{{ request.get_host }}{{ post.photo.url }}" alt="{{ post.photo_alt_text|escape }}" loading="lazy"></p>
         {% endif %}
         {{ post.html|safe }}
     </div>

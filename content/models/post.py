@@ -120,6 +120,17 @@ class Post(MentionableMixin, models.Model):
         else:
             return self.slug
 
+    def render_html(self):
+        if self.send_to_fediverse:
+            html = utilities.render_html(
+                self.text
+                + ' <a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>'
+            )
+            return html
+        else:
+            html = utilities.render_html(self.text)
+            return html
+
     def handle_publishing(self):
         # get the current time without microseconds
         savetime = timezone.now().replace(microsecond=0)
@@ -250,7 +261,7 @@ class Post(MentionableMixin, models.Model):
             pass
 
     def save(self, *args, **kwargs):
-        self.html = utilities.render_html(self.text)
+        self.html = self.render_html()
         self.handle_publishing()
         if self.pk is None:
             self.handle_photo_upload()
@@ -264,7 +275,7 @@ class Post(MentionableMixin, models.Model):
         super(Post, self).delete(*args, **kwargs)
 
     def get_content_html(self) -> str:
-        return self.html
+        return self.render_html()
 
     def get_absolute_url(self) -> str:
         return reverse(

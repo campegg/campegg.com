@@ -124,7 +124,7 @@ class Post(MentionableMixin, models.Model):
         if self.send_to_fediverse:
             html = utilities.render_html(
                 self.text
-                + ' <a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>'
+                + '\n</div>\n<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>'
             )
             return html
         else:

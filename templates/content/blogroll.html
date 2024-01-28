@@ -11,7 +11,8 @@
     <ul class="list-blogroll">
     {% for feed in category.list %}
         <li>
-            <a class="u-url" href="{{ feed.site_url }}"><span class="p-name">{{ feed.title }}</span></a>&nbsp;<a class="u-url" href="{{ feed.feed_url }}"><span class="icon-svg xsmall">{% inline_svg 'img/rss.svg' %}</span></a>
+            <a class="u-url" href="{{ feed.site_url }}"><span class="p-name">{{ feed.title }}</span></a>
+            <a class="u-url" href="{{ feed.feed_url }}"><span class="icon-svg xsmall">{% inline_svg 'img/rss.svg' %}</span></a>
         </li>
     {% endfor %}
     </ul>

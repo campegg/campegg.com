@@ -429,19 +429,12 @@ time {
 
 ul {
     &.list-blogroll {
-        list-style: none;
-        margin: 0;
-        padding: 0;
         columns: 3;
         column-gap: calc(var(--s-base-margin) * 1);
-        column-width: calc(calc(var(--s-max-content) - calc(var(--s-base-margin) * 2)) / 3);
+        column-width: calc(calc(var(--s-max-content) - calc(var(--s-base-margin) * 2)) / 2);
 
         li {
-            text-indent: calc(var(--s-base-margin) * -0.75);
-            margin-inline-start: calc(var(--s-base-margin) * 0.75);
-            padding: 0;
-            display: inline-block;
-            min-width: calc(calc(var(--s-max-content) - calc(var(--s-base-margin) * 2)) / 3);
+            min-width: calc(calc(var(--s-max-content) - calc(var(--s-base-margin) * 2)) / 2);
         }
     }
 }

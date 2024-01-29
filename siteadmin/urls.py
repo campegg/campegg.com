@@ -4,7 +4,13 @@ from django.contrib.auth.views import LogoutView
 from django.contrib.auth import views
 
 
-from siteadmin.views import AdminLogin, PostCreate, PostEdit
+from siteadmin.views import (
+    AdminLogin,
+    PostCreate,
+    PostEdit,
+    ReactionIndex,
+    ReactionDetail,
+)
 
 
 urlpatterns = [
@@ -28,4 +34,6 @@ urlpatterns = [
         PostEdit.as_view(),
         name="admin_edit",
     ),
+    path("reactions.html", ReactionIndex.as_view(), name="reaction_index"),
+    path("reactions/<int:id>/", ReactionDetail.as_view(), name="reaction_detail"),
 ]

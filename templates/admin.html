@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    {% with "admin/"|add:request.resolver_match.view_name|add:".html" as template %}
+    {% with "admin/"|add:request.resolver_match.view_name|cut:"_index"|cut:"_detail"|add:".html" as template %}
         {% include template %}
     {% endwith %}
 

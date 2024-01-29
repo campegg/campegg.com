@@ -182,6 +182,10 @@ ADMIN_REORDER = (
         "models": (
             "content.Post",
             "content.Page",
+            {
+                "model": "siteadmin.Reaction",
+                "label": "Reactions",
+            },
         ),
     },
     {

@@ -1,0 +1,18 @@
+{% if request.resolver_match.view_name == 'reaction_index' %}
+
+    <ul>
+        {% for reaction in reactions %}
+        <li>{{ reaction.get_reaction_type_display }}: <a class="u-like-of" href="{{ reaction.react_to_url }}">{{ reaction.react_to_url }}</a></li>
+        {% endfor %}
+    </ul>
+
+{% elif request.resolver_match.view_name == 'reaction_detail' %}
+
+    <div class="h-entry">
+        <p class="e-content">
+            {{ reaction.get_reaction_type_display }}: <a class="u-like-of" href="{{ reaction.react_to_url }}">{{ reaction.react_to_url }}</a>
+            <a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans">🌁</a>
+        </p>
+    </div>
+
+{% endif %}

@@ -9,8 +9,15 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const themeToggle = document.getElementById("theme-toggle");
     const themeIcon = document.getElementById("theme-icon");
-    let currentTheme = localStorage.getItem("theme") || "auto";
 
+    // check if 'theme' exists in localstorage, if not set it to default 'auto'
+    let currentTheme = localStorage.getItem("theme");
+    if (!currentTheme) {
+        currentTheme = "auto";
+        localStorage.setItem("theme", currentTheme);
+    }
+
+    // get svg icons
     const fetchSVG = async (theme) => {
         const response = await fetch(`/assets/img/${theme}.svg`);
         const text = await response.text();
@@ -19,17 +26,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const applyTheme = async (theme) => {
         let newTheme = theme;
-        let iconTheme = theme; // Separate variable for the icon theme
+        let iconTheme = theme; // separate variable for the icon theme
 
         if (theme === "auto") {
             newTheme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         } else if (theme === "time") {
             newTheme = isDaytime() ? "light" : "dark";
-            // Keep iconTheme as 'time' to fetch the time icon
         }
 
         document.querySelector('link[id="theme"]').href = `/assets/css/${newTheme}.css`;
-        const svgText = await fetchSVG(iconTheme); // Fetch the SVG for the iconTheme
+        const svgText = await fetchSVG(iconTheme); // fetch the svg for the icontheme
         themeIcon.innerHTML = svgText;
     };
 
@@ -54,9 +60,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
+    // apply the theme based on the current setting
     applyTheme(currentTheme);
-    localStorage.setItem("theme", currentTheme);
 
+    // external links open in new tab
     let links = document.querySelectorAll("a");
     for (let i = 0; i < links.length; i++) {
         if (links[i].hostname !== window.location.hostname) {
@@ -72,18 +79,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-
-
-
     // set table cell spacing and padding
     const tables = document.querySelectorAll("table");
     if (tables.length > 0) {
         tables.forEach((table) => {
-        table.setAttribute("cellspacing", "0");
-        table.setAttribute("cellpadding", "0");
+            table.setAttribute("cellspacing", "0");
+            table.setAttribute("cellpadding", "0");
         });
     }
-
 
     // add shadow to header on scroll
     const headerElement = document.querySelector("header");

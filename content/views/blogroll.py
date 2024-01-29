@@ -16,24 +16,25 @@ tags_json = settings.BASE_DIR / "data" / "blogroll" / "taggings.json"
 
 
 def get_feeds():
-    subs = sorted(
-        json.loads(str(Path(subs_json).read_text())),
-        key=lambda i: i["title"].lower(),
-    )
+    with open(tags_json, "r") as file:
+        tags = json.load(file)
 
-    tags = sorted(
-        json.loads(str(Path(tags_json).read_text())),
-        key=lambda i: i["name"].lower(),
-    )
+    filtered_tags = {
+        tag["feed_id"]: tag["name"]
+        for tag in tags
+        if tag["name"] in ["Blogs", "General"]
+    }
 
+    with open(subs_json, "r") as file:
+        subs = json.load(file)
+
+    display_subs = []
     for sub in subs:
-        for tag in tags:
-            if tag["feed_id"] == sub["feed_id"]:
-                sub["category"] = tag["name"]
+        if sub["feed_id"] in filtered_tags:
+            sub["category"] = filtered_tags[sub["feed_id"]]
+            display_subs.append(sub)
 
-    display_subs = [sub for sub in subs if sub.get("category") in ["Blogs", "General"]]
-
-    return sorted(display_subs, key=lambda i: i["category"])
+    return sorted(display_subs, key=lambda i: (i["category"], i["title"].lower()))
 
 
 # Create your views here.

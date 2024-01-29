@@ -33,6 +33,7 @@ sitemaps = {
 
 urlpatterns = [
     # ---------- content pages ----------#
+    path("", Home.as_view(), name="home"),
     path("page/<int:page>/", Home.as_view(), name="home_paginated"),
     path("archive.html", Archive.as_view(), name="archive"),
     path("<int:year>/", YearArchive.as_view(), name="archive_year"),

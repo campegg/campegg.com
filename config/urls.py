@@ -30,7 +30,6 @@ urlpatterns = [
     path("webmentions/", include("mentions.urls")),
     path("", include("siteadmin.urls")),
     path("", include("content.urls")),
-    path("", Home.as_view(), name="home"),
     # ---------- simple redirects ----------#
     path("about/", RedirectView.as_view(url="/about.html")),
     path("about/changelog/", RedirectView.as_view(url="/about/changelog.html")),

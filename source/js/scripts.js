@@ -40,14 +40,14 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     themeToggle.addEventListener("click", async () => {
-        if (currentTheme === "dark") {
-            currentTheme = "light";
-        } else if (currentTheme === "light") {
-            currentTheme = "auto";
-        } else if (currentTheme === "auto") {
+        if (currentTheme === "auto") {
             currentTheme = "time";
-        } else {
+        } else if (currentTheme === "time") {
             currentTheme = "dark";
+        } else if (currentTheme === "dark") {
+            currentTheme = "light";
+        } else {
+            currentTheme = "auto";
         }
         localStorage.setItem("theme", currentTheme);
         await applyTheme(currentTheme);
@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const systemThemeListener = window.matchMedia("(prefers-color-scheme: dark)");
     systemThemeListener.addListener(() => {
         if (currentTheme === "auto") {
-            applyTheme(currentTheme);
+            applyTheme("auto");
         }
     });
 

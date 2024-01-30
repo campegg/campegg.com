@@ -1,4 +1,5 @@
 from django.views.generic import ListView, DetailView
+from django.db.models.functions import TruncDate
 from django.shortcuts import get_object_or_404
 
 
@@ -12,6 +13,10 @@ class ReactionIndex(ListView):
     model = Reaction
     template_name = "admin.html"
     context_object_name = "reactions"
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.annotate(date_only=TruncDate("create_date")).order_by("-id")
 
     def get_context_data(self, **kwargs):
         context = super(ReactionIndex, self).get_context_data(**kwargs)

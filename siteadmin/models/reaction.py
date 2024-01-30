@@ -39,3 +39,8 @@ class Reaction(MentionableMixin, models.Model):
 
     def __str__(self):
         return f"{self.get_reaction_type_display()}: {self.react_to_url}"
+
+    class Meta:
+        verbose_name = "Reaction"
+        verbose_name_plural = "Reactions"
+        ordering = ["-create_date"]

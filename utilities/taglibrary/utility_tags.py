@@ -2,6 +2,7 @@ from django import template
 from django.conf import settings
 from django.utils.html import mark_safe
 import math
+import re
 
 
 register = template.Library()
@@ -168,6 +169,26 @@ def display_wind_direction(bearing):
     elif bearing_convert == 16:
         dir = "North"
     return dir
+
+
+@register.filter
+def account_name(url):
+    pattern = r"https?://[^/]+/@([^/@]+)"
+    match = re.search(pattern, url)
+    if match:
+        return f"@{match.group(1)}"
+    return url
+
+
+@register.filter
+def account_url(url):
+    pattern = r"https?://(?:[^/]+/)?@([^/@]+)(?:@([^/]+))?"
+    match = re.search(pattern, url)
+    if match:
+        account, domain_b = match.groups()
+        domain = domain_b if domain_b else url.split("/")[2]
+        return f"https://{domain}/@{account}"
+    return url
 
 
 @register.simple_tag

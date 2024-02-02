@@ -36,16 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
     applyTheme(currentTheme);
 
 
-    // open links in new tabs
-    const links = document.querySelectorAll("a");
-    links.forEach(link => {
-        if (link.hostname !== window.location.hostname) {
-            link.target = "_blank";
-            link.rel = link.rel.includes("noopener") ? link.rel : `${link.rel} noopener`.trim();
-        }
-    });
-
-
     // set table cellpadding and cellspacing to 0
     const tables = document.querySelectorAll("table");
     tables.forEach(table => {

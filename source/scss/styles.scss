@@ -299,15 +299,15 @@ nav {
             padding: 0;
             font-size: var(--f-size-small);
 
-            &:after {
+            &:before {
                 content: "•";
                 margin-inline-start: calc(var(--s-base-margin) * 0.5);
                 margin-inline-end: calc(var(--s-base-margin) * 0.5);
                 color: var(--c-text-muted);
             }
 
-            &:last-child {
-                &:after {
+            &:first-child {
+                &:before {
                     content: "";
                     margin-inline-start: 0;
                     margin-inline-end: 0;

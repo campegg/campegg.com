@@ -17,7 +17,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const heading = document.createElement("h3");
                 heading.textContent = "Reactions";
-                heading.title = "When someone responds to one of my posts and sends a webmention, it will be displayed here.";
                 mentionsDiv.appendChild(heading);
 
                 const ul = document.createElement("ul");
@@ -27,14 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
                     const img = document.createElement("img");
 
                     a.href = mention.source_url;
-                    img.src = mention.hcard.avatar;
+                    img.src = mention.hcard.avatar || "/assets/img/no_avatar.png";
                     img.className = "mention_avatar";
                     img.alt = mention.hcard.name + "'s avatar";
+
+                    // Add an error handler for the image
+                    img.onerror = () => {
+                        img.src = "/assets/img/no_avatar.png";
+                    };
 
                     a.appendChild(img);
                     a.appendChild(document.createTextNode(" " + mention.hcard.name));
 
-                    if (mention.source_url.includes('likes/')) {
+                    if (mention.source_url.includes("likes/")) {
                         li.appendChild(a);
                         li.appendChild(document.createTextNode(" liked this post"));
                     } else {
@@ -45,12 +49,12 @@ document.addEventListener("DOMContentLoaded", () => {
                     ul.appendChild(li);
                     mentionsDiv.appendChild(ul);
 
-                    const postArticle = document.querySelector('article:last-of-type');
-                    postArticle.insertAdjacentElement('afterend', mentionsDiv);
+                    const postArticle = document.querySelector("article:last-of-type");
+                    postArticle.insertAdjacentElement("afterend", mentionsDiv);
                 });
             }
         } catch (error) {
-            console.error("Error fetching mentions:", error);
+            console.error("Error fetching reactions:", error);
         }
     }
     getMentions();

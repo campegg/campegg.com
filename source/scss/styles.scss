@@ -321,7 +321,7 @@ nav {
         font-size: var(--f-size-small);
 
         li {
-            &:after {
+            &:before {
                 content: "";
                 margin-inline-start: calc(var(--s-base-margin) * 0.33334);
                 margin-inline-end: calc(var(--s-base-margin) * 0.33334);
@@ -853,12 +853,14 @@ table {
 }
 
 .permalink {
+    span {
+        &.post-edit, &.post-mentions {
+            margin-inline-start: calc(var(--s-base-margin) / 3);
+        }
+    }
+
     a {
         @include link-style(var(--c-text-muted), var(--c-link-ha), false);
-
-        &.post-edit {
-            margin-inline-start: calc(var(--s-base-margin) / 2);
-        }
     }
 }
 

@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const mentionsDiv = document.getElementById("mentions");
 
                 const heading = document.createElement("h3");
-                heading.textContent = "Mentions";
+                heading.textContent = "Reactions";
                 heading.title = "When someone responds to one of my posts and sends a webmention, it will be displayed here.";
                 mentionsDiv.appendChild(heading);
 
@@ -49,7 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
                     a.appendChild(img);
                     a.appendChild(document.createTextNode(" " + mention.hcard.name));
-                    li.appendChild(a);
+
+                    if (mention.source_url.includes('likes/')) {
+                        li.appendChild(a);
+                        li.appendChild(document.createTextNode(" liked this post"));
+                    } else {
+                        li.appendChild(a);
+                        li.appendChild(document.createTextNode(" mentioned this post"));
+                    }
+
                     ul.appendChild(li);
                 });
 

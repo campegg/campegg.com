@@ -22,7 +22,7 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 SITE_ID = int(os.getenv("DJANGO_SITE_ID"))
 
-LOGIN_URL = "/admin/login"
+LOGIN_URL = "/admin/login/"
 
 
 # Application definition

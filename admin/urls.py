@@ -2,19 +2,20 @@
 
 from django.urls import path
 from django.contrib.auth import views
+from django.views.generic import RedirectView
 
 
 from admin.views import (
     AdminLogin,
     AdminDashboard,
-    AdminPost,
+    AdminPostCreate,
 )
 
 
 urlpatterns = [
     # ---------- admin pages ----------#
     path(
-        "admin/login",
+        "admin/login/",
         views.LoginView.as_view(
             template_name="admin.html",
             extra_context={
@@ -23,8 +24,10 @@ urlpatterns = [
             next_page="/",
             authentication_form=AdminLogin,
         ),
-        name="login",
+        name="admin_login",
     ),
-    path("admin/post", AdminPost.as_view(), name="post"),
-    path("admin/", AdminDashboard.as_view(), name="dashboard"),
+    path("admin/post/", AdminPostCreate.as_view(), name="admin_post_new"),
+    path("admin/", AdminDashboard.as_view(), name="admin_dashboard"),
+    # ---------- redirects ----------#
+    path("login/", RedirectView.as_view(pattern_name="admin_login", permanent=True)),
 ]

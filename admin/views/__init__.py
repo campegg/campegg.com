@@ -2,4 +2,4 @@
 
 from .login import AdminLogin
 from .dashboard import AdminDashboard
-from .post import AdminPost
+from .post import AdminPostCreate

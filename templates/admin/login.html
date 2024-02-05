@@ -1,15 +1,64 @@
-<form action="" method="post" id="admin-login-form">
-{% csrf_token %}
-    {{ form.non_field_errors }}
-    <div id="admin-login-username">
-        {{ form.username.errors }}
-        {{ form.username|placeholder:"Username" }}
-    </div>
-    <div id="admin-login-password">
-        {{ form.username.errors }}
-        {{ form.password|placeholder:"Password" }}
-    </div>
-    <div id="admin-note-save">
-        <button class="primary" type="submit">Log in</button>
-    </div>
-</form>
+{% load webmentions %}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name=”robots” content="noindex, nofollow, noimageindex">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Cam Pegg: {% if page_meta.title %}{{ page_meta.title }}{% else %}Digital product and strategy guy{% endif %}</title>
+
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon-16x16.png' %}">
+        <link rel="shortcut icon" href="{% static 'img/favicon.ico' %}">
+        <link rel="mask-icon" href="{% static 'img/favicon-pinned.svg' %}" color="#333333">
+
+        <link rel="me" href="https://github.com/campegg">
+        <link rel="me" href="https://linkedin.com/in/campegg">
+        <link rel="me" href="https://mastodon.social/@campegg">
+        <link rel="me" href="https://indieweb.social/@campegg">
+        <link rel="me" href="https://fed.brid.gy/r/https://campegg.com/">
+
+        <link rel="webmention" href="/webmentions/">
+        <link rel="authorization_endpoint" href="https://indieauth.com/auth">
+
+        <link rel="alternate" type="application/atom+xml" href="{% url 'feed_atom' %}">
+        <link rel="sitemap" type="application/xml" href="{% url 'sitemap' %}">
+
+        <link rel="stylesheet" href="{% static 'css/light.css' %}" id="theme">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/admin-styles.css' %}">
+
+        <script src="{% static 'js/scripts.js' %}"></script>
+        {% if user.is_authenticated %}
+        <script src="{% static 'js/admin_scripts.js' %}"></script>
+        <script src="{% static 'js/marked.js' %}"></script>
+        <script src="{% static 'js/marked-smartypants.js' %}"></script>
+        {% endif %}
+    </head>
+
+    <body class="admin admin-login">
+        {% include "includes/header.html" %}
+
+        <main>
+            <form action="" method="post" id="admin-login-form">
+            {% csrf_token %}
+                {{ form.non_field_errors }}
+                <div id="admin-login-username">
+                    {{ form.username.errors }}
+                    {{ form.username|placeholder:"Username" }}
+                </div>
+                <div id="admin-login-password">
+                    {{ form.username.errors }}
+                    {{ form.password|placeholder:"Password" }}
+                </div>
+                <div id="admin-note-save">
+                    <button class="primary" type="submit">Log in</button>
+                </div>
+            </form>
+        </main>
+
+        {% include "includes/footer.html" %}
+    </body>
+</html>

@@ -1,0 +1,74 @@
+
+<form id="post-entry" action="" method="post">
+    {% csrf_token %}
+    <div id="post-entry-main">
+        {{ post_form.text|placeholder:"Markdown text" }}
+        <div id="id_post_form-html"></div>
+    </div>
+    <div id="post-entry-meta">
+        <details id="admin-post-form-meta">
+            <summary>
+                <div id="admin-text-chars"></div>
+                Post Meta
+            </summary>
+            <div id="admin-note-meta-content">
+                <div id="admin-note-meta-title">
+                    {{ post_form.title.errors }}
+                    {{ post_form.title|placeholder:"Title (Optional)" }}
+                </div>
+                <div id="admin-note-meta-content-status">
+                    <div>
+                        {{ post_form.status }}
+                    </div>
+                    <div>
+                        {{ post_form.publish_date|placeholder:"yyyy-mm-dd hh:mm:ss (Optional)" }}
+                    </div>
+                </div>
+            </div>
+        </details>
+        <div id="admin-post-form-options">
+            <div id="admin-post-form-options-external">
+                <div>
+                    {{ post_form.send_to_fediverse }}
+                    <label for="{{ post_form.send_to_fediverse.id_for_label }}">Federate</label>
+                </div>
+                <div>
+                    {{ post_form.send_to_archive }}
+                    <label for="{{ post_form.send_to_archive.id_for_label }}">web.archive</label>
+                </div>
+                <div>
+                    {{ post_form.rss_only }}
+                    <label for="{{ post_form.rss_only.id_for_label }}">RSS only</label>
+                </div>
+            </div>
+            <div>
+                <button class="primary" type="submit">
+                    {% if request.resolver_match.view_name == 'admin_edit' %}Update{% else %}Save{% endif %}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script nonce="{{ request.csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', function() {
+        marked.use(
+                {
+                    breaks: true,
+                    pedantic: false,
+                    gfm: true,
+                },
+                markedSmartypants.markedSmartypants({ config: "3" })
+        );
+        const postEntryText = document.getElementById('id_post_form-text');
+        const postEntryHtml = document.getElementById('id_post_form-html');
+
+        function updatePreview() {
+            const markdownText = postEntryText.value;
+            postEntryHtml.innerHTML = marked.parse(markdownText);
+        }
+
+        postEntryText.addEventListener('input', updatePreview);
+        updatePreview();
+    });
+</script>

@@ -51,7 +51,10 @@ class PostAdmin(admin.ModelAdmin):
         "ranking",
     )
 
-    readonly_fields = ("update_date",)
+    readonly_fields = (
+        "update_date",
+        "photo_meta",
+    )
 
     fieldsets = (
         (
@@ -61,6 +64,16 @@ class PostAdmin(admin.ModelAdmin):
                     "post_type",
                     "title",
                     "text",
+                )
+            },
+        ),
+        (
+            "Photo",
+            {
+                "fields": (
+                    "photo",
+                    "photo_alt_text",
+                    "photo_meta",
                 )
             },
         ),

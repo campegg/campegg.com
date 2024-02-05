@@ -2,3 +2,4 @@
 
 from .post import Post
 from .page import Page
+from .reaction import Reaction

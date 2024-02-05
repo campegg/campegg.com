@@ -9,8 +9,7 @@
         {{ post.html|safe }}
     </div>
     <p class="meta permalink">
-        <span class="icon-svg small post-date"><a class="u-url" href="{{ post.get_absolute_url }}"><time class="dt-published{% if post.post_type == 1 %} p-name{% endif %}" datetime="{{ post.publish_date|date:"Y-m-d\TH:i:sO" }}">{{ post.publish_date|date:"F j, Y" }}</time></a></span>
+        <span class="icon-svg small post-date">{% if '_detail' not in request.resolver_match.view_name %}<a class="u-url" href="{{ post.get_absolute_url }}">{% endif %}<time class="dt-published{% if post.post_type == 1 %} p-name{% endif %}" datetime="{{ post.publish_date|date:"Y-m-d\TH:i:sO" }}">{{ post.publish_date|date:"F j, Y" }}</time>{% if '_detail' not in request.resolver_match.view_name %}</a>{% endif %}</span>
         {% if 'home' in request.resolver_match.view_name %}{% if post.mention_count is not None %}<span class="icon-svg small post-mentions" title="{{ post.mention_count }} reaction{% if post.mention_count != 1 %}s{% endif %}">{% inline_svg 'img/mention.svg' %} {{ post.mention_count }}</span>{% endif %}{% endif %}
-        {% if user.is_authenticated %}<span class="icon-svg small post-edit"><a href="{% url 'admin_edit' year=post.publish_date.year month=post.publish_date.month day=post.publish_date.day slug=post.slug %}" title="Edit this post">{% inline_svg 'img/edit.svg' %} Edit post</a></span>{% endif %}
     </p>
 </article>

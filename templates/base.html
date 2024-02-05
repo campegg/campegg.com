@@ -39,7 +39,11 @@
 
         <script src="{% static 'js/scripts.js' %}"></script>
         {% if request.resolver_match.view_name == 'post_detail' %}<script src="{% static 'js/mentions.js' %}"></script>{% endif %}
-        {% if user.is_authenticated %}<script src="{% static 'js/admin_scripts.js' %}"></script>{% endif %}
+        {% if user.is_authenticated %}
+        <script src="{% static 'js/admin_scripts.js' %}"></script>
+        <script src="{% static 'js/marked.js' %}"></script>
+        <script src="{% static 'js/marked-smartypants.js' %}"></script>
+        {% endif %}
         {% if "campegg.com" in request.get_host and not "admin_" in request.resolver_match.view_name %}
         <script async src="https://umami.campegg.net/script.js" data-website-id="931542a1-0e3d-45b5-ba3d-105ab7fe8f1e" data-do-not-track="true"></script>
         {% endif %}

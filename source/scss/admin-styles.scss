@@ -5,6 +5,106 @@
 @import 'modules/mixins';
 
 
+/* ---------- new admin elements ---------- */
+
+.admin-new {
+
+    &.admin-post-new {
+        main {
+            max-width: 100%;
+
+            #post-entry {
+                #post-entry-main {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: var(--s-base-margin);
+
+                    #id_post_form-text, #id_post_form-html {
+                        flex: 1;
+                        min-width: 300px;
+                        border: 1px solid var(--c-borders);
+                        border-radius: var(--s-border-radius);
+                        background: var(--c-background);
+                        padding-inline-start: calc(var(--s-base-margin) / 2);
+                        padding-inline-end: calc(var(--s-base-margin) / 2);
+                        padding-block-start: calc(var(--s-base-margin) / 3);
+                        padding-block-end: calc(var(--s-base-margin) / 3);
+                    }
+
+                    #id_post_form-text {
+                        display: block;
+                        width: 100%;
+                        font-family: var(--f-family-mono);
+                        font-size: 95%;
+                        font-weight: 375;
+                        min-height: calc(var(--s-base-margin) * 5);
+                        resize: vertical;
+                    }
+
+                    #id_post_form-html {
+
+                    }
+                }
+
+                #post-entry-meta {
+                    max-width: var(--s-max-content);
+                    margin-inline: auto;
+
+                    details {
+                        summary {
+                            height: 1.25rem;
+                            line-height: 1.25rem;
+                            list-style: none;
+                            font-size: var(--f-size-xsmall);
+                            color: var(--c-text-muted);
+                            cursor: pointer;
+
+                            &::-webkit-details-marker {
+                                display:none;
+                            }
+
+                            &:focus {
+                                outline: none;
+                            }
+
+                            &:after {
+                                content: "→";
+                            }
+
+                            #admin-text-chars {
+                                display: inline-block;
+                                padding-inline-start: 0.5rem;
+                                padding-inline-end: 0.5rem;
+                                font-size: var(--f-size-xsmall);
+                                text-align: right;
+                                min-width: 2.5rem;
+                                height: 1.25rem;
+                                line-height: 1.25rem;
+                                border-radius: 0.625rem;
+                                background: var(--c-background-alt);
+                                color: var(--c-text-muted);
+                            }
+                        }
+
+                        &[open] {
+                            summary {
+                                margin-block-end: calc(var(--s-base-margin) / 2);
+
+                                &:after {
+                                    content: "↓";
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
 /* ---------- admin elements ---------- */
 .admin, .admin-new, .admin-edit {
 background: var(--c-background-admin);

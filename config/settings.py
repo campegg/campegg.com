@@ -22,6 +22,8 @@ ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 SITE_ID = int(os.getenv("DJANGO_SITE_ID"))
 
+LOGIN_URL = "/admin/login"
+
 
 # Application definition
 
@@ -39,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sitemaps",
     "django.contrib.humanize",
     "mentions",
-    "siteadmin",
+    "admin",
     "content",
 ]
 
@@ -78,7 +80,6 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "content.context_processors.pages",
                 "content.context_processors.search_form",
-                "siteadmin.context_processors.post_form",
             ],
         },
     },
@@ -182,10 +183,7 @@ ADMIN_REORDER = (
         "models": (
             "content.Post",
             "content.Page",
-            {
-                "model": "siteadmin.Reaction",
-                "label": "Reactions",
-            },
+            "content.Reaction",
         ),
     },
     {

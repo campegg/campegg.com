@@ -28,7 +28,7 @@ urlpatterns = [
     # ---------- main patterns ----------#
     path("django/", admin.site.urls),
     path("webmentions/", include("mentions.urls")),
-    path("", include("siteadmin.urls")),
+    path("", include("admin.urls")),
     path("", include("content.urls")),
     # ---------- simple redirects ----------#
     path("about/", RedirectView.as_view(url="/about.html")),

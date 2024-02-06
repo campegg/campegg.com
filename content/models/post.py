@@ -124,7 +124,7 @@ class Post(MentionableMixin, models.Model):
         if self.send_to_fediverse:
             html = utilities.render_html(
                 self.text
-                + '\n\n</div>\n<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>'
+                + '\n</div>\n<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>'
             )
             return html
         else:
@@ -261,7 +261,7 @@ class Post(MentionableMixin, models.Model):
             pass
 
     def save(self, *args, **kwargs):
-        self.html = self.render_html()
+        self.html = self.html if self.html else self.render_html()
         self.handle_publishing()
         if self.pk is None:
             self.handle_photo_upload()
@@ -275,7 +275,7 @@ class Post(MentionableMixin, models.Model):
         super(Post, self).delete(*args, **kwargs)
 
     def get_content_html(self) -> str:
-        return self.render_html()
+        return self.html if self.html else self.render_html()
 
     def get_absolute_url(self) -> str:
         return reverse(

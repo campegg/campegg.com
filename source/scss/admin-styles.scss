@@ -5,6 +5,163 @@
 @import 'modules/mixins';
 
 
-/* ---------- new elements ---------- */
+/* ---------- admin elements ---------- */
 
-.admin {}
+.admin {
+    background: var(--c-background-admin);
+
+    header, main, footer {
+        background: var(--c-background-admin);
+    }
+
+    main {
+        form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            padding: 0;
+            margin: 0;
+
+            label {
+                display: inline-block;
+                font-size: var(--f-size-small);
+            }
+
+            #post-entry-main {
+                display: flex;
+                flex-wrap: wrap;
+                flex: 1;
+                gap: var(--s-base-margin);
+
+                #id_text_container, #id_html_container {
+                    max-height: 60vh;
+                    min-width: 300px;
+                    flex: 1;
+                    border: 1px solid var(--c-borders);
+                    border-radius: var(--s-border-radius);
+                    background: var(--c-background);
+                }
+
+                #id_text_container {
+                    display: flex;
+                    flex-direction: column;
+
+                    textarea, #post-entry-meta {
+                        padding-inline: calc(var(--s-base-margin) / 2);
+                        padding-block: calc(var(--s-base-margin) / 3);
+                    }
+
+                    textarea {
+                        width: 100%;
+                        flex: 1;
+                        border: 0;
+                        border-radius: var(--s-border-radius);
+                        font-family: var(--f-family-mono);
+                        font-size: calc(var(--f-size-regular) * 0.95);
+                        background: var(--c-background);
+                    }
+
+                    #post-entry-meta {
+                        width: 100%;
+
+                        details {
+                            summary {
+                                height: 1.25rem;
+                                line-height: 1.25rem;
+                                list-style: none;
+                                font-size: var(--f-size-xsmall);
+                                color: var(--c-text-muted);
+                                cursor: pointer;
+
+                                &::-webkit-details-marker {
+                                    display:none;
+                                }
+
+                                &:focus {
+                                    outline: none;
+                                }
+
+                                &:after {
+                                    content: "→";
+                                }
+
+                                #post-entry-text-chars {
+                                    display: inline-block;
+                                    padding-inline-start: 0.5rem;
+                                    padding-inline-end: 0.5rem;
+                                    font-size: var(--f-size-xsmall);
+                                    text-align: right;
+                                    min-width: 2.5rem;
+                                    height: 1.25rem;
+                                    line-height: 1.25rem;
+                                    border-radius: 0.625rem;
+                                    background: var(--c-background-alt);
+                                    color: var(--c-text-muted);
+                                }
+                            }
+
+                            #admin-note-meta-content-status {
+                                display: flex;
+                                gap: calc(var(--s-base-margin) / 2);
+                                margin-block-start: calc(var(--s-base-margin) / 2);
+
+                                div {
+                                    flex: 1;
+
+                                    select {
+                                        font-size: var(--f-size-small);
+                                        color: var(--c-text-muted);
+                                    }
+                                }
+                            }
+
+                            &[open] {
+                                summary {
+                                    margin-block-end: calc(var(--s-base-margin) / 2);
+
+                                    &:after {
+                                        content: "↓";
+                                    }
+                                }
+                            }
+                        }
+
+                        #post-entry-meta-options {
+                            display: flex;
+                            flex-flow: row wrap;
+                            flex: 1;
+                            justify-content: flex-start;
+                            column-gap: calc(var(--s-base-margin) / 2);
+                            margin-block-start: calc(var(--s-base-margin) / 4);
+
+                            & > div:nth-child(3) {
+                                margin-left: auto;
+                            }
+                        }
+                    }
+                }
+
+                #id_html_container {
+                    padding-inline: calc(var(--s-base-margin) / 2);
+                    padding-block: calc(var(--s-base-margin) / 3);
+                    overflow-y: scroll;
+                }
+            }
+
+            #post-entry-save {
+                margin-block-start: var(--s-base-margin);
+            }
+        }
+    }
+
+    footer {
+        padding-block-start: var(--s-base-margin);
+    }
+}
+
+.admin-post {
+    main {
+        display: flex;
+        max-width: 100%;
+    }
+}

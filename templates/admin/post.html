@@ -1,31 +1,122 @@
 
-<form id="post-entry" action="" method="post">
+<form id="post-entry" action="{% url 'admin_post_new' %}" method="post">
     {% csrf_token %}
     <div id="post-entry-main">
-        {{ form.text }}
-        <div id="id_html"></div>
+        <div id="id_text_container">
+            {{ form.text|placeholder:"Markdown text…" }}
+            <textarea name="html" cols="40" rows="10" id="id_html" spellcheck="false" hidden></textarea>
+            <div id="post-entry-meta">
+                <details>
+                    <summary>
+                        <div id="post-entry-text-chars"></div>
+                        Post meta
+                    </summary>
+                    <div id="post-entry-meta-info">
+                        <div id="post-entry-meta-title">
+                            {{ form.title|placeholder:"Title" }}
+                        </div>
+                    </div>
+                    <div id="admin-note-meta-content-status">
+                        <div>
+                            {{ form.status }}
+                        </div>
+                        <div>
+                            {{ form.publish_date|placeholder:"yyyy-mm-dd hh:mm:ss (Optional)" }}
+                        </div>
+                    </div>
+                </details>
+                <div id="post-entry-meta-options">
+                    <div>
+                        {{ form.send_to_fediverse }}
+                        <label for="{{ form.send_to_fediverse.id_for_label }}">Federate</label>
+                    </div>
+                    <div>
+                        {{ form.send_to_archive }}
+                        <label for="{{ form.send_to_archive.id_for_label }}">Archive</label>
+                    </div>
+                    <div>
+                        {{ form.rss_only }}
+                        <label for="{{ form.rss_only.id_for_label }}">RSS only</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="id_html_container">
+            <div id="id_html_preview"></div>
+        </div>
+    </div>
+    <div id="post-entry-save">
+        <button class="primary" type="submit">
+            {% if '_edit' in request.resolver_match.view_name %}Update{% else %}Save{% endif %}
+        </button>
     </div>
 </form>
 
 <script nonce="{{ request.csp_nonce }}">
     document.addEventListener('DOMContentLoaded', function() {
         marked.use(
-                {
-                    breaks: true,
-                    pedantic: false,
-                    gfm: true,
-                },
-                markedSmartypants.markedSmartypants({ config: "3" })
+            {
+                breaks: true,
+                pedantic: false,
+                gfm: true,
+            },
+            markedSmartypants.markedSmartypants({ config: "3" })
         );
         const postEntryText = document.getElementById('id_text');
-        const postEntryHtml = document.getElementById('id_html');
+        const postEntryHtmlPreview = document.getElementById('id_html_preview');
+        const postEntryHtmlRaw = document.getElementById('id_html');
+        const federateCheckbox = document.getElementById('id_send_to_fediverse');
+        const rssOnlyCheckbox = document.getElementById('id_rss_only');
 
-        function updatePreview() {
+        const federateLinks = '\n</div>\n<!-- Federate via Bridgy -->\n<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>';
+
+        const checkCheckboxes = () => {
+            if (rssOnlyCheckbox.checked) {
+                federateCheckbox.checked = false;
+                federateCheckbox.disabled = true;
+            } else {
+                federateCheckbox.disabled = false;
+            }
+            updateContent();
+        };
+
+        function updateContent() {
             const markdownText = postEntryText.value;
-            postEntryHtml.innerHTML = marked.parse(markdownText);
+            let parsedHtml = marked.parse(markdownText);
+
+            postEntryHtmlPreview.innerHTML = parsedHtml;
+
+            if (federateCheckbox.checked && !rssOnlyCheckbox.checked) {
+                if (!parsedHtml.includes(federateLinks)) {
+                    parsedHtml += federateLinks;
+                }
+            }
+
+            postEntryHtmlRaw.value = parsedHtml;
         }
 
-        postEntryText.addEventListener('input', updatePreview);
-        updatePreview();
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = function() {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        const debouncedUpdateContent = debounce(updateContent, 100);
+
+        postEntryText.addEventListener('input', debouncedUpdateContent);
+
+        federateCheckbox.addEventListener('change', debouncedUpdateContent);
+
+        rssOnlyCheckbox.addEventListener('change', function() {
+            checkCheckboxes();
+        });
+
+        checkCheckboxes();
     });
 </script>

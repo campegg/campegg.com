@@ -1,4 +1,4 @@
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -14,9 +14,9 @@ class AdminPostCreate(LoginRequiredMixin, CreateView):
     model = Post
     template_name = "admin.html"
     fields = [
-        "post_type",
         "title",
         "text",
+        "html",
         "publish_date",
         "status",
         "rss_only",
@@ -29,7 +29,7 @@ class AdminPostCreate(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(AdminPostCreate, self).get_context_data(**kwargs)
         context["page_meta"] = {
-            "body_class": "admin",
+            "body_class": "admin admin-post",
             "title": "New post",
         }
         return context

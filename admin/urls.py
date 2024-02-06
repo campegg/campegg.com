@@ -17,7 +17,7 @@ urlpatterns = [
     path(
         "admin/login/",
         views.LoginView.as_view(
-            template_name="admin.html",
+            template_name="admin/login.html",
             extra_context={
                 "page_meta": {"title": "Login", "body_class": "admin admin-login"}
             },

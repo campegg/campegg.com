@@ -42,7 +42,7 @@
         {% include "includes/header.html" %}
 
         <main>
-            {% with "admin/"|add:request.resolver_match.view_name|cut:"admin_"|cut:"_new"|cut:"_edit"|add:".html" as template %}
+            {% with "admin/"|add:request.resolver_match.view_name|cut:"admin_"|cut:"_new"|cut:"_edit"|cut:"_index"|cut:"_detail"|add:".html" as template %}
                 {% include template %}
             {% endwith %}
         </main>

@@ -26,7 +26,6 @@ class AdminPostCreate(LoginRequiredMixin, CreateView):
         "send_to_fediverse",
         "send_to_archive",
         "rss_only",
-        "allow_outgoing_webmentions",
     ]
 
     def get_context_data(self, **kwargs):
@@ -52,7 +51,6 @@ class AdminPostEdit(LoginRequiredMixin, UpdateView):
         "send_to_fediverse",
         "send_to_archive",
         "rss_only",
-        "allow_outgoing_webmentions",
     ]
 
     def get_context_data(self, **kwargs):
@@ -72,6 +70,6 @@ class AdminPostEdit(LoginRequiredMixin, UpdateView):
 
         context["page_meta"] = {
             "body_class": "admin admin-post",
-            "title": f"Editing ‘{ self.object.title if self.object.title else title_date }’",
+            "title": f"Editing ‘{self.object.title if self.object.title else title_date}’",
         }
         return context

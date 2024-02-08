@@ -1,6 +1,5 @@
 from django.db import models
 from django.utils import timezone
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.files.storage import default_storage
 from django.template.defaultfilters import slugify
 from django.contrib.sites.models import Site
@@ -12,14 +11,8 @@ from mentions.models.mixins import MentionableMixin
 
 from bs4 import BeautifulSoup
 from datetime import datetime
-from fractions import Fraction
-from io import BytesIO
-from PIL import Image
-import exifread
+
 import httpx
-import json
-import os
-import tempfile
 import utilities
 
 
@@ -76,177 +69,77 @@ class Post(MentionableMixin, models.Model):
     photo_meta = models.TextField(blank=True, null=True, verbose_name="EXIF data")
     ranking = models.FloatField(default=0.0, editable=False)
 
-    def create_slug(self):
-        # only if the slug doesn't exist
+    def save(self, *args, **kwargs):
+        # render the post's html and add/remove bridgy links if required
+        bridgy_links = '\n</div><!-- bridgy links --><div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a><!-- /bridgy links -->'
+        self.html = self.html if self.html else utilities.render_html(self.text)
+        if self.send_to_fediverse and bridgy_links not in self.html:
+            self.html += bridgy_links
+        else:
+            self.html = self.html.replace(bridgy_links, "")
+
+        # handle published vs draft posts and scheduled publishing
+        savetime = timezone.now().replace(microsecond=0)
+        if self.status:
+            if self.pk:
+                self.update_date = savetime
+                if not self.publish_date:
+                    self.publish_date = savetime
+            else:
+                self.create_date = savetime
+                if not self.publish_date or self.publish_date <= savetime:
+                    self.publish_date = savetime
+        else:
+            if self.pk:
+                self.update_date = savetime
+            else:
+                self.create_date = savetime
+
+        # create a slug if one doesn't exist
         if not self.slug:
             # if title exists, set the type to 'post' and use the first three words of the title for the slug
             if self.title:
                 self.post_type = 1
-                title_slug = " ".join(self.title.split()[:3])
-                return slugify(title_slug)
+                self.slug = slugify(" ".join(self.title.split()[:3]))
 
             # otherwise, let's set the appropriate post type and then generate a slug from what we have...
             else:
-                if self.photo:
-                    self.post_type = 2
-                else:
-                    self.post_type = 0
+                self.post_type = 0
 
                 soup = BeautifulSoup(self.html, "lxml")
                 post_text = soup.get_text()
-                image_tag = soup.find("img", alt=True)
-                alt_text = image_tag["alt"] if image_tag else None
 
                 # if no title but has text, use the first three words of the text
                 if post_text:
-                    slug_text = " ".join(post_text.split()[:3])
-                    return slugify(slug_text)
+                    self.slug = slugify(" ".join(post_text.split()[:3]))
 
-                # if no text but an image with alt text, use the first three words of the alt text
-                elif not post_text and alt_text:
-                    alt_slug = " ".join(alt_text.split()[:3])
-                    return slugify(alt_slug)
-
-                # if photo_alt_text exists, use it for the slug
-                elif self.photo_alt_text:
-                    photo_alt_slug = " ".join(self.photo_alt_text.split()[:3])
-                    return slugify(photo_alt_slug)
-
-                # if no title, text, image with alt text, or photo alt text, create a time-based slug
+                # if none of the above exist, create a time-based slug
                 else:
                     time_format = "%H%M"
                     time_slug = datetime.strftime(self.publish_date, time_format)
-                    return f"post-{time_slug}"
-        else:
-            return self.slug
+                    self.slug = f"post-{time_slug}"
 
-    def render_html(self):
-        bridgy_links = '\n</div><!-- bridgy links --><div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a><!-- /bridgy links -->'
-        if self.send_to_fediverse:
-            self.html = self.html or utilities.render_html(self.text)
-            if bridgy_links not in self.html:
-                self.html += bridgy_links
-        else:
-            self.html = self.html or utilities.render_html(self.text)
-            self.html = self.html.replace(bridgy_links, "")
+        # archive the post if required
+        if self.send_to_archive:
+            current_site = Site.objects.get_current()
+            post_url = f"https://{current_site.domain}{self.get_absolute_url()}"
+            archive_url = f"https://web.archive.org/save/{post_url}"
+            headers = {
+                "User-Agent": f"Mozilla/5.0 (Ubuntu; Linux x86_64; {current_site.domain})"
+            }
 
-    def handle_publishing(self):
-        savetime = timezone.now().replace(microsecond=0)
-        if self.pk:
-            self.update_date = savetime
-            if self.status and not self.publish_date:
-                self.publish_date = savetime
-        else:
-            self.create_date = savetime
-            if self.status and (not self.publish_date or self.publish_date <= savetime):
-                self.publish_date = savetime
+            try:
+                with httpx.Client(headers=headers, timeout=20.0) as client:
+                    response = client.get(archive_url)
+                if response.status_code == 200:
+                    print(f"Successfully archived {post_url}")
+                else:
+                    print(
+                        f"Failed to archive {post_url}. Status code: {response.status_code}, Response: {response.text}"
+                    )
+            except httpx.RequestError as e:
+                print(f"An error occurred while requesting {e.request.url!r}.")
 
-    def archive_post(self):
-        current_site = Site.objects.get_current()
-        post_url = f"https://{current_site.domain}{self.get_absolute_url()}"
-        archive_url = f"https://web.archive.org/save/{post_url}"
-        headers = {
-            "User-Agent": f"Mozilla/5.0 (Ubuntu; Linux x86_64; {current_site.domain})"
-        }
-
-        try:
-            with httpx.Client(headers=headers, timeout=20.0) as client:
-                response = client.get(archive_url)
-            if response.status_code == 200:
-                print(f"Successfully archived {post_url}")
-            else:
-                print(
-                    f"Failed to archive {post_url}. Status code: {response.status_code}, Response: {response.text}"
-                )
-        except httpx.RequestError as e:
-            print(f"An error occurred while requesting {e.request.url!r}.")
-
-    def handle_photo_upload(self):
-        if self.photo:
-            # Step 1: Save the uploaded photo to a temp file
-            with tempfile.NamedTemporaryFile(delete=False) as temp:
-                for chunk in self.photo.chunks():
-                    temp.write(chunk)
-                temp_path = temp.name  # Save the path to the temp file
-
-            # Step 2: Extract the EXIF data and populate the img_data dict using exifread
-            with open(temp_path, "rb") as f:
-                tags = exifread.process_file(f, details=False)
-
-            img_data = {}
-            # Populate img_data with EXIF information
-            img_data["make"] = str(tags.get("Image Make", None))
-            img_data["model"] = str(tags.get("Image Model", None))
-            img_data["orientation"] = str(tags.get("Image Orientation", None))
-            img_data["date"] = str(tags.get("Image DateTime", None))
-            img_data["fstop"] = float(Fraction(str(tags.get("EXIF FNumber", None))))
-            img_data["exp"] = str(tags.get("EXIF ExposureProgram", None))
-            img_data["iso"] = str(tags.get("EXIF ISOSpeedRatings", None))
-            img_data["focal"] = float(Fraction(str(tags.get("EXIF FocalLength", None))))
-
-            # GPS Data
-            gps_latitude = tags.get("GPS GPSLatitude")
-            gps_latitude_ref = tags.get("GPS GPSLatitudeRef")
-            gps_longitude = tags.get("GPS GPSLongitude")
-            gps_longitude_ref = tags.get("GPS GPSLongitudeRef")
-
-            print(f"GPS Lat: {gps_latitude}")
-            print(f"GPS Lat Ref: {gps_latitude_ref}")
-            print(f"GPS Lon: {gps_longitude}")
-            print(f"GPS Lon Ref: {gps_longitude_ref}")
-
-            coordinates = None
-
-            if (
-                gps_latitude
-                and gps_latitude_ref
-                and gps_longitude
-                and gps_longitude_ref
-            ):
-                lat_value = [float(x.num) / float(x.den) for x in gps_latitude.values]
-                lon_value = [float(x.num) / float(x.den) for x in gps_longitude.values]
-                coordinates = get_decimal_coordinates(
-                    lat_value, gps_latitude_ref, lon_value, gps_longitude_ref
-                )
-                img_data["lat"] = coordinates[0]
-                img_data["lon"] = coordinates[1]
-            else:
-                img_data["lat"] = None
-                img_data["lon"] = None
-
-            if coordinates:
-                print(f"Coords: {coordinates}")
-
-            # Step 3: Resize, rename and save the temp file to the media directory using Pillow
-            img = Image.open(temp_path)
-            img.thumbnail((2048, 2048), Image.Resampling.LANCZOS)
-            photo_filename = self.create_date.strftime("%Y%m%d%H%M%S")
-            output = BytesIO()
-            img.save(output, format="JPEG", quality=95)
-            output.seek(0)
-            self.photo = InMemoryUploadedFile(
-                output,
-                "ImageField",
-                f"{photo_filename}.jpg",
-                "image/jpeg",
-                output.tell(),
-                None,
-            )
-
-            # Step 4: Delete the temp file
-            os.unlink(temp_path)
-
-            # Save the img_data as JSON
-            self.photo_meta = json.dumps(img_data)
-        else:
-            pass
-
-    def save(self, *args, **kwargs):
-        self.html = self.html if self.html else self.render_html(self.text)
-        self.handle_publishing()
-        if self.pk is None:
-            self.handle_photo_upload()
-        self.slug = self.create_slug()
         super(Post, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):
@@ -256,7 +149,7 @@ class Post(MentionableMixin, models.Model):
         super(Post, self).delete(*args, **kwargs)
 
     def get_content_html(self) -> str:
-        return self.html if self.html else self.render_html(self.text)
+        return self.html
 
     def get_absolute_url(self) -> str:
         return reverse(
@@ -299,9 +192,3 @@ class Post(MentionableMixin, models.Model):
         verbose_name = "Post"
         verbose_name_plural = "Posts"
         ordering = ["-create_date"]
-
-
-@receiver(post_save, sender=Post)
-def post_saved(sender, instance, **kwargs):
-    if instance.status == 1 and instance.send_to_archive:
-        instance.archive_post()

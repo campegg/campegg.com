@@ -68,8 +68,6 @@
         const federateCheckbox = document.getElementById('id_send_to_fediverse');
         const rssOnlyCheckbox = document.getElementById('id_rss_only');
 
-        const federateLinks = '\n</div><!-- bridgy links --><div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a><!-- /bridgy links -->';
-
         const checkCheckboxes = () => {
             if (rssOnlyCheckbox.checked) {
                 federateCheckbox.checked = false;
@@ -86,13 +84,9 @@
 
             postEntryHtmlPreview.innerHTML = parsedHtml;
 
-            if (federateCheckbox.checked && !rssOnlyCheckbox.checked) {
-                if (!parsedHtml.includes(federateLinks)) {
-                    parsedHtml += federateLinks;
-                }
-            }
-
             postEntryHtmlRaw.value = parsedHtml;
+            
+            console.log(postEntryHtmlRaw.value);
         }
 
         function debounce(func, wait) {

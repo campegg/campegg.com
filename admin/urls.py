@@ -9,6 +9,7 @@ from admin.views import (
     AdminLogin,
     AdminDashboard,
     AdminPostCreate,
+    AdminPostEdit,
 )
 
 
@@ -27,6 +28,7 @@ urlpatterns = [
         name="admin_login",
     ),
     path("admin/post/", AdminPostCreate.as_view(), name="admin_post_new"),
+    path("admin/post/edit/<int:pk>", AdminPostEdit.as_view(), name="admin_post_edit"),
     path("admin/", AdminDashboard.as_view(), name="admin_dashboard"),
     # ---------- redirects ----------#
     path("login/", RedirectView.as_view(pattern_name="admin_login", permanent=True)),

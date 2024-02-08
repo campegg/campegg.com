@@ -121,44 +121,25 @@ class Post(MentionableMixin, models.Model):
             return self.slug
 
     def render_html(self):
+        bridgy_links = '\n</div><!-- bridgy links --><div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a><!-- /bridgy links -->'
         if self.send_to_fediverse:
-            html = utilities.render_html(
-                self.text
-                + '\n</div>\n<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>'
-            )
-            return html
+            self.html = self.html or utilities.render_html(self.text)
+            if bridgy_links not in self.html:
+                self.html += bridgy_links
         else:
-            html = utilities.render_html(self.text)
-            return html
+            self.html = self.html or utilities.render_html(self.text)
+            self.html = self.html.replace(bridgy_links, "")
 
     def handle_publishing(self):
-        # get the current time without microseconds
         savetime = timezone.now().replace(microsecond=0)
-
-        # set create_date for new posts
-        if self.pk is None:
+        if self.pk:
+            self.update_date = savetime
+            if self.status and not self.publish_date:
+                self.publish_date = savetime
+        else:
             self.create_date = savetime
-
-        # handle scheduled posts
-        if self.publish_date is not None and self.publish_date > savetime:
-            self.status = 1
-            return
-
-        # handle new posts that are published immediately
-        if self.pk is None and self.status == 1:
-            self.publish_date = savetime
-            return
-
-        # handle updates to existing posts
-        if self.pk is not None:
-            if self.status == 1:
-                # update publish_date for newly published posts, update_date for others
-                self.publish_date = self.publish_date if self.publish_date else savetime
-                self.update_date = savetime
-            else:
-                # reset publish_date and update_date for unpublished posts
-                self.publish_date = None
-                self.update_date = None
+            if self.status and (not self.publish_date or self.publish_date <= savetime):
+                self.publish_date = savetime
 
     def archive_post(self):
         current_site = Site.objects.get_current()
@@ -261,7 +242,7 @@ class Post(MentionableMixin, models.Model):
             pass
 
     def save(self, *args, **kwargs):
-        self.html = self.html if self.html else self.render_html()
+        self.html = self.html if self.html else self.render_html(self.text)
         self.handle_publishing()
         if self.pk is None:
             self.handle_photo_upload()
@@ -275,7 +256,7 @@ class Post(MentionableMixin, models.Model):
         super(Post, self).delete(*args, **kwargs)
 
     def get_content_html(self) -> str:
-        return self.html if self.html else self.render_html()
+        return self.html if self.html else self.render_html(self.text)
 
     def get_absolute_url(self) -> str:
         return reverse(

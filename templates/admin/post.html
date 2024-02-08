@@ -1,5 +1,5 @@
 
-<form id="post-entry" action="{% url 'admin_post_new' %}" method="post">
+<form id="post-entry" action="" method="post">
     {% csrf_token %}
     <div id="post-entry-main">
         <div id="id_text_container">
@@ -68,7 +68,7 @@
         const federateCheckbox = document.getElementById('id_send_to_fediverse');
         const rssOnlyCheckbox = document.getElementById('id_rss_only');
 
-        const federateLinks = '\n</div>\n<!-- Federate via Bridgy -->\n<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a>';
+        const federateLinks = '\n</div><!-- bridgy links --><div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a><!-- /bridgy links -->';
 
         const checkCheckboxes = () => {
             if (rssOnlyCheckbox.checked) {

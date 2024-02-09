@@ -16,7 +16,7 @@
 <div id="reaction-list">
     <ul>
     {% for reaction in reactions %}
-        <li><span class="reaction-date">{{ reaction.create_date|date:"Y-m-d H:i:s" }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></li>
+        <li><span class="date reaction-date">{{ reaction.create_date|date:"Y-m-d H:i:s" }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></li>
     {% endfor %}
     </ul>
 </div>

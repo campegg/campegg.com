@@ -11,7 +11,7 @@ from content.models import Reaction
 
 class ReactionIndex(ListView):
     model = Reaction
-    template_name = "admin.html"
+    template_name = "content.html"
     context_object_name = "reactions"
 
     def get_queryset(self):
@@ -30,7 +30,7 @@ class ReactionIndex(ListView):
 
 class ReactionDetail(DetailView):
     model = Reaction
-    template_name = "admin.html"
+    template_name = "content.html"
     context_object_name = "reaction"
 
     def get_object(self, queryset=None):

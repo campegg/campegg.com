@@ -2,9 +2,6 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-from datetime import datetime
-
-
 from content.models import Post
 
 

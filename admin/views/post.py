@@ -8,7 +8,7 @@ from content.models import Post
 # Create your views here.
 
 
-# ---------- posts admin ----------#
+# ---------- new post ----------#
 class AdminPostCreate(LoginRequiredMixin, CreateView):
     login_url = "/admin/login"
     model = Post
@@ -34,6 +34,7 @@ class AdminPostCreate(LoginRequiredMixin, CreateView):
         return context
 
 
+# ---------- edit post ----------#
 class AdminPostEdit(LoginRequiredMixin, UpdateView):
     login_url = "/admin/login"
     model = Post

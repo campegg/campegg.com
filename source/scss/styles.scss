@@ -83,7 +83,7 @@ header {
         img {
             position: relative;
             top: -3px;
-            max-height: 50%;
+            max-width: var(--s-base-margin);
         }
     }
 

@@ -1,0 +1,25 @@
+{% if request.resolver_match.view_name == 'reaction_index' %}
+
+    {% regroup reactions by date_only as grouped_objects %}
+
+    {% for group in grouped_objects %}
+        <h3>{{ group.grouper|date:"F j, Y" }}</h3>
+        <ul>
+        {% for reaction in group.list %}
+            <li>{{ reaction.create_date|date:"g:ia" }}: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+
+{% elif request.resolver_match.view_name == 'reaction_detail' %}
+
+    <div class="h-entry">
+        <p class="e-content">
+            {{ reaction.create_date|date:"F j, Y g:ia" }}: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a> <a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans">🌁</a>
+        </p>
+    </div>
+
+{% endif %}
+
+
+

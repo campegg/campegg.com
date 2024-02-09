@@ -915,6 +915,10 @@ table {
     color: $orange !important;
 }
 
+.date {
+    font-variant-numeric: tabular-nums;
+}
+
 
 /* ---------- content-specific ids/classes ---------- */
 .h-card {

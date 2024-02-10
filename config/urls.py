@@ -21,9 +21,6 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 
-from content.views import Home
-
-
 urlpatterns = [
     # ---------- main patterns ----------#
     path("django/", admin.site.urls),
@@ -46,7 +43,7 @@ urlpatterns = [
     ),
     path(
         "mastodon/",
-        RedirectView.as_view(url="https://mastodon.social/@campegg", permanent=True),
+        RedirectView.as_view(url="https://indieweb.social/@campegg", permanent=True),
     ),
     path(
         "strava/",

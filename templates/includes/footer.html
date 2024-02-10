@@ -15,5 +15,5 @@
         </nav>
         <p><a href="https://xn--sr8hvo.ws/previous">←</a> <a href="https://🕸💍.ws/">IndieWeb Webring</a> <a href="https://xn--sr8hvo.ws/next">→</a></p>
     {% endif %}
-    <p>{% if user.is_authenticated %}<a href="/admin">Admin</a> &nbsp; &nbsp;•&nbsp; &nbsp; <a href="/django">Django</a>{% else %}&copy; Cam Pegg. You seem nice.{% endif %}</p>
+    <div>{% if user.is_authenticated %}<a href="/admin">Admin</a> &nbsp; &nbsp;•&nbsp; &nbsp; <a href="/django">Django</a> &nbsp; &nbsp;•&nbsp; &nbsp; <form id="admin-logout" action="{% url 'admin_logout' %}" method="post">{% csrf_token %}<button id="admin-logout-button" type="submit">Log Out</button></form>{% else %}&copy; Cam Pegg. You seem nice.{% endif %}</div>
 </footer>

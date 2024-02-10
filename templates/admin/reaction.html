@@ -16,10 +16,59 @@
 <div id="reaction-list">
     <ul>
     {% for reaction in reactions %}
-        <li><span class="date reaction-date">{{ reaction.create_date|date:"Y-m-d H:i:s" }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></li>
+        <li>
+            <div class="reaction-list-info">
+                <span class="date reaction-date">{{ reaction.create_date|date:"Y-m-d H:i:s" }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a>
+            </div>
+            <div class="reaction-list-delete" title="Delete this {% if reaction.reaction_type == 0 %}like{% elif reaction_type == 1 %}reply{% elif reaction_type == 2 %}repost{% endif %}">
+                <button data-object-id="{{ reaction.id }}" class="reaction-list-delete-button icon-svg">{% inline_svg 'img/trash.svg' %}</button>
+            </div>
+        </li>
     {% endfor %}
     </ul>
 </div>
+
+<script nonce="{{ request.csp_nonce }}">
+    document.addEventListener('DOMContentLoaded', () => {
+        const deleteButtons = document.querySelectorAll('.reaction-list-delete-button');
+
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+
+                const objectId = button.getAttribute('data-object-id');
+                if (!objectId) {
+                    console.error('Object ID is null or undefined.');
+                    return;
+                }
+
+              if (confirm('Are you sure you want to delete this reaction?')) {
+                const url = `{% url 'admin_reaction_delete' '00000' %}`.replace('00000', objectId);
+                console.log('Attempting to delete object with ID:', objectId, 'URL:', url);
+
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                        body: new URLSearchParams({
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('There was an error trying to delete the reaction.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+              }
+            });
+        });
+    });
+</script>
 
 
 

@@ -175,6 +175,7 @@ WEBMENTIONS_DOMAINS_OUTGOING_DENY = [
     "*.wikipedia.org",
     "daringfireball.net",
     "github.com",
+    "hachyderm.io",
     "hbr.org",
     "indieweb.social",
     "kottke.org",
@@ -262,15 +263,12 @@ CSP_IMG_SRC = (
 )
 CSP_STYLE_SRC = (
     "'self'",
-    "nonce",
     "'unsafe-inline'",
-    "https://api.mapbox.com",
+    "nonce",
 )
 CSP_SCRIPT_SRC = (
     "'self'",
     "nonce",
-    "https://umami.campegg.net",
-    "https://api.mapbox.com",
 )
 CSP_WORKER_SRC = (
     "'self'",

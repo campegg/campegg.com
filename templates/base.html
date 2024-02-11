@@ -34,8 +34,8 @@
         {% if user.is_authenticated %}<link rel="stylesheet" href="{% static 'css/admin-styles.css' %}">{% endif %}
 
         {% if request.resolver_match.view_name == "activity_detail" %}
-        <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js"></script>
-        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" />
+        <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js" nonce="{{ request.csp_nonce }}"></script>
+        <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" nonce="{{ request.csp_nonce }}">
         {% endif %}
 
         <script src="{% static 'js/scripts.js' %}"></script>
@@ -46,7 +46,7 @@
         <script src="{% static 'js/marked-smartypants.js' %}"></script>
         {% endif %}
         {% if "campegg.com" and not user.is_authenticated %}
-        <script async src="https://umami.campegg.net/script.js" data-website-id="931542a1-0e3d-45b5-ba3d-105ab7fe8f1e" data-do-not-track="true"></script>
+        <script async src="https://umami.campegg.net/script.js" nonce="{{ request.csp_nonce }}" data-website-id="931542a1-0e3d-45b5-ba3d-105ab7fe8f1e" data-do-not-track="true"></script>
         {% endif %}
     </head>
 

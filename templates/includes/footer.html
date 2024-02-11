@@ -1,5 +1,5 @@
 <footer>
-    {% if 'admin' not in  request.resolver_match.view_name %}
+    {% if 'admin' not in request.resolver_match.view_name %}
         {% if request.resolver_match.view_name != 'home' %}
             {% include 'includes/h-card.html' %}
         {% endif %}

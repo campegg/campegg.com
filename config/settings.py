@@ -172,11 +172,22 @@ DOMAIN_NAME = os.getenv("DJANGO_DOMAIN")
 WEBMENTIONS_USE_CELERY = False
 WEBMENTIONS_ALLOW_OUTGOING_DEFAULT = True
 WEBMENTIONS_DOMAINS_OUTGOING_DENY = [
-    "indieweb.social",
-    "mastodon.social",
-    "mstdn.social",
     "*.wikipedia.org",
+    "daringfireball.net",
+    "github.com",
+    "hbr.org",
+    "indieweb.social",
+    "kottke.org",
+    "mastodon.online",
+    "mastodon.social",
+    "medium.com",
+    "mstdn.social",
+    "news.ycombinator.com",
+    "sentiers.media",
+    "techhub.social",
     "xoxo.zone",
+    "youtu.be",
+    "youtube.com",
 ]
 
 WEBMENTIONS_DOMAINS_OUTGOING_TAG_DENY: str = "wm-nosend"

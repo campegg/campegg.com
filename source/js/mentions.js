@@ -21,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const ul = document.createElement("ul");
                 mentions.forEach(mention => {
+                    console.log(mention)
                     const li = document.createElement("li");
                     const a = document.createElement("a");
                     const img = document.createElement("img");
@@ -38,13 +39,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     a.appendChild(img);
                     a.appendChild(document.createTextNode(" " + mention.hcard.name));
 
+                    li.appendChild(a);
+
+                    const mentionTypes = {
+                        "bookmark": "bookmarked",
+                        "like": "liked",
+                        "reply": "replied to",
+                        "repost": "reposted"
+                    };
+
+                    let action = mentionTypes[mention.type] || "mentioned";
                     if (mention.source_url.includes("likes/")) {
-                        li.appendChild(a);
-                        li.appendChild(document.createTextNode(" liked this post"));
-                    } else {
-                        li.appendChild(a);
-                        li.appendChild(document.createTextNode(" mentioned this post"));
+                        action = "liked";
                     }
+
+                    li.appendChild(document.createTextNode(` ${action} this post`));
 
                     ul.appendChild(li);
                     mentionsDiv.appendChild(ul);

@@ -171,6 +171,15 @@ CACHES = {
 DOMAIN_NAME = os.getenv("DJANGO_DOMAIN")
 WEBMENTIONS_USE_CELERY = False
 WEBMENTIONS_ALLOW_OUTGOING_DEFAULT = True
+WEBMENTIONS_DOMAINS_OUTGOING_DENY = [
+    "indieweb.social",
+    "mastodon.social",
+    "mstdn.social",
+    "*.wikipedia.org",
+    "xoxo.zone",
+]
+
+WEBMENTIONS_DOMAINS_OUTGOING_TAG_DENY: str = "wm-nosend"
 
 # Admin interface
 X_FRAME_OPTIONS = "SAMEORIGIN"

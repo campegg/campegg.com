@@ -57,7 +57,7 @@ class PostDetail(DetailView):
                     hcard_meta.url if hcard_meta.url is not "/" else None
                 )
 
-            if "likes/" in mention.source_url or mention.post_type:
+            if "likes/" in mention.source_url or mention.post_type == "like":
                 mention.action = "liked"
             elif mention.post_type == "bookmark":
                 mention.action = "bookmarked"

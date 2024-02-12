@@ -26,7 +26,7 @@ class Home(ListView):
 
         mentions_count_subquery = Subquery(
             Webmention.objects.filter(
-                content_type=post_content_type, object_id=OuterRef("id")
+                content_type=post_content_type, object_id=OuterRef("id"), approved=1
             )
             .order_by()
             .values("object_id")

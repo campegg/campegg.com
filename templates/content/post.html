@@ -14,3 +14,23 @@
         {% if user.is_authenticated %}<span class="icon-svg small post-edit" title="Edit this post"><a href="{% url 'admin_post_edit' pk=post.id %}">{% inline_svg 'img/edit.svg' %} Edit post</a></span>{% endif %}
     </p>
 </article>
+
+{% if mentions %}
+<div id="reaction-container">
+    <h3 id="reactions">Reactions</h3>
+    <ul>
+    {% for mention in mentions %}
+        <li>
+            {% if mention.hcard.homepage %}<a href="{{ mention.hcard.homepage }}">{% endif %}
+                <img src=" {% if mention.hcard.avatar %}{{ mention.hcard.avatar }}{% else %}{% static '/img/no_avatar.png' %}{% endif %}" class="mention_avatar" alt="{{ mention.hcard.name }}’s avatar"> {{ mention.hcard.name }}
+            {% if mention.hcard.homepage %}</a>{% endif %}
+            {% if 'likes/' not in mention.source_url %}<a href="{{ mention.source_url }}">{% endif %}
+                {{ mention.action }}
+            {% if 'likes/' not in mention.source_url %}</a>{% endif %}
+            this post
+            {{ mention.meta }}
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endif %}

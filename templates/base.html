@@ -39,7 +39,6 @@
         {% endif %}
 
         <script src="{% static 'js/scripts.js' %}"></script>
-        {% if request.resolver_match.view_name == 'post_detail' %}<script src="{% static 'js/mentions.js' %}"></script>{% endif %}
         {% if user.is_authenticated and "admin_" in request.resolver_match.view_name %}
         <script src="{% static 'js/admin_scripts.js' %}"></script>
         <script src="{% static 'js/marked.js' %}"></script>

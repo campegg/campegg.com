@@ -22,7 +22,7 @@ def get_feeds():
     filtered_tags = {
         tag["feed_id"]: tag["name"]
         for tag in tags
-        if tag["name"] in ["Blogs", "General"]
+        if tag["name"] in ["People", "Sites"]
     }
 
     with open(subs_json, "r") as file:

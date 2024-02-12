@@ -12,34 +12,29 @@ document.addEventListener("DOMContentLoaded", () => {
             const mentions = data.mentions;
 
             if (Array.isArray(mentions) && mentions.length > 0) {
-                const mentionsDiv = document.createElement("div");
-                mentionsDiv.id = "mentions";
+                const reactionsDiv = document.createElement("div");
+                reactionsDiv.id = "reaction-container";
 
                 const heading = document.createElement("h3");
                 heading.textContent = "Reactions";
-                mentionsDiv.appendChild(heading);
+                reactionsDiv.appendChild(heading);
 
                 const ul = document.createElement("ul");
                 mentions.forEach(mention => {
-                    console.log(mention)
                     const li = document.createElement("li");
-                    const a = document.createElement("a");
+                    const profileLink = document.createElement("a");
+                    profileLink.href = mention.hcard.homepage;
                     const img = document.createElement("img");
-
-                    a.href = mention.source_url;
                     img.src = mention.hcard.avatar || "/assets/img/no_avatar.png";
                     img.className = "mention_avatar";
-                    img.alt = mention.hcard.name + "'s avatar";
-
-                    // Add an error handler for the image
+                    img.alt = `${mention.hcard.name}’s avatar`;
                     img.onerror = () => {
                         img.src = "/assets/img/no_avatar.png";
                     };
+                    profileLink.appendChild(img);
+                    profileLink.innerHTML += ` ${mention.hcard.name}`;
 
-                    a.appendChild(img);
-                    a.appendChild(document.createTextNode(" " + mention.hcard.name));
-
-                    li.appendChild(a);
+                    li.appendChild(profileLink);
 
                     const mentionTypes = {
                         "bookmark": "bookmarked",
@@ -47,20 +42,23 @@ document.addEventListener("DOMContentLoaded", () => {
                         "reply": "replied to",
                         "repost": "reposted"
                     };
-
                     let action = mentionTypes[mention.type] || "mentioned";
                     if (mention.source_url.includes("likes/")) {
                         action = "liked";
                     }
 
-                    li.appendChild(document.createTextNode(` ${action} this post`));
-
+                    const actionLink = document.createElement("a");
+                    actionLink.href = mention.source_url;
+                    actionLink.textContent = action;
+                    li.appendChild(document.createTextNode(" "));
+                    li.appendChild(actionLink);
+                    li.appendChild(document.createTextNode(" this post"));
                     ul.appendChild(li);
-                    mentionsDiv.appendChild(ul);
-
-                    const postArticle = document.querySelector("article:last-of-type");
-                    postArticle.insertAdjacentElement("afterend", mentionsDiv);
                 });
+                reactionsDiv.appendChild(ul);
+
+                const postArticle = document.querySelector("article:last-of-type");
+                postArticle.insertAdjacentElement("afterend", reactionsDiv);
             }
         } catch (error) {
             console.error("Error fetching reactions:", error);

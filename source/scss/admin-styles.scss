@@ -35,13 +35,13 @@
     }
 }
 
-.admin-post {
+.admin-post, .admin-page {
     main {
         display: flex;
         max-width: 100%;
 
         form {
-            #post-entry-main {
+            #post-entry-main, #page-entry-main {
                 display: flex;
                 flex-wrap: wrap;
                 flex: 1;
@@ -54,13 +54,17 @@
                     border: 1px solid var(--c-borders);
                     border-radius: var(--s-border-radius);
                     background: var(--c-background);
+
+                    select {
+                        font-size: var(--f-size-small);
+                    }
                 }
 
                 #id_text_container {
                     display: flex;
                     flex-direction: column;
 
-                    textarea, #post-entry-meta {
+                    textarea, #post-entry-meta, #page-entry-meta {
                         padding-inline: calc(var(--s-base-margin) / 2);
                         padding-block: calc(var(--s-base-margin) / 3);
                     }
@@ -75,7 +79,23 @@
                         background: var(--c-background);
                     }
 
-                    #post-entry-meta {
+                    #page-entry-meta-info {
+                        display: flex;
+                        flex-direction: column;
+                        gap: calc(var(--s-base-margin) / 2);
+
+                        #page-entry-meta-title {
+                            display: flex;
+                            flex-direction: row;
+                            gap: calc(var(--s-base-margin) / 2);
+
+                            div {
+                                flex: 1;
+                            }
+                        }
+                    }
+
+                    #post-entry-meta, #page-entry-meta {
                         width: 100%;
 
                         details {
@@ -123,7 +143,6 @@
                                     flex: 1;
 
                                     select {
-                                        font-size: var(--f-size-small);
                                         color: var(--c-text-muted);
                                     }
                                 }
@@ -140,7 +159,7 @@
                             }
                         }
 
-                        #post-entry-meta-options {
+                        #post-entry-meta-options, #page-entry-meta-options {
                             display: flex;
                             flex-flow: row wrap;
                             flex: 1;
@@ -162,7 +181,7 @@
                 }
             }
 
-            #post-entry-save {
+            #post-entry-save, #page-entry-save {
                 margin-block-start: var(--s-base-margin);
             }
         }

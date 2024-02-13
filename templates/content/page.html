@@ -2,4 +2,9 @@
 
     {{ page.html|safe }}
 
+    <p class="meta permalink">
+        <span class="icon-svg small page-date">Last updated: <time class="dt-published" datetime="{{ page.publish_date|date:"Y-m-d\TH:i:sO" }}">{{ page.update_date|date:"F j, Y" }}</time></span>
+        {% if user.is_authenticated %}<span class="icon-svg small page-edit" title="Edit this page"><a href="{% url 'admin_page_edit' pk=page.id %}">{% inline_svg 'img/edit.svg' %} Edit page</a></span>{% endif %}
+    </p>
+
 {% endblock %}

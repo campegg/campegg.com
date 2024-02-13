@@ -858,7 +858,7 @@ table {
 
 .permalink {
     span {
-        &.post-edit, &.post-mentions {
+        &.post-edit, &.page-edit, &.post-mentions {
             margin-inline-start: calc(var(--s-base-margin) / 3);
         }
     }

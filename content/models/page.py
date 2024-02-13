@@ -38,7 +38,7 @@ class Page(models.Model):
             self.full_path = slugify(self.title)
 
     def save(self, *args, **kwargs):
-        self.html = utilities.render_html(self.text)
+        self.html = self.html if self.html else utilities.render_html(self.text)
         self.update_date = timezone.now().replace(microsecond=0)
         self.update_full_path()
         super(Page, self).save(*args, **kwargs)

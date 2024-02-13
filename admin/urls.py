@@ -9,6 +9,8 @@ from django.contrib.auth.views import LogoutView
 from admin.views import (
     AdminLogin,
     AdminDashboard,
+    AdminPageCreate,
+    AdminPageEdit,
     AdminPostCreate,
     AdminPostEdit,
     AdminReactionCreate,
@@ -31,6 +33,8 @@ urlpatterns = [
         name="admin_login",
     ),
     path("admin/logout/", LogoutView.as_view(next_page="home"), name="admin_logout"),
+    path("admin/page/", AdminPageCreate.as_view(), name="admin_page_new"),
+    path("admin/page/edit/<int:pk>", AdminPageEdit.as_view(), name="admin_page_edit"),
     path("admin/post/", AdminPostCreate.as_view(), name="admin_post_new"),
     path("admin/post/edit/<int:pk>", AdminPostEdit.as_view(), name="admin_post_edit"),
     path("admin/reaction/", AdminReactionCreate.as_view(), name="admin_reaction_new"),

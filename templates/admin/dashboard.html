@@ -1,69 +1,41 @@
-<div id="heat-map" data-heat-options="bindingOptions">
-</div>
+<div id="heat-map" data-heat-options="bindingOptions"></div>
 
 <script nonce="{{ request.csp_nonce }}">
-    $heat.setConfiguration({
-        safeMode: false,
-        backButtonText: "←",
-        nextButtonText: "→",
-        stText: "<sup>st</sup>",
-        ndText: "<sup>nd</sup>",
-        rdText: "<sup>rd</sup>",
-        thText: "<sup>th</sup>",
-    });
-
-    function bindingOptions() {
-        return {
-            showTitle: false,
-            showGuide: false,
-            showYearSelectionDropDown: false,
-            mapTogglesEnabled: false,
-            allowFileImports: false,
-            showLessAndMoreLabels: false,
-            dayToolTipText: "{mmmm} {d}{o}, {yyyy}",
-            views: {
-                map: {
-                    showDayNumbers: true,
-                    showDayNames: true,
-                    showMonthDayGaps: false
-                },
-                chart: {
-                    enabled: false
-                },
-                statistics: {
-                    enabled: false
-                }
-            },
-            colorRanges: [ {
-                minimum: 1,
-                cssClassName: "day-color-1",
-            },
-            {
-                minimum: 2,
-                cssClassName: "day-color-2",
-            },
-            {
-                minimum: 3,
-                cssClassName: "day-color-3",
-            },
-            {
-                minimum: 4,
-                cssClassName: "day-color-4",
-            },
-            {
-                minimum: 5,
-                cssClassName: "day-color-5",
-            } ]
-        };
-    }
-
-document.addEventListener("DOMContentLoaded", function() {
-    var datesList = {{ date_list|safe }};
-    datesList.forEach(function(dateStr) {
-        $heat.addDate("heat-map", new Date(dateStr), null, false);
-    });
-    $heat.refreshAll();
+$heat.setConfiguration({
+    safeMode: false,
+    backButtonText: "←",
+    nextButtonText: "→"
 });
+
+const bindingOptions = () => ({
+    showTitle: false,
+    showGuide: false,
+    showYearSelectionDropDown: false,
+    mapTogglesEnabled: false,
+    allowFileImports: false,
+    showLessAndMoreLabels: false,
+    dayToolTipText: "{mmmm} {d}, {yyyy}",
+    views: {
+        map: { showDayNumbers: true, showDayNames: true, showMonthDayGaps: false },
+        chart: { enabled: false },
+        statistics: { enabled: false }
+    },
+    colorRanges: [
+        { minimum: 1, cssClassName: "day-color-1" },
+        { minimum: 2, cssClassName: "day-color-2" },
+        { minimum: 3, cssClassName: "day-color-3" },
+        { minimum: 4, cssClassName: "day-color-4" },
+        { minimum: 5, cssClassName: "day-color-5" }
+    ]
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    const datesList = {{ date_list|safe }};
+        datesList.forEach(dateStr => {
+            $heat.addDate("heat-map", new Date(dateStr), null, false);
+        });
+        $heat.refreshAll();
+    });
 </script>
 
 <ul>

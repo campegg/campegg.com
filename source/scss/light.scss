@@ -10,7 +10,7 @@
     --c-link-lv:        #{shade($blue, 10%)};
     --c-link-ha:        #{shade($red, 10%)};
 
-    --c-background:     #{$white };
+    --c-background:     #{$white};
     --c-background-alt: #{tint($grey, 0%, 0.05)};
     --c-background-admin:#{tint($grey, 97.5%, 1)};
     --c-borders:        #{tint($grey, 0%, 0.1)};

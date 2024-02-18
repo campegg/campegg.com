@@ -5,65 +5,68 @@
  * Released under the MIT License
  */
 :root {
-  --heat-js-default-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --heat-js-color-black: #3b3a3a;
-  --heat-js-color-white: #adbac7;
-  --heat-js-color-snow-white: #F5F5F5;
-  --heat-js-color-gray: #AAAAAA;
-  --heat-js-container-background-color: #22272e;
-  --heat-js-container-border-color: #454c56;
-  --heat-js-tooltip-background-color: var(--heat-js-container-background-color);
-  --heat-js-tooltip-border-color: var(--heat-js-container-border-color);
-  --heat-js-tooltip-text-color: var(--heat-js-color-white);
-  --heat-js-years-background-color: var(--heat-js-container-background-color);
-  --heat-js-years-border-color: var(--heat-js-container-border-color);
-  --heat-js-years-text-color: var(--heat-js-color-white);
-  --heat-js-years-background-color-hover: var(--heat-js-button-background-color-hover);
-  --heat-js-years-text-color-hover: var(--heat-js-color-snow-white);
-  --heat-js-title-opener-text-color-hover: var(--heat-js-color-gray);
-  --heat-js-title-background-color: var(--heat-js-container-background-color);
-  --heat-js-title-border-color: var(--heat-js-container-border-color);
-  --heat-js-title-text-color: var(--heat-js-color-white);
-  --heat-js-title-background-color-hover: var(--heat-js-button-background-color-hover);
-  --heat-js-title-text-color-hover: var(--heat-js-color-snow-white);
-  --heat-js-day-background-color: #2d333b;
-  --heat-js-day-border-color: var(--heat-js-container-border-color);
-  --heat-js-day-background-color-hover: var(--heat-js-container-border-color);
-  --heat-js-day-spacing: 6.3px;
-  --heat-js-day-opacity-hover: 0.7;
-  --heat-js-day-opacity-active: 0.5;
-  --heat-js-day-size: 1.1rem;
-  --heat-js-day-chart-width: 10px;
-  --heat-js-day-color-1-background-color: rgba( 80, 200, 120, 0.25 );
-  --heat-js-day-color-1-border-color: rgba( 80, 200, 120, 0.15 );
-  --heat-js-day-color-1-text-color: var(--heat-js-color-white);
-  --heat-js-day-color-2-background-color: rgba( 80, 200, 120, 0.50 );
-  --heat-js-day-color-2-border-color: rgba( 80, 200, 120, 0.25 );
-  --heat-js-day-color-2-text-color: var(--heat-js-color-white);
-  --heat-js-day-color-3-background-color: rgba( 80, 200, 120, 0.75 );
-  --heat-js-day-color-3-border-color: rgba( 80, 200, 120, 0.50 );
-  --heat-js-day-color-3-text-color: var(--heat-js-color-black);
-  --heat-js-day-color-4-background-color: rgba( 80, 200, 120, 1 );
-  --heat-js-day-color-4-border-color: rgba( 80, 200, 120, 0.75 );
-  --heat-js-day-color-4-text-color: var(--heat-js-color-black);
-  --heat-js-button-background-color: var(--heat-js-day-background-color);
-  --heat-js-button-border-color: var(--heat-js-container-border-color);
-  --heat-js-button-text-color: var(--heat-js-color-white);
-  --heat-js-button-background-color-hover: var(--heat-js-container-border-color);
-  --heat-js-button-text-color-hover: var(--heat-js-color-snow-white);
-  --heat-js-button-background-color-active: #616b79;
-  --heat-js-button-text-color-active: var(--heat-js-color-snow-white);
-  --heat-js-border-radius: 0.5rem;
-  --heat-js-border-radius-day: 0.35rem;
-  --heat-js-border-size: 0.5px;
-  --heat-js-border-size-day: 1px;
-  --heat-js-spacing: 10px;
-  --heat-js-spacing-font-size: 0.85rem;
-  --heat-js-text-bold-weight: 400;
-  --heat-js-title-bold-weight: 900;
-  --heat-js-text-bold-weight-active: 900;
-  --heat-js-transition: all .3s;
-  --heat-js-animation-length: 0.5s;
+    --heat-js-default-font: inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --heat-js-color-black: var(--c-background);
+    --heat-js-color-white: var(--c-text);
+    --heat-js-color-snow-white: var(--c-text);
+    --heat-js-color-gray: var(--c-text-muted);
+    --heat-js-container-background-color: var(--c-background-admin);
+    --heat-js-container-border-color: var(--heat-js-color-gray);
+    --heat-js-tooltip-background-color: var(--heat-js-container-background-color);
+    --heat-js-tooltip-border-color: var(--heat-js-container-border-color);
+    --heat-js-tooltip-text-color: var(--c-text);
+    --heat-js-years-background-color: var(--heat-js-container-background-color);
+    --heat-js-years-border-color: var(--heat-js-container-border-color);
+    --heat-js-years-text-color: var(--c-text);
+    --heat-js-years-background-color-hover: var(--heat-js-button-background-color-hover);
+    --heat-js-years-text-color-hover: var(--c-text);
+    --heat-js-title-opener-text-color-hover: var(--c-text);
+    --heat-js-title-background-color: var(--heat-js-container-background-color);
+    --heat-js-title-border-color: var(--heat-js-container-border-color);
+    --heat-js-title-text-color: var(--c-text);
+    --heat-js-title-background-color-hover: var(--heat-js-button-background-color-hover);
+    --heat-js-title-text-color-hover: var(--c-text);
+    --heat-js-day-background-color: var(--c-background);
+    --heat-js-day-border-color: var(--heat-js-container-border-color);
+    --heat-js-day-background-color-hover: var(--heat-js-container-border-color);
+    --heat-js-day-spacing: 6.625px;
+    --heat-js-day-opacity-hover: 0.7;
+    --heat-js-day-opacity-active: 0.5;
+    --heat-js-day-size: 1.25rem;
+    --heat-js-day-chart-width: 10px;
+    --heat-js-day-color-1-background-color: rgba( 80, 200, 120, 0.2 );
+    --heat-js-day-color-1-border-color: rgba( 80, 200, 120, 0.15 );
+    --heat-js-day-color-1-text-color: rgba(255, 255, 255, 1);
+    --heat-js-day-color-2-background-color: rgba( 80, 200, 120, 0.4 );
+    --heat-js-day-color-2-border-color: rgba( 80, 200, 120, 0.35 );
+    --heat-js-day-color-2-text-color: rgba(255, 255, 255, 0.93);
+    --heat-js-day-color-3-background-color: rgba( 80, 200, 120, 0.6 );
+    --heat-js-day-color-3-border-color: rgba( 80, 200, 120, 0.55 );
+    --heat-js-day-color-3-text-color: rgba(255, 255, 255, 0.87);
+    --heat-js-day-color-4-background-color: rgba( 80, 200, 120, 0.8 );
+    --heat-js-day-color-4-border-color: rgba( 80, 200, 120, 0.75 );
+    --heat-js-day-color-4-text-color: rgba(255, 255, 255, 0.8);
+    --heat-js-day-color-5-background-color: rgba( 80, 200, 120, 1 );
+    --heat-js-day-color-5-border-color: rgba( 80, 200, 120, 0.95 );
+    --heat-js-day-color-5-text-color: rgba(255, 255, 255, 0.73);
+    --heat-js-button-background-color: var(--heat-js-day-background-color);
+    --heat-js-button-border-color: var(--heat-js-container-border-color);
+    --heat-js-button-text-color: var(--c-text);
+    --heat-js-button-background-color-hover: var(--c-background-alt);
+    --heat-js-button-text-color-hover: var(--c-text);
+    --heat-js-button-background-color-active: var(--c-background-alt);
+    --heat-js-button-text-color-active: var(--c-text);
+    --heat-js-border-radius: var(--s-border-radius);
+    --heat-js-border-radius-day: var(--s-border-radius);
+    --heat-js-border-size: 0.5px;
+    --heat-js-border-size-day: 1px;
+    --heat-js-spacing: 7.5px;
+    --heat-js-spacing-font-size: var(--f-size-xsmall);
+    --heat-js-text-bold-weight: var(--f-weight-regular);
+    --heat-js-title-bold-weight: var(--f-weight-bold);
+    --heat-js-text-bold-weight-active: var(--f-weight-bold);
+    --heat-js-transition: all .25s;
+    --heat-js-animation-length: 0.5s;
 }
 
 /*
@@ -77,37 +80,40 @@
     -------------------------------------------------------------------------
 */
 div.heat-js {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  -o-user-select: none;
-  user-select: none;
-  cursor: default;
-  box-sizing: border-box;
-  line-height: normal;
-  font-family: var(--heat-js-default-font);
-  display: inline-block;
-  position: relative;
-  border-radius: var(--heat-js-border-radius);
-  background-color: var(--heat-js-container-background-color);
-  color: var(--heat-js-color-white);
-  border: var(--heat-js-border-size) solid var(--heat-js-container-border-color);
-  padding: var(--heat-js-spacing);
-  font-size: var(--heat-js-spacing-font-size);
-  width: 100%;
-  max-width: 700px;
-  margin: 0 !important;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    cursor: default;
+    box-sizing: border-box;
+    line-height: normal;
+    font-family: var(--heat-js-default-font);
+    display: inline-block;
+    position: relative;
+    border-radius: var(--heat-js-border-radius);
+    background-color: var(--heat-js-container-background-color);
+    color: var(--c-text);
+    border: 0;
+    padding: var(--heat-js-spacing);
+    font-size: var(--heat-js-spacing-font-size);
+    width: 100%;
+    max-width: 700px;
+    margin: 0 !important;
 }
+
 div.heat-js div.no-click {
-  pointer-events: none !important;
+    pointer-events: none !important;
 }
+
 div.heat-js * {
-  box-sizing: border-box;
-  line-height: normal;
+    box-sizing: border-box;
+    line-height: normal;
 }
+
 div.heat-js *::before, div.heat-js *::after {
-  box-sizing: border-box;
-  line-height: normal;
+    box-sizing: border-box;
+    line-height: normal;
 }
 
 /*
@@ -116,7 +122,7 @@ div.heat-js *::before, div.heat-js *::after {
     -------------------------------------------------------------------------
 */
 div.heat-js div.title-bar {
-  text-align: right;
+  text-align: center;
   margin-bottom: calc(var(--heat-js-spacing) + var(--heat-js-spacing) / 2);
 }
 div.heat-js div.title-bar div.title {
@@ -142,7 +148,7 @@ div.heat-js div.title-bar div.title div.down-arrow {
   height: 0;
   border-left: 8px solid transparent;
   border-right: 8px solid transparent;
-  border-top: 14px solid var(--heat-js-color-white);
+  border-top: 14px solid var(--c-text);
   transition: var(--heat-js-transition);
   margin-right: var(--heat-js-spacing);
 }
@@ -163,7 +169,7 @@ div.heat-js div.title-bar div.title div.titles-list div.titles {
   overflow-y: scroll;
 }
 div.heat-js div.title-bar div.title div.titles-list div.titles div.title {
-  color: var(--heat-js-color-white);
+  color: var(--c-text);
   font-weight: var(--heat-js-text-bold-weight);
   border-bottom: var(--heat-js-border-size) dashed var(--heat-js-container-border-color);
   padding: var(--heat-js-spacing);
@@ -274,7 +280,7 @@ div.heat-js div.title-bar div.year-text div.years-list div.years {
   scroll-snap-type: y mandatory;
 }
 div.heat-js div.title-bar div.year-text div.years-list div.years div.year {
-  color: var(--heat-js-color-white);
+  color: var(--c-text);
   font-weight: var(--heat-js-text-bold-weight);
   border-bottom: var(--heat-js-border-size) dashed var(--heat-js-container-border-color);
   padding: var(--heat-js-spacing);
@@ -673,7 +679,7 @@ div.heat-js div.description {
 div.heat-js div.description span.label,
 div.heat-js div.description a.label,
 div.heat-js div.description a.label:visited {
-  color: var(--heat-js-color-white);
+  color: var(--c-text);
   font-weight: var(--heat-js-text-bold-weight);
   text-decoration: none;
 }
@@ -693,11 +699,11 @@ div.heat-js div.description a.label:hover {
     -------------------------------------------------------------------------
 */
 div.heat-js div.guide {
-  display: block;
+  display: none;
 }
 @media (min-width: 768px) {
   div.heat-js div.guide {
-    display: flex;
+    display: none;
   }
 }
 div.heat-js div.guide div.map-types,
@@ -756,7 +762,7 @@ div.heat-js div.guide div.map-types button.active {
 div.heat-js div.guide div.map-types span.label,
 div.heat-js div.guide div.map-types a.label,
 div.heat-js div.guide div.map-types a.label:visited {
-  color: var(--heat-js-color-white);
+  color: var(--c-text);
   font-weight: var(--heat-js-text-bold-weight);
   text-decoration: none;
 }
@@ -837,13 +843,15 @@ div.heat-js div.guide div.map-toggles div.days div.day:not(.no-hover):hover {
 div.heat-js div.day-color-1:not(.no-hover):active,
 div.heat-js div.day-color-2:not(.no-hover):active,
 div.heat-js div.day-color-3:not(.no-hover):active,
-div.heat-js div.day-color-4:not(.no-hover):active {
+div.heat-js div.day-color-4:not(.no-hover):active,
+div.heat-js div.day-color-5:not(.no-hover):active {
   opacity: var(--heat-js-day-opacity-active) !important;
 }
 div.heat-js div.day-color-1:not(.no-hover):hover,
 div.heat-js div.day-color-2:not(.no-hover):hover,
 div.heat-js div.day-color-3:not(.no-hover):hover,
-div.heat-js div.day-color-4:not(.no-hover):hover {
+div.heat-js div.day-color-4:not(.no-hover):hover,
+div.heat-js div.day-color-5:not(.no-hover):hover {
   cursor: pointer;
   opacity: var(--heat-js-day-opacity-hover);
 }
@@ -866,6 +874,11 @@ div.heat-js div.day-color-4 {
   background-color: var(--heat-js-day-color-4-background-color) !important;
   border: var(--heat-js-border-size-day) solid var(--heat-js-day-color-4-border-color) !important;
   color: var(--heat-js-day-color-4-text-color);
+}
+div.heat-js div.day-color-5 {
+  background-color: var(--heat-js-day-color-5-background-color) !important;
+  border: var(--heat-js-border-size-day) solid var(--heat-js-day-color-5-border-color) !important;
+  color: var(--heat-js-day-color-5-text-color);
 }
 
 /*

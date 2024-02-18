@@ -413,7 +413,7 @@ pre {
 }
 
 sub, sup {
-    font-size: var(--f-size-xsmall);
+    font-size: 80%;
     line-height: 0;
     position: relative;
     vertical-align: baseline;
@@ -424,7 +424,7 @@ sub {
 }
 
 sup {
-    top: -0.5em;
+    top: -0.33334em;
 }
 
 time {

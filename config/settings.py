@@ -268,6 +268,7 @@ CSP_STYLE_SRC = (
 )
 CSP_SCRIPT_SRC = (
     "'self'",
+    "'unsafe-eval'",
     "nonce",
 )
 CSP_WORKER_SRC = (

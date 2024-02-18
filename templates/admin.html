@@ -29,12 +29,14 @@
         <link rel="stylesheet" href="{% static 'css/light.css' %}" id="theme">
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         <link rel="stylesheet" href="{% static 'css/admin-styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/heat.js.css' %}">
 
         <script src="{% static 'js/scripts.js' %}"></script>
         {% if user.is_authenticated %}
         <script src="{% static 'js/admin_scripts.js' %}"></script>
         <script src="{% static 'js/marked.js' %}"></script>
         <script src="{% static 'js/marked-smartypants.js' %}"></script>
+        <script src="{% static 'js/heat.js' %}"></script>
         {% endif %}
     </head>
 

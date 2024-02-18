@@ -1,5 +1,6 @@
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 
 from content.models import Post
@@ -69,5 +70,21 @@ class AdminPostEdit(LoginRequiredMixin, UpdateView):
         context["page_meta"] = {
             "body_class": "admin admin-post",
             "title": f"Editing ‘{self.object.title if self.object.title else title_date}’",
+        }
+        return context
+
+
+# ---------- delete post ----------#
+class AdminPostDelete(LoginRequiredMixin, DeleteView):
+    login_url = "/admin/login"
+    success_url = reverse_lazy("admin_dashboard")
+    model = Post
+    template_name = "admin.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(AdminPostDelete, self).get_context_data(**kwargs)
+        context["page_meta"] = {
+            "body_class": "admin admin-post",
+            "title": "Delete post",
         }
         return context

@@ -11,8 +11,10 @@ from admin.views import (
     AdminDashboard,
     AdminPageCreate,
     AdminPageEdit,
+    AdminPageDelete,
     AdminPostCreate,
     AdminPostEdit,
+    AdminPostDelete,
     AdminReactionCreate,
     AdminReactionDelete,
 )
@@ -35,8 +37,18 @@ urlpatterns = [
     path("admin/logout/", LogoutView.as_view(next_page="home"), name="admin_logout"),
     path("admin/page/", AdminPageCreate.as_view(), name="admin_page_new"),
     path("admin/page/edit/<int:pk>", AdminPageEdit.as_view(), name="admin_page_edit"),
+    path(
+        "admin/page/delete/<int:pk>",
+        AdminPageDelete.as_view(),
+        name="admin_page_delete",
+    ),
     path("admin/post/", AdminPostCreate.as_view(), name="admin_post_new"),
     path("admin/post/edit/<int:pk>", AdminPostEdit.as_view(), name="admin_post_edit"),
+    path(
+        "admin/post/delete/<int:pk>",
+        AdminPostDelete.as_view(),
+        name="admin_post_delete",
+    ),
     path("admin/reaction/", AdminReactionCreate.as_view(), name="admin_reaction_new"),
     path(
         "admin/reaction/delete/<int:pk>",

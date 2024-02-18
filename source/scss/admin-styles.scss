@@ -33,6 +33,64 @@
     footer {
         padding-block-start: var(--s-base-margin);
     }
+
+    .admin-edit-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+            display: flex;
+            flex-direction: row;
+            column-gap: var(--s-base-margin);
+            border-top: 1px solid transparent;
+            border-bottom: 1px solid transparent;
+            padding-block-start: calc(var(--s-base-margin) / 8);
+            padding-block-end: calc(var(--s-base-margin) / 8);
+
+            &:hover {
+                background: var(--c-background);
+                border-top: 1px solid var(--c-borders);
+                border-bottom: 1px solid var(--c-borders);
+            }
+
+            div {
+                display: flex;
+
+                &:first-child {
+                    flex-grow: 1;
+                }
+
+                &:last-child {
+                    margin-inline-start: auto;
+                    padding-inline-end: calc(var(--s-base-margin) / 8);
+                }
+            }
+
+            .admin-edit-button {
+                margin-inline-end: calc(var(--s-base-margin) / 2);
+            }
+
+            .admin-delete-button {
+                position: relative;
+                top: -2px;
+                appearance: none;
+                background: none;
+                color: var(--c-link-lv);
+                border: none;
+                padding: 0;
+                margin: 0;
+                font: inherit;
+                text-align: inherit;
+                cursor: pointer;
+
+                &:hover {
+                    color: $red !important;
+                }
+            }
+        }
+    }
+
 }
 
 .admin-post, .admin-page {
@@ -188,6 +246,34 @@
     }
 }
 
+.admin-dashboard {
+    #admin-actions {
+        list-style: none;
+        margin: 0;
+        margin-block-end: calc(var(--s-base-margin) * 2);
+        padding: 0;
+        text-align: center;
+
+        li {
+            display: inline-block;
+            margin: 0;
+            margin-inline-start: var(--s-base-margin);
+            margin-inline-end: var(--s-base-margin);
+            padding: 0;
+        }
+    }
+
+    .admin-dashboard-links {
+        margin-block-start: calc(var(--s-base-margin) * 2);
+        display: flex;
+        gap: var(--s-base-margin);
+
+        .admin-dashboard-links-container {
+            flex: 1;
+        }
+    }
+}
+
 .admin-reaction {
     main {
         form {
@@ -202,54 +288,6 @@
 
         #reaction-list {
             margin-block-start: calc(var(--s-base-margin) * 2);
-
-            ul {
-                list-style: none;
-                margin: 0;
-                padding: 0;
-
-                li {
-                    display: flex;
-                    flex-direction: row;
-                    column-gap: var(--s-base-margin);
-                    border-top: 1px solid transparent;
-                    border-bottom: 1px solid transparent;
-                    padding-block-start: calc(var(--s-base-margin) / 8);
-                    padding-block-end: calc(var(--s-base-margin) / 8);
-
-                    &:hover {
-                        background: var(--c-background);
-                        border-top: 1px solid var(--c-borders);
-                        border-bottom: 1px solid var(--c-borders);
-                    }
-
-                    .reaction-list-info {
-                        flex-grow: 1;
-                    }
-
-                    .reaction-list-delete {
-                        padding-inline-end: calc(var(--s-base-margin) / 8);
-
-                        button {
-                            position: relative;
-                            top: -2px;
-                            appearance: none;
-                            background: none;
-                            color: inherit;
-                            border: none;
-                            padding: 0;
-                            margin: 0;
-                            font: inherit;
-                            text-align: inherit;
-                            cursor: pointer;
-
-                            &:hover {
-                                color: $red !important;
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 }

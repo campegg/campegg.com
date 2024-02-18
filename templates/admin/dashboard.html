@@ -1,4 +1,45 @@
+<ul id="admin-actions">
+    <li><a href="{% url 'admin_post_new' %}">New post</a></li>
+    <li><a href="{% url 'admin_page_new' %}">New page</a></li>
+    <li><a href="{% url 'admin_reaction_new' %}">New reaction</a></li>
+</ul>
+
 <div id="heat-map" data-heat-options="bindingOptions"></div>
+
+<div class="admin-dashboard-links">
+    <div class="admin-dashboard-links-container">
+        <h3>Posts</h3>
+        <ul class="admin-edit-list post-edit-list">
+        {% for post in posts %}
+            <li>
+                <div>
+                    <p><a href="{{ post.get_absolute_url }}" target="_blank">{% if post.title %}{{ post.title }}{% else %}<span class="date">{{ post.publish_date|date:'Y-m-d H:i' }}</span>{% endif %}</a></p>
+                </div>
+                <div>
+                    <a href="{% url 'admin_post_edit' pk=post.id %}" class="admin-edit-button icon-svg">{% inline_svg 'img/edit.svg' %}</a>
+                    <button data-object-id="{{ post.id }}" class="admin-delete-button icon-svg">{% inline_svg 'img/trash.svg' %}</button>
+                </div>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+    <div class="admin-dashboard-links-container">
+        <h3>Pages</h3>
+        <ul class="admin-edit-list page-edit-list">
+            {% for page in pages %}
+                <li>
+                    <div>
+                        <p><a href="{% url 'page_detail' path=page.full_path %}" target="_blank">{{ page.title }}</a></p>
+                    </div>
+                    <div>
+                        <a href="{% url 'admin_page_edit' pk=page.id %}" class="admin-edit-button icon-svg">{% inline_svg 'img/edit.svg' %}</a>
+                        <button data-object-id="{{ page.id }}" class="admin-delete-button icon-svg">{% inline_svg 'img/trash.svg' %}</button>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
 
 <script nonce="{{ request.csp_nonce }}">
 $heat.setConfiguration({
@@ -30,17 +71,62 @@ const bindingOptions = () => ({
 });
 
 document.addEventListener("DOMContentLoaded", () => {
+    // set up the heatmap
     const datesList = {{ date_list|safe }};
-        datesList.forEach(dateStr => {
-            $heat.addDate("heat-map", new Date(dateStr), null, false);
-        });
-        $heat.refreshAll();
+    datesList.forEach(dateStr => {
+        $heat.addDate("heat-map", new Date(dateStr), null, false);
     });
-</script>
+    $heat.refreshAll();
 
-<ul>
-    <li><a href="{% url 'admin_post_new' %}">New post</a></li>
-    <li><a href="{% url 'admin_page_new' %}">New page</a></li>
-    <li><a href="{% url 'admin_reaction_new' %}">New reaction</a></li>
-    <li><a href="/django">Django admin</a></li>
-</ul>
+    // handle post/page deletion
+    const deleteButtons = document.querySelectorAll('.admin-delete-button');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const objectId = button.getAttribute('data-object-id');
+            if (!objectId) {
+                console.error('Object ID is null or undefined.');
+                return;
+            }
+
+            let deleteUrl = '';
+            if (button.closest('.post-edit-list')) {
+                deleteUrl = `{% url 'admin_post_delete' '00000' %}`.replace('00000', objectId);
+                objectType = "post";
+            } else if (button.closest('.page-edit-list')) {
+                deleteUrl = `{% url 'admin_page_delete' '00000' %}`.replace('00000', objectId);
+                objectType = "page";
+            } else {
+                console.error('Delete button is not inside a recognized list.');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this ' + objectType + '?')) {
+                console.log('Attempting to delete object with ID:', objectId, 'URL:', deleteUrl);
+
+                fetch(deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        alert('There was an error trying to delete.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+});
+
+</script>

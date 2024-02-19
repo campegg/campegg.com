@@ -7,9 +7,7 @@
         {{ form.react_to_url }}
     </div>
     <div id="reaction-entry-save">
-        <button class="primary" type="submit">
-            {% if '_edit' in request.resolver_match.view_name %}Update{% else %}Save{% endif %}
-        </button>
+        <button class="primary" type="submit">Save</button>
     </div>
 </form>
 
@@ -18,9 +16,9 @@
     {% for reaction in reactions %}
         <li>
             <div>
-                <p><span class="date reaction-date">{{ reaction.create_date|date:"Y-m-d H:i" }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction_type == 1 %}replied to{% elif reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></p>
+                <p><span class="date reaction-date">{{ reaction.create_date|date:"Y-m-d H:i" }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction.reaction_type == 1 %}replied to{% elif reaction.reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></p>
             </div>
-            <div title="Delete this {% if reaction.reaction_type == 0 %}like{% elif reaction_type == 1 %}reply{% elif reaction_type == 2 %}repost{% endif %}">
+            <div title="Delete this {% if reaction.reaction_type == 0 %}like{% elif reaction.reaction_type == 1 %}reply{% elif reaction.reaction_type == 2 %}repost{% endif %}">
                 <button data-object-id="{{ reaction.id }}" class="admin-delete-button icon-svg">{% inline_svg 'img/trash.svg' %}</button>
             </div>
         </li>

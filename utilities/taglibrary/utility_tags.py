@@ -96,7 +96,7 @@ def convert_ms_to_mph(ms):
 
 
 @register.filter("kph_to_mph")
-def convert_ms_to_mph(ms):
+def convert_kph_to_mph(ms):
     return round(ms / 1.609344, 2)
 
 

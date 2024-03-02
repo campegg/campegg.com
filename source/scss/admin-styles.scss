@@ -70,6 +70,7 @@
     }
 }
 
+
 /* ---------- content-specific styles ---------- */
 .admin-dashboard {
     #admin-actions {
@@ -109,6 +110,13 @@
         flex-flow: column;
     }
 }
+
+.admin-reaction {
+    .reaction-edit-list {
+        margin-block-start: calc(var(--s-base-margin) * 2);
+    }
+}
+
 
 /* ---------- admin form layouts ---------- */
 .admin-form {
@@ -232,6 +240,6 @@
 
     .admin-action {
         flex: 0;
-        margin-block-start: var(--s-base-margin);
+        margin-block-start: calc(var(--s-base-margin) / 2);
     }
 }

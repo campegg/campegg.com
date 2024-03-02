@@ -2,6 +2,6 @@
 
 from .login import AdminLogin
 from .dashboard import AdminDashboard
-from .page import AdminPageCreate, AdminPageEdit, AdminPageDelete
-from .post import AdminPostCreate, AdminPostEdit, AdminPostDelete
-from .reaction import AdminReactionCreate, AdminReactionDelete
+from .new import AdminNew
+from .edit import AdminEdit
+from .delete import AdminDelete

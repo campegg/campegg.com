@@ -4,8 +4,8 @@
 </div>
 {% endif %}
 
-{% for post in posts %}
-    {% include "content/post.html" %}
+{% for item in contents %}
+    {% include item.template_path %}
 {% endfor %}
 
 {% if is_paginated %}

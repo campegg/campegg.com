@@ -1,67 +1,54 @@
 from django.views.generic import ListView
-from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 from django.db.models import Count, OuterRef, Subquery, IntegerField
 
-
-from bs4 import BeautifulSoup
-from datetime import datetime
-
-
-from content.models import Post
-
-
-# Create your views here.
+from content.models import Content
+from mentions.models import Webmention
 
 
 class Home(ListView):
-    context_object_name = "posts"
-    model = Post
+    context_object_name = "contents"
+    model = Content
     paginate_by = 20
     paginate_orphans = 2
     template_name = "content.html"
 
     def get_queryset(self):
-        post_content_type = ContentType.objects.get_for_model(Post)
-        from mentions.models import Webmention
+        # Filter Content objects by the specified types
+        content_types = ["note", "post", "photo", "reply", "repost"]
+        contents_filtered = Content.objects.filter(content_type__in=content_types)
 
         mentions_count_subquery = Subquery(
-            Webmention.objects.filter(
-                content_type=post_content_type, object_id=OuterRef("id"), approved=1
-            )
+            Webmention.objects.filter(object_id=OuterRef("id"), approved=True)
             .order_by()
             .values("object_id")
             .annotate(cnt=Count("id"))
             .values("cnt")[:1],
-            output_field=IntegerField(),  # Corrected usage
+            output_field=IntegerField(),
         )
 
         queryset = (
-            Post.objects.all()
-            .annotate(mention_count=mentions_count_subquery)
+            contents_filtered.annotate(mention_count=mentions_count_subquery)
             .filter(
-                publish_date__lte=datetime.now().replace(microsecond=0),
-                status__exact=1,
-                rss_only__exact=0,
+                publish_date__lte=timezone.now(),
+                content_rss_only=False,
             )
             .order_by("-publish_date")
         )
 
-        # get the first paragraph only (or first two if the first is an image) for posts
-        for post in queryset:
-            if post.post_type == 1:
-                soup = BeautifulSoup(post.html, "lxml")
-                paragraphs = soup.find_all("p")
-                post.first_paragraph = str(paragraphs[0])
-
         return queryset
 
     def get_context_data(self, **kwargs):
-        context = super(Home, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
+        contents_with_template_path = []
+
+        for item in context["contents"]:
+            item.template_path = f"content/{item.content_type}.html"
+            contents_with_template_path.append(item)
+        context["contents"] = contents_with_template_path
+
         context["page_meta"] = {
             "body_class": "home h-feed",
             "desc": "Musings about stuff by someone old enough to know better than to put them on the internet",
         }
         return context
-
-    def get_page(self):
-        return self.kwargs.get("page", 1)

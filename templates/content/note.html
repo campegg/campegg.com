@@ -1,0 +1,6 @@
+<article class="{{ item.content_type }} h-entry">
+    <div class="e-content">
+        {{ item.content_meta.html|safe }}
+    </div>
+    {% include "includes/permalink.html" %}
+</article>

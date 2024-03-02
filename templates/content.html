@@ -2,8 +2,14 @@
 
 {% block content %}
 
-    {% with "content/"|add:request.resolver_match.view_name|cut:"_index"|cut:"_detail"|cut:"_all"|cut:"_paginated"|cut:"_year"|cut:"_month"|cut:"_day"|add:".html" as template %}
-        {% include template %}
-    {% endwith %}
+    {% if request.resolver_match.view_name == 'dispatcher' %}
+        {% with "content/"|add:object.content_type|add:".html" as template %}
+            {% include template %}
+        {% endwith %}
+    {% else %}
+        {% with "content/"|add:request.resolver_match.view_name|add:".html" as template %}
+            {% include template %}
+        {% endwith %}
+    {% endif %}
 
 {% endblock %}

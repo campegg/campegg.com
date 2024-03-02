@@ -1,74 +1,256 @@
-/* admin_scripts.js -- admin-specific script library */
+/* admin-scripts.js -- admin script library */
+
+
+// debounce function to limit the rate at which a function is executed
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func.apply(this, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
-    // make sure umami tracking is disabled for me
-    localStorage.setItem("umami.disabled", "true");
+    // set up marked.js for markdown processing
+    marked.use({
+        breaks: true,
+        pedantic: false,
+        gfm: true,
+    });
+    markedSmartypants.markedSmartypants({ config: "3" });
 
+    // set up constants for forms
+    const postForm = document.getElementById("post-entry");
+    const pageForm = document.getElementById("page-entry");
+    const reactionForm = document.getElementById("reaction-entry");
 
-    // strip Markdown syntax for character counting
-    const stripMarkdown = (md) => {
-        return md
-            .replace(/!\[[^\]]*\]\([^)]*\)/g, '') // images
-            .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1') // links (but keep the text!)
-            .replace(/#+\s+/g, '') // headings
-            .replace(/`{3}.*?`{3}/gs, '') // code blocks
-            .replace(/`.*?`/g, '') // inline code
-            .replace(/[*_]{1,3}/g, '') // bold, italic, and strikethrough
-            .replace(/~~/g, '') // strikethrough
-            .replace(/(>+ )/g, '') // blockquotes
-            .replace(/(-|\*|\+|\d+\.) /g, ''); // list items
-    };
+    // set up contentMeta JSON object
+    const contentMeta = document.getElementById("id_content_meta");
+    let contentMetaValue = JSON.parse(contentMeta ? contentMeta.value : "{}");
 
-
-    // count post characters
-    const updateChars = () => {
-        const countArea = document.getElementById("id_text");
-        const countDisplay = document.getElementById("post-entry-text-chars");
-        const rawText = countArea.value;
-        const strippedText = stripMarkdown(rawText);
-        const chars = strippedText.length;
-
-        countDisplay.textContent = chars;
-
-        if (chars <= 239) {
-            countDisplay.className = "";
-        } else if (chars >= 240 && chars < 460) {
-            countDisplay.className = "warning";
-        } else if (chars >= 460) {
-            countDisplay.className = "error";
+    const updateContentMeta = function(key, value) {
+        if (value) {
+            contentMetaValue[key] = value;
+        } else {
+            delete contentMetaValue[key];
         }
+        contentMeta.value = JSON.stringify(contentMetaValue);
     };
 
-    const adminTextChars = document.getElementById("post-entry-text-chars");
-    const postCreateText = document.getElementById("id_text");
+    // update markdown preview
+    const markdownPreview = document.getElementById("preview-markdown");
+    const previewDisplay = document.getElementById("preview-display");
 
-    if (adminTextChars) {
-        updateChars();
-        postCreateText.addEventListener("keyup", () => updateChars());
+    const updatePreview = function() {
+        if (markdownPreview && previewDisplay) {
+            const markdownText = markdownPreview.value.replace(/\n{3,}/g, "\n\n");
+            const html = marked.parse(markdownText).trim();
+
+            updateContentMeta('markdown', markdownText ? markdownText : null);
+            updateContentMeta('html', html ? html : null);
+
+            previewDisplay.innerHTML = html;
+        }
     }
 
-    // enforce checkbox rules
-    const sendToFediverseCheckbox = document.getElementById("id_send_to_fediverse");
-    const sendToArchiveCheckbox = document.getElementById("id_send_to_archive");
-    const rssOnlyCheckbox = document.getElementById("id_rss_only");
+    if (markdownPreview) {
+        markdownPreview.addEventListener("keyup", debounce(updatePreview, 100));
+        updatePreview;
+    }
 
-    const updateCheckboxes = () => {
-        if (rssOnlyCheckbox.checked) {
-            sendToFediverseCheckbox.checked = false;
-            sendToArchiveCheckbox.checked = false;
-            sendToFediverseCheckbox.disabled = true;
-            sendToArchiveCheckbox.disabled = true;
-        } else {
-            sendToFediverseCheckbox.disabled = false;
-            sendToArchiveCheckbox.disabled = false;
+    // process post form
+    if (postForm) {
+        const titleField = document.getElementById("preview-title");
+        const contentTypeSelect = document.getElementById("id_content_type");
+        contentTypeSelect.value = "note"
+
+        if (titleField) {
+            titleField.addEventListener("keyup", debounce(() => {
+                contentTypeSelect.value = titleField.value.trim().length > 0 ? "post" : "note";
+
+                const title = titleField.value;
+                updateContentMeta('title', title ? title : null);
+
+                let previewTitle = previewDisplay.querySelector('h2');
+
+                if (title) {
+                    if (previewTitle) {
+                        previewTitle.textContent = title;
+                    } else {
+                        let newTitle = document.createElement('h2');
+                        newTitle.textContent = title;
+                        previewDisplay.insertAdjacentElement('afterbegin', newTitle);
+                    }
+                } else {
+                    // If title is empty and an <h2> exists, remove it
+                    if (previewTitle) {
+                        previewTitle.remove();
+                    }
+                }
+            }, 100));
         }
-    };
 
-    if (sendToFediverseCheckbox) {
-        updateCheckboxes();
+        // handle syndication checkboxes
+        const contentFederate = document.getElementById('id_content_federate');
+        const contentRssOnly = document.getElementById('id_content_rss_only');
+        const contentWebmentions = document.getElementById('id_allow_outgoing_webmentions');
 
-        rssOnlyCheckbox.addEventListener("change", updateCheckboxes);
-        sendToFediverseCheckbox.addEventListener("change", updateCheckboxes);
-        sendToArchiveCheckbox.addEventListener("change", updateCheckboxes);
+        const handleSyndication = function(event) {
+            if (event.target === contentRssOnly && contentRssOnly.checked) {
+                contentFederate.checked = false;
+                contentWebmentions.checked = false;
+            } else if ((event.target === contentFederate && contentFederate.checked) ||
+                       (event.target === contentWebmentions && contentWebmentions.checked)) {
+                contentRssOnly.checked = false;
+            }
+        }
+
+        if (contentFederate && contentRssOnly && contentWebmentions) {
+            contentFederate.addEventListener('change', handleSyndication);
+            contentRssOnly.addEventListener('change', handleSyndication);
+            contentWebmentions.addEventListener('change', handleSyndication);
+        }
+
+        // handle date input
+        const dateInput = document.getElementById("preview-publish-date");
+        const dateField = document.getElementById("id_publish_date");
+
+        if (dateInput) {
+            dateInput.addEventListener('change', () => {
+                let dateValue = dateInput.value;
+                if (dateValue) {
+                    let dateTimeParts = dateValue.split('T');
+                    if (dateTimeParts.length === 2) {
+                        let timeParts = dateTimeParts[1].split(':');
+                        if (timeParts.length === 2) {
+                            dateValue = dateTimeParts[0] + 'T' + dateTimeParts[1] + ':00';
+                        }
+                    }
+                    dateField.value = dateValue.replace('T', ' ');
+                }
+            });
+        }
+
+        updatePreview();
+    }
+
+    // process page form
+    if (pageForm) {
+        const descField = document.getElementById("preview-description");
+        const titleField = document.getElementById("preview-title");
+        const parentField = document.getElementById("id_parent_type");
+        const pathField = document.getElementById("id_content_path");
+
+        const updateContentPath = function() {
+            const slug = titleField.value.trim().toLowerCase().replace(/[\s\W-]+/g, "-");
+            const parentValue = parentField.value;
+
+            let contentPath = parentValue ? parentValue + "/" + slug : slug
+
+            pathField.value = contentPath;
+        }
+
+        if (descField) {
+            descField.addEventListener("keyup", debounce(() => {
+                updateContentMeta('description', descField.value.trim() ? descField.value.trim() : null);
+            }, 100));
+        }
+
+        if (titleField) {
+            titleField.addEventListener("keyup", debounce(() => {
+                const title = titleField.value.trim();
+                updateContentMeta('title', title ? title : null);
+                updateContentPath();
+            }, 100));
+        }
+
+        if (parentField) {
+            parentField.addEventListener("change", updateContentPath);
+        }
+
+        updatePreview();
+    }
+
+    // process reaction form
+    if (reactionForm) {
+        const reactionUrlField = document.getElementById("id_reaction_url");
+        const contentTypeSelect = document.getElementById("id_content_type");
+        const reactionContainer = document.getElementById("reaction-container");
+        const reactionMarkdown = document.getElementById("reaction-markdown");
+
+        // handle paste into reactionUrlField
+        reactionUrlField.addEventListener('paste', (event) => {
+            const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+            let match = pastedText.match(/^https:\/\/([^/]+)\/@(\w+)\/(\d+)$/);
+            let originalDomain, name, id;
+
+            if (match) {
+                [, originalDomain, name, id] = match;
+            } else {
+                match = pastedText.match(/^https:\/\/([^/]+)\/@(\w+)@([^/]+)\/(\d+)$/);
+                if (match) {
+                    [, originalDomain, , id] = match;
+                }
+            }
+
+            if (match) {
+                fetch(`https://${originalDomain}/api/v1/statuses/${id}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        updateContentMeta('json', data);
+                        updateContentMeta('url', pastedText);
+                    })
+                    .catch(() => {
+                        alert("Error fetching status");
+                    });
+            } else {
+                alert("Unrecognized URL format");
+            }
+        });
+
+        // handle change on contentTypeSelect
+        const updateReplyText = function() {
+            const markdown = reactionMarkdown.value;
+            const html = marked.parse(markdown);
+            updateContentMeta('markdown', markdown);
+            updateContentMeta('html', html);
+        };
+
+        contentTypeSelect.addEventListener('change', () => {
+            const contentType = contentTypeSelect.value;
+            reactionMarkdown.removeEventListener('keyup', updateReplyText);
+
+            switch (contentType) {
+                case "like":
+                case "repost":
+                    reactionContainer.classList.add('hide');
+                    reactionMarkdown.value = '';
+                    updateContentMeta('markdown', '');
+                    updateContentMeta('html', '');
+                    break;
+                case "reply":
+                    reactionContainer.classList.remove('hide');
+                    if (contentMetaValue.json && contentMetaValue.json.account) {
+                        const { acct, url } = contentMetaValue.json.account;
+                        if (!reactionMarkdown.value.startsWith(`<span class="hide"><a href="${url}">@${acct}</a> </span>`)) {
+                            reactionMarkdown.value = `<span class="hide"><a href="${url}">@${acct}</a> </span>` + reactionMarkdown.value;
+                        }
+                    }
+                    reactionMarkdown.addEventListener('keyup', updateReplyText);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 });

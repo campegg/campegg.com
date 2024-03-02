@@ -1,25 +1,19 @@
-{% if request.resolver_match.view_name == 'reaction_index' %}
+{% regroup items by date_only as grouped_objects %}
 
-    {% regroup reactions by date_only as grouped_objects %}
-
-    {% for group in grouped_objects %}
-        <h3>{{ group.grouper|date:"F j, Y" }}</h3>
-        <ul>
-        {% for reaction in group.list %}
-            <li><span class="date reaction-date">{{ reaction.create_date|date:"g:ia"|cut:"." }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction.reaction_type == 1 %}replied to{% elif reaction.reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a></li>
-        {% endfor %}
-        </ul>
+{% for group in grouped_objects %}
+    <h3>{{ group.grouper|date:"F j, Y" }}</h3>
+    <ul>
+    {% for item in group.list %}
+        <li>
+            <span class="date reaction-date">{{ item.create_date|date:"g:ia"|cut:"." }}</span>:
+            {% if item.content_type == "like" %}
+                liked a <a class="u-like-of" href="{{ item.content_meta.url }}">post</a> by <a href="{{ item.content_meta.json.account.url }}">@{{ item.content_meta.json.account.acct }}</a>
+            {% elif item.content_type == "reply" %}
+                replied to a <a class="u-reply-to" href="{{ item.content_meta.url }}">post</a> by<a href="{{ item.content_meta.json.account.url }}">@{{ item.content_meta.json.account.acct }}</a>
+            {% elif item.content_type == "repost" %}
+                reposted a <a class="u-repost-of" href="{{ item.content_meta.url }}">post</a> by <a href="{{ item.content_meta.json.account.url }}">@{{ item.content_meta.json.account.acct }}</a>
+            {% endif %}
+        </li>
     {% endfor %}
-
-{% elif request.resolver_match.view_name == 'reaction_detail' %}
-
-    <div class="h-entry">
-        <p class="e-content">
-            <span class="date reaction-date">{{ reaction.create_date|date:"F j, Y g:ia"|cut:"." }}</span>: {% if reaction.reaction_type == 0 %}liked{% elif reaction.reaction_type == 1 %}replied to{% elif reaction.reaction_type == 2 %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.react_to_url }}">a post</a> by <a href="{{ reaction.react_to_url|account_url }}">{{ reaction.react_to_url|account_name }}</a> <a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans">🌁</a>
-        </p>
-    </div>
-
-{% endif %}
-
-
-
+    </ul>
+{% endfor %}

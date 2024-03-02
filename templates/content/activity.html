@@ -1,214 +1,179 @@
-{% if request.resolver_match.view_name == 'activity_index' or request.resolver_match.view_name == 'activity_paginated' %}
-
-    <section class="table-container">
-        <table class="h-feed activity-table">
-            <thead>
-                <tr>
-                    <th class="tbl-date">Date</th>
-                    <th class="tbl-name">Name</th>
-                    <th class="tbl-dist numbers">Distance</th>
-                    <th class="tbl-time numbers">Time</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for activity in activities %}
-                <tr class="h-entry">
-                    <td class="tbl-date"><time class="dt-published" datetime="{{ activity.start_date_local|date:"Y-m-d\TH:i:sO" }}">{{ activity.start_date_local|date:"M j, Y" }}</time></td>
-                    <td class="tbl-name"><a class="u-url p-name" href="{% url 'activity_detail' activity.id %}">{{ activity.name }}</a></td>
-                    <td class="tbl-dist numbers">
-                        <span class="units units-si show">{{ activity.distance|m_to_km|floatformat:"1" }}km</span>
-                        <span class="units units-us hide">{{ activity.distance|m_to_mi|floatformat:"1" }}mi</span>
-                    </td>
-                    <td class="tbl-time numbers">{{ activity.moving_time|activitytime }}</td>
-                </tr>
-            {% endfor %}
-            </tbody>
-        </table>
+<div class="e-content">
+    <section>
+        <div class="p-summary">
+        {% if item.content_meta.description %}
+            {{ item.content_meta.description }}
+        {% else %}
+            <p>I didn&#8217;t write a description for this activity. 🤷🏻‍♂️</p>
+        {% endif %}
+        </div>
     </section>
 
-    {% if is_paginated %}
-        {% include "includes/pagination.html" %}
-    {% endif %}
+    <section>
+        {% if item.content_meta.map.polyline %}
+            <div id="map"></div>
+        {% else %}
+            <div id="no-map"><img src="{% static 'img/nomap_sq.png' %}" alt="No map available for &#8216;{{ item.content_meta.name }}&#8217;" loading="lazy"></div>
+        {% endif %}
+    </section>
 
-{% elif request.resolver_match.view_name == 'activity_detail' %}
-{# ---------- activity detail ---------- #}
-    <div class="e-content">
-        <section>
-            <div class="p-summary">
-            {% if activity.description %}
-                {{ activity.description }}
-            {% else %}
-                <p>I didn&#8217;t write a description for this activity. 🤷🏻‍♂️</p>
+    <section class="activity-detail grid two">
+        <div class="activity-info">
+            <h4>Date</h4>
+            <p><time class="dt-published" datetime="{{ item.content_meta.start_date_local|date:"Y-m-d\TH:i:sO" }}">{{ item.content_meta.start_date_local|date:"F j, Y \a\t g:ia" }}</time></p>
+
+            <h4>Device</h4>
+            <p>{{ item.content_meta.device_name }}</p>
+
+            {% if item.content_meta.weather.temperature %}
+            <h4>Conditions</h4>
+            <p>
+                {{ item.content_meta.weather.summary|sentencecase }},
+                <span class="units units-si show">{{ item.content_meta.weather.temperature|floatformat:"0" }}&#176;C,</span>
+                <span class="units units-us hide">{{ item.content_meta.weather.temperature|c_to_f|floatformat:"0" }}&#176;F,</span>
+                {{ item.content_meta.weather.humidity|percent|floatformat:"0" }}% humidity.
+                Wind from the {{ item.content_meta.weather.windBearing|winddir|lower }} at
+                <span class="units units-si show">{{ item.content_meta.weather.windSpeed|floatformat:"1" }}km/h.</span>
+                <span class="units units-us hide">{{ item.content_meta.weather.windSpeed|kph_to_mph|floatformat:"1" }}mph.</span>
+            </p>
             {% endif %}
-            </div>
-        </section>
 
-        <section>
-            {% if activity.map.polyline %}
-                <div id="map"></div>
-            {% else %}
-                <div id="no-map"><img src="{% static 'img/nomap_sq.png' %}" alt="No map available for &#8216;{{ activity.name }}&#8217;" loading="lazy"></div>
+            {% if item.content_meta.start_latlng %}
+            <p class="p-location h-geo" hidden>
+              <span class="p-latitude">{{ item.content_meta.start_latlng|lat }}</span>,
+              <span class="p-longitude">{{ item.content_meta.start_latlng|lng }}</span>
+            </p>
             {% endif %}
-        </section>
+        </div>
 
-        <section class="activity-detail grid two">
-            <div class="activity-info">
-                <h4>Date</h4>
-                <p><time class="dt-published" datetime="{{ activity.start_date_local|date:"Y-m-d\TH:i:sO" }}">{{ activity.start_date_local|date:"F j, Y \a\t g:ia" }}</time></p>
+        <div class="activity-data grid five">
 
-                <h4>Device</h4>
-                <p>{{ activity.device_name }}</p>
-
-                {% if activity.weather.temperature %}
-                <h4>Conditions</h4>
+            <div>
+                <h4>Distance</h4>
                 <p>
-                    {{ activity.weather.summary|sentencecase }},
-                    <span class="units units-si show">{{ activity.weather.temperature|floatformat:"0" }}&#176;C,</span>
-                    <span class="units units-us hide">{{ activity.weather.temperature|c_to_f|floatformat:"0" }}&#176;F,</span>
-                    {{ activity.weather.humidity|percent|floatformat:"0" }}% humidity.
-                    Wind from the {{ activity.weather.windBearing|winddir|lower }} at
-                    <span class="units units-si show">{{ activity.weather.windSpeed|floatformat:"1" }}km/h.</span>
-                    <span class="units units-us hide">{{ activity.weather.windSpeed|kph_to_mph|floatformat:"1" }}mph.</span>
+                    <span class="units units-si show">{{ item.content_meta.distance|m_to_km|floatformat:"1" }}km</span>
+                    <span class="units units-us hide">{{ item.content_meta.distance|m_to_mi|floatformat:"1" }}mi</span>
                 </p>
-                {% endif %}
+            </div>
 
-                {% if activity.start_latlng %}
-                <p class="p-location h-geo" hidden>
-                  <span class="p-latitude">{{ activity.start_latlng|lat }}</span>,
-                  <span class="p-longitude">{{ activity.start_latlng|lng }}</span>
+            <div>
+                <h4>Time</h4>
+                <p>{{ item.content_meta.moving_time|activitytime }}</p>
+            </div>
+
+            <div>
+                <h4>Avg {% if item.content_meta.type == 'Run' %}Pace{% else %}Speed{% endif %}</h4>
+                {% if item.content_meta.type == 'Run' %}
+                <p>
+                    <span class="units units-si show">{{ item.content_meta.average_speed|ms_to_minkm }}/km</span>
+                    <span class="units units-us hide">{{ item.content_meta.average_speed|ms_to_minmi }}/mi</span>
+                </p>
+                {% else %}
+                <p>
+                    <span class="units units-si show">{{ item.content_meta.average_speed|ms_to_kph|floatformat:"1" }}km/h</span>
+                    <span class="units units-us hide">{{ item.content_meta.average_speed|ms_to_mph|floatformat:"1" }}mph</span>
                 </p>
                 {% endif %}
             </div>
 
-            <div class="activity-data grid five">
-
-                <div>
-                    <h4>Distance</h4>
-                    <p>
-                        <span class="units units-si show">{{ activity.distance|m_to_km|floatformat:"1" }}km</span>
-                        <span class="units units-us hide">{{ activity.distance|m_to_mi|floatformat:"1" }}mi</span>
-                    </p>
-                </div>
-
-                <div>
-                    <h4>Time</h4>
-                    <p>{{ activity.moving_time|activitytime }}</p>
-                </div>
-
-                <div>
-                    <h4>Avg {% if activity.type == 'Run' %}Pace{% else %}Speed{% endif %}</h4>
-                    {% if activity.type == 'Run' %}
-                    <p>
-                        <span class="units units-si show">{{ activity.average_speed|ms_to_minkm }}/km</span>
-                        <span class="units units-us hide">{{ activity.average_speed|ms_to_minmi }}/mi</span>
-                    </p>
-                    {% else %}
-                    <p>
-                        <span class="units units-si show">{{ activity.average_speed|ms_to_kph|floatformat:"1" }}km/h</span>
-                        <span class="units units-us hide">{{ activity.average_speed|ms_to_mph|floatformat:"1" }}mph</span>
-                    </p>
-                    {% endif %}
-                </div>
-
-                {% if activity.average_heartrate %}
-                <div>
-                    <h4>Avg <abbr title="Heartrate">HR</abbr></h4>
-                    <p>{{ activity.average_heartrate }}</p>
-                </div>
-
-                <div>
-                    <h4>Max <abbr title="Heartrate">HR</abbr></h4>
-                    <p>{{ activity.max_heartrate }}</p>
-                </div>
-                {% endif %}
-
-                {% if activity.suffer_score %}
-                <div>
-                    <h4>Relative Effort</h4>
-                    <p>{{ activity.suffer_score }}</p>
-                </div>
-                {% endif %}
-
-                {% if activity.calories != 0 %}
-                <div>
-                    <h4>Calories</h4>
-                    <p>{{ activity.calories|floatformat:"0" }}</p>
-                </div>
-                {% endif %}
-
-                {% if activity.total_elevation_gain != 0 %}
-                <div>
-                    <h4>Elevation Gain</h4>
-                    <p>
-                        <span class="units units-si show">{{ activity.total_elevation_gain|floatformat:"0" }}m</span>
-                        <span class="units units-us hide">{{ activity.total_elevation_gain|m_to_ft|floatformat:"0" }}ft</span>
-                    </p>
-                </div>
-                {% endif %}
+            {% if item.content_meta.average_heartrate %}
+            <div>
+                <h4>Avg <abbr title="Heartrate">HR</abbr></h4>
+                <p>{{ item.content_meta.average_heartrate }}</p>
             </div>
-        </section>
-    </div>
 
-    {% if activity.map.polyline %}
-        <script nonce="{{ request.csp_nonce }}">
-            window.addEventListener('DOMContentLoaded', (event) => {
-                mapboxgl.accessToken = 'pk.eyJ1IjoiY2FtcGVnZyIsImEiOiJja2ZsdmI3ODUwdGM5MnFxcjV0dGlkZmU1In0.ctPEszjW1zyWMaSx9C6bMA';
-                const map = new mapboxgl.Map({
-                    container: 'map',
-                    style: 'mapbox://styles/campegg/ck9hshhx65ris1imlr9vf12ml',
-                    center: {{ activity.start_latlng|lnglat }},
-                    zoom: 4
+            <div>
+                <h4>Max <abbr title="Heartrate">HR</abbr></h4>
+                <p>{{ item.content_meta.max_heartrate }}</p>
+            </div>
+            {% endif %}
+
+            {% if item.content_meta.suffer_score %}
+            <div>
+                <h4>Relative Effort</h4>
+                <p>{{ item.content_meta.suffer_score }}</p>
+            </div>
+            {% endif %}
+
+            {% if item.content_meta.calories != 0 %}
+            <div>
+                <h4>Calories</h4>
+                <p>{{ item.content_meta.calories|floatformat:"0" }}</p>
+            </div>
+            {% endif %}
+
+            {% if item.content_meta.total_elevation_gain != 0 %}
+            <div>
+                <h4>Elevation Gain</h4>
+                <p>
+                    <span class="units units-si show">{{ item.content_meta.total_elevation_gain|floatformat:"0" }}m</span>
+                    <span class="units units-us hide">{{ item.content_meta.total_elevation_gain|m_to_ft|floatformat:"0" }}ft</span>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </section>
+</div>
+
+{% if item.content_meta.map.polyline %}
+    <script nonce="{{ request.csp_nonce }}">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            mapboxgl.accessToken = 'pk.eyJ1IjoiY2FtcGVnZyIsImEiOiJja2ZsdmI3ODUwdGM5MnFxcjV0dGlkZmU1In0.ctPEszjW1zyWMaSx9C6bMA';
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/campegg/ck9hshhx65ris1imlr9vf12ml',
+                center: {{ item.content_meta.start_latlng|lnglat }},
+                zoom: 4
+            });
+
+            var geojson = {
+                'type': 'FeatureCollection',
+                'features': [
+                    {
+                        'type': 'Feature',
+                        'properties': {},
+                        'geometry': {
+                            'type': 'LineString',
+                            'coordinates': {{ location }}
+                        }
+                    }
+                ]
+            };
+
+            map.on('load', function() {
+                map.addSource('LineString', {
+                    'type': 'geojson',
+                    'data': geojson
                 });
 
-                var geojson = {
-                    'type': 'FeatureCollection',
-                    'features': [
-                        {
-                            'type': 'Feature',
-                            'properties': {},
-                            'geometry': {
-                                'type': 'LineString',
-                                'coordinates': {{ location }}
-                            }
-                        }
-                    ]
-                };
+                map.addLayer({
+                    'id': 'LineString',
+                    'type': 'line',
+                    'source': 'LineString',
+                    'layout': {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    'paint': {
+                        'line-color': '#d32f2f',
+                        'line-width': 3,
+                        'line-opacity': 0.66
+                    }
+                });
 
-                map.on('load', function() {
-                    map.addSource('LineString', {
-                        'type': 'geojson',
-                        'data': geojson
-                    });
+                map.addControl(new mapboxgl.NavigationControl({
+                    'showCompass': false
+                }));
 
-                    map.addLayer({
-                        'id': 'LineString',
-                        'type': 'line',
-                        'source': 'LineString',
-                        'layout': {
-                            'line-join': 'round',
-                            'line-cap': 'round'
-                        },
-                        'paint': {
-                            'line-color': '#d32f2f',
-                            'line-width': 3,
-                            'line-opacity': 0.66
-                        }
-                    });
+                var coordinates = geojson.features[0].geometry.coordinates;
+                var bounds = coordinates.reduce(function(bounds, coord) {
+                    return bounds.extend(coord);
+                }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
 
-                    map.addControl(new mapboxgl.NavigationControl({
-                        'showCompass': false
-                    }));
-
-                    var coordinates = geojson.features[0].geometry.coordinates;
-                    var bounds = coordinates.reduce(function(bounds, coord) {
-                        return bounds.extend(coord);
-                    }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
-
-                    map.fitBounds(bounds, {
-                        padding: 24
-                    });
+                map.fitBounds(bounds, {
+                    padding: 24
                 });
             });
-        </script>
-    {% endif %}
+        });
+    </script>
 {% endif %}

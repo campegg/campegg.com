@@ -79,8 +79,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "content.context_processors.pages",
-                "content.context_processors.search_form",
             ],
         },
     },
@@ -202,11 +200,7 @@ ADMIN_REORDER = (
     {
         "app": "content",
         "label": "Content",
-        "models": (
-            "content.Post",
-            "content.Page",
-            "content.Reaction",
-        ),
+        "models": ("content.Content",),
     },
     {
         "app": "mentions",
@@ -277,8 +271,7 @@ CSP_WORKER_SRC = (
 )
 CSP_CONNECT_SRC = (
     "'self'",
-    "https://api.mapbox.com",
-    "https://events.mapbox.com",
+    "https:",
 )
 CSP_FRAME_SRC = (
     "'self'",

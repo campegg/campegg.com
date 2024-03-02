@@ -1,0 +1,14 @@
+
+{% if content_type == 'post' %}
+    {% include "admin/form_post.html" %}
+{% elif content_type == 'reaction' %}
+    {% include "admin/form_reaction.html" %}
+{% elif content_type == 'page' %}
+    {% include "admin/form_page.html" %}
+{% elif content_type == 'photo' %}
+    {% include "admin/form_photo.html" %}
+{% elif content_type == 'activity' %}
+    {% include "admin/form_activity.html" %}
+{% else %}
+    <p>Unknown content type!</p>
+{% endif %}

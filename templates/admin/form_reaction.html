@@ -1,0 +1,106 @@
+<form id="reaction-entry" class="admin-form" action="" method="post">
+    {% csrf_token %}
+    <div class="admin-ui">
+        <div class="admin-ui-meta">
+            <div class="admin-ui-meta-1">
+                <select name="content_type" id="id_content_type">
+                    <option value="like">Like</option>
+                    <option value="reply">Reply</option>
+                    <option value="repost">Repost</option>
+                </select>
+            </div>
+            <div class="admin-ui-meta-3">
+                <input type="text" name="reaction_url" id="id_reaction_url">
+            </div>
+        </div>
+        <div id="reaction-container" class="admin-ui-meta hide">
+            <textarea id="reaction-markdown" class="admin-preview-ui-fields-markdown" placeholder="Reply text (markdown)">{{ object.content_meta.markdown }}</textarea>
+        </div>
+    </div>
+    <div class="admin-data">
+        <input type="hidden" name="allow_outgoing_webmentions" id="id_allow_outgoing_webmentions" value="True">
+        <input type="hidden" name="content_federate" id="id_content_federate" value="True">
+        <input type="hidden" name="content_rss_only" id="id_content_rss_only" value="False">
+        <input type="hidden" name="publish_date" id="id_publish_date" value="{{ object.publish_date }}">
+        <div>
+            <label for="{{ form.content_meta.id_for_label }}">Content meta</label>
+            {{ form.content_meta }}
+        </div>
+        <div>
+            <label for="{{ form.content_path.id_for_label }}">Content path</label>
+            {{ form.content_path }}
+        </div>
+    </div>
+    <div class="admin-action">
+       <button class="primary" type="submit">{% if '_edit' in request.resolver_match.view_name %}Update{% else %}Save{% endif %}</button>
+    </div>
+</form>
+
+<div>
+    <ul class="admin-edit-list reaction-edit-list">
+        {% for reaction in reactions %}
+            {% if reaction.content_meta.json %}
+            <li>
+                <div>
+                    <p><span class="date reaction-date">{{ reaction.create_date|date:"Y-m-d H:i" }}</span>: {% if reaction.content_type == 'like' %}liked{% elif reaction.content_type == 'reply' %}replied to{% elif reaction.content_type == 'repost' %}reposted{% endif %} <a class="u-like-of" href="{{ reaction.content_meta.json.url }}">a post</a> by <a href="{{ reaction.content_meta.json.account.url }}">@{{ reaction.content_meta.json.account.acct }}</a></p>
+                </div>
+                <div>
+                    {% if reaction.content_type == 'reply' %}
+                    <a href="{% url 'admin_edit' content_type='reaction' content_id=reaction.id %}" class="admin-edit-button icon-svg">{% inline_svg 'img/edit.svg' %}</a>
+                    {% endif %}
+                    <button data-delete-url="{% url 'admin_delete' content_type=reaction.content_type pk=reaction.id %}" data-content-type="{{ reaction.content_type }}" class="admin-delete-button icon-svg">{% inline_svg 'img/trash.svg' %}</button>
+                </div>
+            </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+</div>
+
+<script nonce="{{ request.csp_nonce }}">
+document.addEventListener("DOMContentLoaded", () => {
+    // handle post/page deletion
+    const deleteButtons = document.querySelectorAll('.admin-delete-button');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            const deleteUrl = button.getAttribute('data-delete-url');
+            const contentType = button.getAttribute('data-content-type');
+
+            console.log('Content type: "' + contentType + '"; delete URL: "' + deleteUrl + '"');
+
+            if (!deleteUrl) {
+                console.error('Delete URL is null or undefined.');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this ' + contentType + '?')) {
+                console.log('Attempting to delete object using', deleteUrl);
+
+                fetch(deleteUrl, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}',
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Successfully deleted object');
+                        window.location.reload();
+                    } else {
+                        alert('There was an error trying to delete.');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            }
+        });
+    });
+});
+
+</script>
+

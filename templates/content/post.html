@@ -1,36 +1,7 @@
-<article class="{% if post.post_type == 2 %}photo{% elif post.post_type == 1 %}post{% else %}note{% endif %}{% if 'post' not in request.resolver_match.view_name %} h-entry{% endif %}">
-    {% if post.post_type == 1 %}
-    <h2 class="p-name"><a class="u-url" href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-    {% endif %}
+<article class="{{ item.content_type }} h-entry">
+    <h2 class="p-name"><a class="u-url" href="{{ item.get_absolute_url }}">{{ item.content_meta.title }}</a></h2>
     <div class="e-content">
-        {% if post.post_type == 2 %}
-        <p><img class="u-photo" src="{{ request.scheme }}://{{ request.get_host }}{{ post.photo.url }}" alt="{{ post.photo_alt_text|escape }}" loading="lazy"></p>
-        {% endif %}
-        {{ post.html|safe }}
+        {{ item.content_meta.html|safe }}
     </div>
-    <p class="meta permalink">
-        <span class="icon-svg small post-date">{% if '_detail' not in request.resolver_match.view_name %}<a class="u-url" href="{{ post.get_absolute_url }}">{% endif %}<time class="dt-published{% if post.post_type == 1 %} p-name{% endif %}" datetime="{{ post.publish_date|date:"Y-m-d\TH:i:sO" }}">{{ post.publish_date|date:"F j, Y" }}</time>{% if '_detail' not in request.resolver_match.view_name %}</a>{% endif %}</span>
-        {% if 'home' in request.resolver_match.view_name %}{% if post.mention_count is not None %}<span class="icon-svg small post-mentions" title="{{ post.mention_count }} reaction{% if post.mention_count != 1 %}s{% endif %}">{% inline_svg 'img/mention.svg' %} {{ post.mention_count }}</span>{% endif %}{% endif %}
-        {% if user.is_authenticated %}<span class="icon-svg small post-edit" title="Edit this post"><a href="{% url 'admin_post_edit' pk=post.id %}">{% inline_svg 'img/edit.svg' %} Edit post</a></span>{% endif %}
-    </p>
+    {% include "includes/permalink.html" %}
 </article>
-
-{% if mentions %}
-<div id="reaction-container">
-    <h3 id="reactions">Reactions</h3>
-    <ul>
-    {% for mention in mentions %}
-        <li>
-            {% if mention.hcard.homepage %}<a href="{{ mention.hcard.homepage }}">{% endif %}
-                <img src=" {% if mention.hcard.avatar %}{{ mention.hcard.avatar }}{% else %}{% static '/img/no_avatar.png' %}{% endif %}" class="mention_avatar" alt="{{ mention.hcard.name }}’s avatar"> {{ mention.hcard.name }}
-            {% if mention.hcard.homepage %}</a>{% endif %}
-            {% if 'likes/' not in mention.source_url %}<a href="{{ mention.source_url }}">{% endif %}
-                {{ mention.action }}
-            {% if 'likes/' not in mention.source_url %}</a>{% endif %}
-            this post
-            {{ mention.meta }}
-        </li>
-    {% endfor %}
-    </ul>
-</div>
-{% endif %}

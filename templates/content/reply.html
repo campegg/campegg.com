@@ -1,0 +1,7 @@
+<article class="{{ item.content_type }} h-entry">
+    <p class="reaction-meta"><span class="icon-svg small">{% inline_svg 'img/reply.svg' %}</span> Replied to <a class="u-reply-to icon-svg" href="{{ item.content_meta.json.url }}">a post</a> by <a href="{{ item.content_meta.json.account.url }}">@{{ item.content_meta.json.account.acct }}</a>:</p>
+    <div class="e-content">
+        {{ item.content_meta.html|safe }}
+    </div>
+    {% include "includes/permalink.html" %}
+</article>

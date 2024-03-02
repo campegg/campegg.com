@@ -1,27 +1,23 @@
 from django.views.generic import DetailView
-from django.shortcuts import get_object_or_404
+from content.models import Content
 
 
-from content.models import Page
-
-
-# Create your views here.
-
-
-class PageDetail(DetailView):
-    context_object_name = "page"
-    model = Page
+class Page(DetailView):
+    model = Content
     template_name = "content.html"
+    context_object_name = "item"
+    slug_field = "content_path"
+    slug_url_kwarg = "slug"
 
-    def get_object(self, queryset=None):
-        path = self.kwargs.get("path")
-        return get_object_or_404(Page, full_path=path)
+    def get_queryset(self):
+        return Content.objects.filter(content_type="page")
 
     def get_context_data(self, **kwargs):
-        context = super(PageDetail, self).get_context_data(**kwargs)
-        context["page_meta"] = {
+        context = super().get_context_data(**kwargs)
+        page_meta = {
             "body_class": "page",
-            "title": self.object.title,
-            "desc": self.object.description,
+            "title": self.object.content_meta.get("title", ""),
+            "desc": self.object.content_meta.get("description", ""),
         }
+        context["page_meta"] = page_meta
         return context

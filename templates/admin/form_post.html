@@ -1,0 +1,52 @@
+<form id="post-entry" class="admin-form" action="" method="post">
+    {% csrf_token %}
+    <div class="admin-preview-ui">
+        <div class="admin-preview-ui-fields">
+            <textarea id="preview-markdown" class="admin-preview-ui-fields-markdown" placeholder="Post text (markdown)">{{ object.content_meta.markdown }}</textarea>
+            <div class="admin-preview-ui-fields-meta">
+                <div>
+                    <input id="preview-title" class="admin-preview-ui-fields-text" type="text" placeholder="Title (optional)" value="{{ object.content_meta.title }}">
+                </div>
+                <div>
+                    <input id="preview-publish-date" class="admin-preview-ui-fields-datetime" type="datetime-local" id="post-entry-ui-fields-date" name="post-entry-ui-fields-date"{% if object.publish_date %}value="{{ object.publish_date|date:'Y-m-d\TH:i:s' }}"{% endif %}>
+                </div>
+            </div>
+            <div class="admin-preview-ui-fields-meta">
+                <div>
+                    {{ form.allow_outgoing_webmentions }}
+                    <label for="{{ form.allow_outgoing_webmentions.id_for_label }}">Mentions</label>
+                </div>
+                <div>
+                    {{ form.content_federate }}
+                    <label for="{{ form.content_federate.id_for_label }}">Federate</label>
+                </div>
+                <div>
+                    {{ form.content_rss_only }}
+                    <label for="{{ form.content_rss_only.id_for_label }}">RSS only</label>
+                </div>
+            </div>
+        </div>
+        <div id="preview-display" class="admin-preview-ui-display"></div>
+    </div>
+    <div class="admin-data">
+        <div>
+            <label for="{{ form.content_type.id_for_label }}">Content type</label>
+            {{ form.content_type }}
+        </div>
+        <div>
+            <label for="{{ form.content_meta.id_for_label }}">Content meta</label>
+            {{ form.content_meta }}
+        </div>
+        <div>
+            <label for="{{ form.content_path.id_for_label }}">Content path</label>
+            {{ form.content_path }}
+        </div>
+        <div>
+            <label for="{{ form.publish_date.id_for_label }}">Publish date</label>
+            {{ form.publish_date }}
+        </div>
+    </div>
+    <div class="admin-action">
+       <button class="primary" type="submit">{% if '_edit' in request.resolver_match.view_name %}Update{% else %}Save{% endif %}</button>
+    </div>
+  </form>

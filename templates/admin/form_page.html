@@ -1,0 +1,43 @@
+<form id="page-entry" class="admin-form" action="" method="post">
+    {% csrf_token %}
+    <div class="admin-preview-ui">
+        <div class="admin-preview-ui-fields">
+            <textarea id="preview-markdown" class="admin-preview-ui-fields-markdown" placeholder="Page text (markdown)">{{ object.content_meta.markdown }}</textarea>
+            <div class="admin-preview-ui-fields-meta">
+                <div>
+                    <input id="preview-title" class="admin-preview-ui-fields-text" type="text" placeholder="Title" value="{{ object.content_meta.title }}" required>
+                </div>
+            </div>
+            <div class="admin-preview-ui-fields-meta">
+                <div>
+                    <select name="parent_type" id="id_parent_type">
+                        <option value="">----------</option>
+                        {% for page in pages %}<option value="{{ page.content_path }}">{{ page.content_meta.title }}</option>{% endfor %}
+                    </select>
+                </div>
+                <div>
+                    <input id="preview-description" class="admin-preview-ui-fields-text" type="text" placeholder="Description" value="{{ object.content_meta.description }}" required>
+                </div>
+            </div>
+        </div>
+        <div id="preview-display" class="admin-preview-ui-display"></div>
+    </div>
+    <div class="admin-data">
+        <input type="hidden" name="allow_outgoing_webmentions" id="id_allow_outgoing_webmentions" value="False">
+        <input type="hidden" name="content_federate" id="id_content_federate" value="False">
+        <input type="hidden" name="content_rss_only" id="id_content_rss_only" value="False">
+        <input type="hidden" name="content_type" id="id_content_type" value="page">
+        <input type="hidden" name="publish_date" id="id_publish_date" value="{{ object.publish_date|date:'Y-m-d H:i:s' }}">
+        <div>
+            <label for="{{ form.content_meta.id_for_label }}">Content meta</label>
+            {{ form.content_meta }}
+        </div>
+        <div>
+            <label for="{{ form.content_path.id_for_label }}">Content path</label>
+            {{ form.content_path }}
+        </div>
+    </div>
+    <div class="admin-action">
+       <button class="primary" type="submit">{% if '_edit' in request.resolver_match.view_name %}Update{% else %}Save{% endif %}</button>
+    </div>
+  </form>

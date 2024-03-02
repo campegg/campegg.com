@@ -1,0 +1,7 @@
+<article class="{{ item.content_type }} h-entry">
+    <div class="e-content">
+        <p><img class="u-photo" src="{{ request.scheme }}://{{ request.get_host }}/media/{{ item.content_meta.url }}" alt="{{ item.content_meta.description|escape }}"></p>
+        {{ item.content_meta.html|safe }}
+    </div>
+    {% include "includes/permalink.html" %}
+</article>

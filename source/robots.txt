@@ -19,6 +19,9 @@ Disallow: /
 User-Agent: adsbot-google
 Disallow: /
 
+User-Agent: adsbot-google-mobile
+Disallow: /
+
 User-Agent: ahrefsbot
 Disallow: /
 
@@ -26,6 +29,9 @@ User-Agent: aihitbot
 Disallow: /
 
 User-Agent: aolbuild
+Disallow: /
+
+User-Agent: apis-google
 Disallow: /
 
 User-Agent: baidu bookmark search
@@ -97,10 +103,16 @@ Disallow: /
 User-Agent: google-extended
 Disallow: /
 
+User-Agent: google-inspectionTool
+Disallow: /
+
 User-Agent: googlebot
 Disallow: /
 
 User-Agent: googlebot-image
+Disallow: /
+
+User-Agent: googleother
 Disallow: /
 
 User-Agent: gptbot
@@ -128,6 +140,9 @@ User-Agent: pinterestbot
 Disallow: /
 
 User-Agent: slurp
+Disallow: /
+
+User-Agent: storebot-google
 Disallow: /
 
 User-Agent: slysearch

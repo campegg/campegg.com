@@ -1,0 +1,10 @@
+<form id="activity-entry" class="admin-form" action="" method="post">
+    {% csrf_token %}
+    <div id="activity-entry-" class="admin-display-container">
+    </div>
+    <div id="activity-entry-" class="admin-data-container">
+    </div>
+</form>
+
+<script nonce="{{ request.csp_nonce }}">
+</script>

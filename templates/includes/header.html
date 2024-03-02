@@ -8,11 +8,11 @@
             <li><a href="/django" target="_blank" class="icon-svg">{% inline_svg 'img/django.svg' %}</a></li>
             {% else %}
             <li><a href="{% url 'archive' %}" class="icon-svg">{% inline_svg 'img/archive.svg' %}</a></li>
-            <li><a href="{% url 'page_detail' path='about' %}" class="icon-svg">{% inline_svg 'img/about.svg' %}</a></li>
+            <li><a href="{% url 'page' slug='about' %}" class="icon-svg">{% inline_svg 'img/about.svg' %}</a></li>
             {% endif %}
         {% else %}
             <li><a href="{% url 'archive' %}">Archive</a></li>
-            <li><a href="{% url 'page_detail' path='about' %}">About</a></li>
+            <li><a href="{% url 'page' slug='about' %}">About</a></li>
         {% endif %}
         </ul>
     </nav>

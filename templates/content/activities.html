@@ -1,0 +1,30 @@
+
+<section class="table-container">
+<table class="h-feed activity-table">
+    <thead>
+        <tr>
+            <th class="tbl-date">Date</th>
+            <th class="tbl-name">Name</th>
+            <th class="tbl-dist numbers">Distance</th>
+            <th class="tbl-time numbers">Time</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for item in items %}
+        <tr class="h-entry">
+            <td class="tbl-date"><time class="dt-published" datetime="{{ item.content_meta.start_date_local|convert_date|date:"Y-m-d\TH:i:sO" }}">{{ item.content_meta.start_date_local|convert_date|date:"M j, Y" }}</time></td>
+            <td class="tbl-name"><a class="u-url p-name" href="{% url 'activity' item.content_meta.id %}">{{ item.content_meta.name }}</a></td>
+            <td class="tbl-dist numbers">
+                <span class="units units-si show">{{ item.content_meta.distance|m_to_km|floatformat:"1" }}km</span>
+                <span class="units units-us hide">{{ item.content_meta.distance|m_to_mi|floatformat:"1" }}mi</span>
+            </td>
+            <td class="tbl-time numbers">{{ item.content_meta.moving_time|activitytime }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+</section>
+
+{% if is_paginated %}
+{% include "includes/pagination.html" %}
+{% endif %}

@@ -1,12 +1,12 @@
 {% spaceless %}
-    {% if obj.rss_only == 1 %}
-        <p><strong>Welcome to RSS Club!</strong> This post is exclusively for readers of my RSS feeds. <a href="https://daverupert.com/rss-club/">Learn more&#8230;</a></p><br><hr><br>
+    {% if obj.content_rss_only == 1 %}
+        <p><small><strong>Welcome to RSS Club!</strong> This post is exclusively for readers of my RSS feeds. <a href="https://daverupert.com/rss-club/">Learn more&#8230;</a></small></p><br><hr><br>
     {% endif %}
-    {% if obj.post_type == 2 %}
-        <p><img src="{{ request.scheme }}://{{ request.get_host }}/media/{{ obj.photo }}" alt="{{ obj.photo_alt_text|escape }}"></p>
+    {% if obj.content_type == "photo" %}
+        <p><img src="{{ request.scheme }}://{{ request.get_host }}/media/{{ obj.content_meta.url }}" alt="{{ obj.content_meta.description|escape }}"></p>
     {% endif %}
-    {% if obj.html is not None %}
-        {{ obj.html|safe }}
+    {% if obj.content_meta.html is not None %}
+        {{ obj.content_meta.html|safe }}
     {% endif %}
     <br><hr><br>
     <p><small>Reply via <a href="mailto:cam@campegg.com">email</a> or <a href="https://mastodon.social/@cam@campegg.com">Mastodon</a>.</small></p>

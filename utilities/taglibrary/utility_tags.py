@@ -1,11 +1,17 @@
 from django import template
 from django.conf import settings
 from django.utils.html import mark_safe
+from datetime import datetime
 import math
 import re
 
 
 register = template.Library()
+
+
+@register.filter(name="convert_date")
+def convert_date(value):
+    return datetime.strptime(value, "%Y-%m-%dT%H:%M:%SZ")
 
 
 @register.filter("readtime")

@@ -25,15 +25,14 @@
         <link rel="webmention" href="/webmentions/">
         <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 
-        {% if request.resolver_match.view_name == "post_detail" %}<link rel="alternate" type="application/activity+json" href="https://fed.brid.gy/r/{{ request.scheme }}://{{ request.get_host }}{{ object.get_absolute_url }}">{% endif %}
+        {% if request.resolver_match.view_name == "post" %}<link rel="alternate" type="application/activity+json" href="https://fed.brid.gy/r/{{ request.scheme }}://{{ request.get_host }}{{ object.get_absolute_url }}">{% endif %}
         <link rel="alternate" type="application/atom+xml" href="{% url 'feed_atom' %}">
-        <link rel="sitemap" type="application/xml" href="{% url 'sitemap' %}">
 
         <link rel="stylesheet" href="{% static 'css/light.css' %}" id="theme">
         <link rel="stylesheet" href="{% static 'css/styles.css' %}">
         {% if user.is_authenticated %}<link rel="stylesheet" href="{% static 'css/admin-styles.css' %}">{% endif %}
 
-        {% if request.resolver_match.view_name == "activity_detail" %}
+        {% if request.resolver_match.view_name == "activity" %}
         <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js" nonce="{{ request.csp_nonce }}"></script>
         <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css" nonce="{{ request.csp_nonce }}">
         {% endif %}

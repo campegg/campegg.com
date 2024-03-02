@@ -4,7 +4,7 @@ from django.utils.timezone import is_aware, make_aware
 import pytz
 
 
-from content.models import Post, Page
+from content.models import Content
 
 
 class AdminDashboard(LoginRequiredMixin, TemplateView):
@@ -13,19 +13,23 @@ class AdminDashboard(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        posts = Post.objects.all().order_by("-publish_date")
+        items = Content.objects.all().order_by("-publish_date")
+
         date_list = []
-        for post in posts:
-            date = post.publish_date
+        for item in items:
+            date = item.publish_date
             if not is_aware(date):
                 date = make_aware(date, pytz.UTC)
             formatted_date = date.isoformat()
             date_list.append(formatted_date)
 
-        pages = Page.objects.all()
+        post_types = ["note", "post", "photo"]
+        posts = [item for item in items if item.content_type in post_types]
 
-        context["pages"] = pages[:10]
+        pages = [item for item in items if item.content_type == "page"]
+
         context["posts"] = posts[:10]
+        context["pages"] = pages
         context["date_list"] = date_list
         context["page_meta"] = {
             "body_class": "admin admin-dashboard",

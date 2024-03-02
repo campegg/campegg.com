@@ -15,18 +15,21 @@ class AdminDashboard(LoginRequiredMixin, TemplateView):
 
         items = Content.objects.all().order_by("-publish_date")
 
-        date_list = []
-        for item in items:
-            date = item.publish_date
-            if not is_aware(date):
-                date = make_aware(date, pytz.UTC)
-            formatted_date = date.isoformat()
-            date_list.append(formatted_date)
-
         post_types = ["note", "post", "photo"]
         posts = [item for item in items if item.content_type in post_types]
 
         pages = [item for item in items if item.content_type == "page"]
+
+        map_types = ["note", "post", "photo", "reply", "repost", "activity"]
+        map_items = [item for item in items if item.content_type in map_types]
+
+        date_list = []
+        for map_item in map_items:
+            date = map_item.publish_date
+            if not is_aware(date):
+                date = make_aware(date, pytz.UTC)
+            formatted_date = date.isoformat()
+            date_list.append(formatted_date)
 
         context["posts"] = posts[:10]
         context["pages"] = pages

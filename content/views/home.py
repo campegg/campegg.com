@@ -14,9 +14,12 @@ class Home(ListView):
     template_name = "content.html"
 
     def get_queryset(self):
-        # Filter Content objects by the specified types
         content_types = ["note", "post", "photo", "reply", "repost"]
-        contents_filtered = Content.objects.filter(content_type__in=content_types)
+        contents_filtered = Content.objects.filter(
+            content_type__in=content_types,
+            publish_date__lte=timezone.now(),
+            content_rss_only=False,
+        )
 
         mentions_count_subquery = Subquery(
             Webmention.objects.filter(object_id=OuterRef("id"), approved=True)
@@ -27,14 +30,9 @@ class Home(ListView):
             output_field=IntegerField(),
         )
 
-        queryset = (
-            contents_filtered.annotate(mention_count=mentions_count_subquery)
-            .filter(
-                publish_date__lte=timezone.now(),
-                content_rss_only=False,
-            )
-            .order_by("-publish_date")
-        )
+        queryset = contents_filtered.annotate(
+            mention_count=mentions_count_subquery
+        ).order_by("-publish_date")
 
         return queryset
 

@@ -184,9 +184,10 @@ WEBMENTIONS_DOMAINS_OUTGOING_DENY = [
     "news.ycombinator.com",
     "sentiers.media",
     "techhub.social",
+    "wired.com",
     "xoxo.zone",
     "youtu.be",
-    "youtube.com",
+    "*.youtube.com",
 ]
 
 WEBMENTIONS_DOMAINS_OUTGOING_TAG_DENY: str = "wm-nosend"

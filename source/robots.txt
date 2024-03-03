@@ -9,6 +9,10 @@ Allow: /
 User-Agent: search.marginalia.nu
 Allow: /
 
+# stract seems ok for now
+User-Agent: stractbot
+Allow: /
+
 # disallow some explicitly named bots...
 User-Agent: 360spider
 Disallow: /
@@ -25,7 +29,13 @@ Disallow: /
 User-Agent: ahrefsbot
 Disallow: /
 
+User-Agent: ahrefssiteaudit
+Disallow: /
+
 User-Agent: aihitbot
+Disallow: /
+
+User-agent: anthropic-ai
 Disallow: /
 
 User-Agent: aolbuild
@@ -34,28 +44,28 @@ Disallow: /
 User-Agent: apis-google
 Disallow: /
 
-User-Agent: baidu bookmark search
+User-Agent: "baidu bookmark search"
 Disallow: /
 
-User-Agent: baidu business search
+User-Agent: "baidu business search"
 Disallow: /
 
-User-Agent: baidu image search
+User-Agent: "baidu image search"
 Disallow: /
 
-User-Agent: baidu mobile search
+User-Agent: "baidu mobile search"
 Disallow: /
 
-User-Agent: baidu news search
+User-Agent: "baidu news search"
 Disallow: /
 
-User-Agent: baidu union search
+User-Agent: "baidu union search"
 Disallow: /
 
-User-Agent: baidu video search
+User-Agent: "baidu video search"
 Disallow: /
 
-User-Agent: baidu web search
+User-Agent: "baidu web search"
 Disallow: /
 
 User-Agent: baiduspider
@@ -94,10 +104,31 @@ Disallow: /
 User-Agent: chatgpt-user
 Disallow: /
 
+User-agent: claudebot
+Disallow: /
+
+User-agent: claude-web
+Disallow: /
+
+User-agent: dataforseobot
+Disallow: /
+
 User-Agent: duckduckbot
 Disallow: /
 
+User-Agent: exabot
+Disallow: /
+
 User-agent: facebookbot
+Disallow: /
+
+User-agent: facebookexternalhit
+Disallow: /
+
+User-Agent: gigabot
+Disallow: /
+
+User-Agent: gigablast
 Disallow: /
 
 User-Agent: google-extended
@@ -118,6 +149,15 @@ Disallow: /
 User-Agent: gptbot
 Disallow: /
 
+User-agent: magpie-crawler
+Disallow: /
+
+User-agent: linkedinbot
+Disallow: /
+
+User-agent: mail.ru_bot
+Disallow: /
+
 User-Agent: mediapartners-google
 Disallow: /
 
@@ -127,19 +167,31 @@ Disallow: /
 User-Agent: msnbot-media
 Disallow: /
 
-User-Agent: netestate ne crawler
+User-Agent: "netestate ne crawler"
 Disallow: /
 
 User-Agent: npbot
 Disallow: /
 
+User-agent: omgili
+Disallow: /
+
 User-agent: omgilibot
+Disallow: /
+
+User-agent: perplexitybot
 Disallow: /
 
 User-Agent: pinterestbot
 Disallow: /
 
+User-Agent: scribdbot
+Disallow: /
+
 User-Agent: slurp
+Disallow: /
+
+User-Agent: spbot
 Disallow: /
 
 User-Agent: storebot-google
@@ -151,10 +203,16 @@ Disallow: /
 User-Agent: teoma
 Disallow: /
 
-User-Agent: the knowledge ai
+User-Agent: "the knowledge ai"
+Disallow: /
+
+User-Agent: turnitin
 Disallow: /
 
 User-Agent: turnitinbot
+Disallow: /
+
+User-agent: twitterbot
 Disallow: /
 
 User-Agent: yadirectfetcher

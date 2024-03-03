@@ -6,6 +6,8 @@
         {% with "content/"|add:object.content_type|add:".html" as template %}
             {% include template %}
         {% endwith %}
+    {% elif "archive" in request.resolver_match.view_name %}
+        {% include "content/archive.html" %}
     {% else %}
         {% with "content/"|add:request.resolver_match.view_name|add:".html" as template %}
             {% include template %}

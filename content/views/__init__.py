@@ -1,7 +1,7 @@
 # views/__init__.py
 
 from .activity import Activities, Activity
-from .archive import Archive
+from .archive import Archive, YearArchive, MonthArchive, DayArchive
 from .blogroll import Blogroll, BlogrollOPML
 from .dispatcher import Dispatcher
 from .home import Home

@@ -1,5 +1,5 @@
-<h2>{% if page_meta.title %}{{ page_meta.title }}{% else %}All the things!{% endif %}</h2>
-<ol reversed class="archive summary-list h-feed">
+<h2>{% if page_meta.title %}{{ page_meta.title|safe }}{% else %}All the things!{% endif %}</h2>
+<ol class="archive summary-list h-feed">
     {% for item in items %}
     <li>
         <p class="h-entry p-summary"><a href="{{ item.get_absolute_url }}"><b><time class="dt-published p-name" datetime="{{ item.publish_date|date:"Y-m-d\TH:i:sO" }}">{{ item.publish_date|date:"F j, Y" }}</time></b></a>: {{ item.archive_text }}</p>

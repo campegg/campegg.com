@@ -123,12 +123,20 @@ class Content(MentionableMixin, models.Model):
 
     def get_content_html(self) -> str:
         bridgy_link = '<div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a></div>'
-        html_content = self.content_meta.get("html")
 
-        if self.allow_outgoing_webmentions and self.content_federate:
-            return html_content + bridgy_link if html_content else bridgy_link
+        if self.content_meta.get("json"):
+            item_html = (
+                f'<div class="e-content">{self.content_meta["json"]["content"]}</div>'
+            )
+        elif self.content_meta.get("html"):
+            item_html = f'<div class="e-content">{self.content_meta.get("html")}</div>'
+        else:
+            item_html = None
 
-        return html_content
+        if self.content_federate:
+            return item_html + bridgy_link
+        else:
+            return item_html
 
     def __str__(self):
         return f"{self.get_content_type_display()} - {self.id}"

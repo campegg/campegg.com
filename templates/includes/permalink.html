@@ -2,7 +2,7 @@
 <div class="ap-bridgy-link"><a class="u-bridgy-fed" href="https://fed.brid.gy/" hidden="from-humans"></a></div>
 <!-- /bridgy link -->{% endif %}
 <p class="meta permalink">
-    <span class="icon-svg small post-date">{% if 'home' in request.resolver_match.view_name %}<a class="u-url" href="{{ item.get_absolute_url }}">{% endif %}<time class="dt-published{% if item.content_type == 'note' %} p-name{% endif %}" datetime="{{ item.publish_date|date:'Y-m-d\TH:i:sO' }}">{{ item.publish_date|date:'F j, Y' }}</time>{% if 'home' in request.resolver_match.view_name %}</a>{% endif %}</span>
+    <span class="icon-svg small post-date">{% if 'home' in request.resolver_match.view_name %}<a class="u-url" href="{{ item.get_absolute_url }}">{% endif %}<time class="dt-published" datetime="{{ item.publish_date|date:'Y-m-d\TH:i:sO' }}">{{ item.publish_date|date:'F j, Y' }}</time>{% if 'home' in request.resolver_match.view_name %}</a>{% endif %}</span>
     {% if 'home' in request.resolver_match.view_name and item.mention_count %}<span class="icon-svg small post-mentions" title="{{ item.mention_count }} reaction{% if item.mention_count != 1 %}s{% endif %}">{% inline_svg 'img/mention.svg' %} {{ item.mention_count }}</span>{% endif %}
     <span class="h-card p-author" hidden><a href="{{ request.scheme }}://{{ request.get_host }}/">Cam Pegg</a></span>
 </p>

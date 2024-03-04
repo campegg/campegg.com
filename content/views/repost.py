@@ -3,10 +3,11 @@ from bs4 import BeautifulSoup
 from utilities.mentions import get_mentions
 
 
+from content.mixins import DateSlugObjectMixin
 from content.models import Content
 
 
-class Repost(DetailView):
+class Repost(DateSlugObjectMixin, DetailView):
     context_object_name = "item"
     model = Content
     template_name = "content.html"

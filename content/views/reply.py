@@ -2,10 +2,11 @@ from django.views.generic import DetailView
 from utilities.mentions import get_mentions
 
 
+from content.mixins import DateSlugObjectMixin
 from content.models import Content
 
 
-class Reply(DetailView):
+class Reply(DateSlugObjectMixin, DetailView):
     context_object_name = "item"
     model = Content
     template_name = "content.html"

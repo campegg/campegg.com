@@ -24,7 +24,7 @@ class ContentSitemap(Sitemap):
     def changefreq(self, obj):
         now = datetime.now()
 
-        if obj.update_date:
+        if obj.update_date is not None:
             delta = now - obj.update_date
         else:
             delta = now - obj.publish_date

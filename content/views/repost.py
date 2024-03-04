@@ -1,5 +1,6 @@
 from django.views.generic import DetailView
 from bs4 import BeautifulSoup
+from utilities.mentions import get_mentions
 
 
 from content.models import Content
@@ -26,6 +27,7 @@ class Repost(DetailView):
 
         repost_title = f"Repost from {account}"
 
+        context["mentions"] = get_mentions(self.object.id)
         context["page_meta"] = {
             "body_class": "repost",
             "title": repost_title,

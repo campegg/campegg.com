@@ -3,4 +3,7 @@
         {{ item.content_meta.html|safe }}
     </div>
     {% include "includes/permalink.html" %}
+    {% if mentions %}
+        {% include "includes/mentions.html" %}
+    {% endif %}
 </article>

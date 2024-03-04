@@ -12,4 +12,7 @@
         </div>
     {% endif %}
     {% include "includes/permalink.html" %}
+    {% if mentions %}
+        {% include "includes/mentions.html" %}
+    {% endif %}
 </article>

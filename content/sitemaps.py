@@ -23,7 +23,12 @@ class ContentSitemap(Sitemap):
 
     def changefreq(self, obj):
         now = datetime.now()
-        delta = now - obj.publish_date
+
+        if obj.update_date:
+            delta = now - obj.update_date
+        else:
+            delta = now - obj.publish_date
+
         if delta <= timedelta(days=7):
             return "daily"
         elif timedelta(days=7) < delta <= timedelta(days=30):

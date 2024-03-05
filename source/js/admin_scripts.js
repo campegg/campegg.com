@@ -174,6 +174,22 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         updatePreview();
+
+        const selectParent = function() {
+            let contentPath = document.getElementById("id_content_path").value;
+            contentPath = contentPath.substring(0, contentPath.lastIndexOf('/'));
+
+            const parentType = document.getElementById("id_parent_type").options;
+
+            for (const option of parentType) {
+                if (option.value === contentPath) {
+                    option.selected = true;
+                    break;
+                }
+            }
+        };
+
+        selectParent();
     }
 
     // process reaction form

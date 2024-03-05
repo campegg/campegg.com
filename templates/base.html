@@ -43,9 +43,6 @@
         <script src="{% static 'js/marked.js' %}"></script>
         <script src="{% static 'js/marked-smartypants.js' %}"></script>
         {% endif %}
-        {% if "campegg.com" and not user.is_authenticated %}
-        <script async src="https://umami.campegg.net/script.js" nonce="{{ request.csp_nonce }}" data-website-id="931542a1-0e3d-45b5-ba3d-105ab7fe8f1e" data-do-not-track="true"></script>
-        {% endif %}
     </head>
 
     <body{% if page_meta.body_class %} class="{{ page_meta.body_class }}"{% endif %}>

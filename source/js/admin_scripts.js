@@ -224,7 +224,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     })
                     .then(data => {
                         updateContentMeta('json', data);
-                        updateContentMeta('url', pastedText);
+                        updateContentMeta('url', data["url"]);
+                        document.getElementById("reaction-react-to").classList.remove('hide');
+                        document.getElementById("reaction-react-to").innerHTML = data["content"];
                     })
                     .catch(() => {
                         alert("Error fetching status");

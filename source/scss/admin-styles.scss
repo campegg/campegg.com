@@ -135,6 +135,14 @@
             }
         }
 
+        #reaction-react-to {
+            margin-block: calc(var(--s-base-margin) / 2);
+            padding-block: calc(var(--s-base-margin) / 4);
+            padding-inline: calc(var(--s-base-margin) / 3);
+            border: 1px solid var(--c-borders);
+            border-radius: var(--s-border-radius);
+        }
+
         .admin-ui-meta {
             display: flex;
             flex-flow: row;

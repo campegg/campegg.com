@@ -17,12 +17,14 @@ function debounce(func, wait) {
 
 document.addEventListener("DOMContentLoaded", () => {
     // set up marked.js for markdown processing
-    marked.use({
-        breaks: true,
-        pedantic: false,
-        gfm: true,
-    });
-    markedSmartypants.markedSmartypants({ config: "3" });
+    marked.use(
+        {
+            breaks: true,
+            pedantic: false,
+            gfm: true,
+        },
+        markedSmartypants.markedSmartypants({ config: "3" }),
+    );
 
     // set up constants for forms
     const postForm = document.getElementById("post-entry");

@@ -2,7 +2,7 @@
 
 {% block content %}
 
-    {% if request.resolver_match.view_name == 'dispatcher' %}
+    {% if request.resolver_match.view_name == 'content' %}
         {% with "content/"|add:object.content_type|add:".html" as template %}
             {% include template %}
         {% endwith %}

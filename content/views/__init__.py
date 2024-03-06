@@ -3,13 +3,8 @@
 from .activity import Activities, Activity
 from .archive import Archive, YearArchive, MonthArchive, DayArchive
 from .blogroll import Blogroll, BlogrollOPML
-from .dispatcher import Dispatcher
+from .content import CoreContent
 from .home import Home
 from .like import Like
-from .note import Note
 from .page import Page
-from .photo import Photo
-from .post import Post
 from .reaction import Reaction
-from .reply import Reply
-from .repost import Repost

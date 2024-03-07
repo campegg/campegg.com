@@ -53,8 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
             const markdownText = markdownPreview.value.replace(/\n{3,}/g, "\n\n");
             const html = marked.parse(markdownText).trim();
 
-            updateContentMeta('markdown', markdownText ? markdownText : null);
-            updateContentMeta('html', html ? html : null);
+            updateContentMeta("markdown", markdownText ? markdownText : null);
+            updateContentMeta("html", html ? html : null);
 
             previewDisplay.innerHTML = html;
         }
@@ -76,17 +76,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 contentTypeSelect.value = titleField.value.trim().length > 0 ? "post" : "note";
 
                 const title = titleField.value;
-                updateContentMeta('title', title ? title : null);
+                updateContentMeta("title", title ? title : null);
 
-                let previewTitle = previewDisplay.querySelector('h2');
+                let previewTitle = previewDisplay.querySelector("h2");
 
                 if (title) {
                     if (previewTitle) {
                         previewTitle.textContent = title;
                     } else {
-                        let newTitle = document.createElement('h2');
+                        let newTitle = document.createElement("h2");
                         newTitle.textContent = title;
-                        previewDisplay.insertAdjacentElement('afterbegin', newTitle);
+                        previewDisplay.insertAdjacentElement("afterbegin", newTitle);
                     }
                 } else {
                     // If title is empty and an <h2> exists, remove it
@@ -98,9 +98,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // handle syndication checkboxes
-        const contentFederate = document.getElementById('id_content_federate');
-        const contentRssOnly = document.getElementById('id_content_rss_only');
-        const contentWebmentions = document.getElementById('id_allow_outgoing_webmentions');
+        const contentFederate = document.getElementById("id_content_federate");
+        const contentRssOnly = document.getElementById("id_content_rss_only");
+        const contentWebmentions = document.getElementById("id_allow_outgoing_webmentions");
 
         const handleSyndication = function(event) {
             if (event.target === contentRssOnly && contentRssOnly.checked) {
@@ -113,9 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         if (contentFederate && contentRssOnly && contentWebmentions) {
-            contentFederate.addEventListener('change', handleSyndication);
-            contentRssOnly.addEventListener('change', handleSyndication);
-            contentWebmentions.addEventListener('change', handleSyndication);
+            contentFederate.addEventListener("change", handleSyndication);
+            contentRssOnly.addEventListener("change", handleSyndication);
+            contentWebmentions.addEventListener("change", handleSyndication);
         }
 
         // handle date input
@@ -123,17 +123,17 @@ document.addEventListener("DOMContentLoaded", () => {
         const dateField = document.getElementById("id_publish_date");
 
         if (dateInput) {
-            dateInput.addEventListener('change', () => {
+            dateInput.addEventListener("change", () => {
                 let dateValue = dateInput.value;
                 if (dateValue) {
-                    let dateTimeParts = dateValue.split('T');
+                    let dateTimeParts = dateValue.split("T");
                     if (dateTimeParts.length === 2) {
-                        let timeParts = dateTimeParts[1].split(':');
+                        let timeParts = dateTimeParts[1].split(":");
                         if (timeParts.length === 2) {
-                            dateValue = dateTimeParts[0] + 'T' + dateTimeParts[1] + ':00';
+                            dateValue = dateTimeParts[0] + "T" + dateTimeParts[1] + ":00";
                         }
                     }
-                    dateField.value = dateValue.replace('T', ' ');
+                    dateField.value = dateValue.replace("T", " ");
                 }
             });
         }
@@ -159,14 +159,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (descField) {
             descField.addEventListener("keyup", debounce(() => {
-                updateContentMeta('description', descField.value.trim() ? descField.value.trim() : null);
+                updateContentMeta("description", descField.value.trim() ? descField.value.trim() : null);
             }, 100));
         }
 
         if (titleField) {
             titleField.addEventListener("keyup", debounce(() => {
                 const title = titleField.value.trim();
-                updateContentMeta('title', title ? title : null);
+                updateContentMeta("title", title ? title : null);
                 updateContentPath();
             }, 100));
         }
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const selectParent = function() {
             let contentPath = document.getElementById("id_content_path").value;
-            contentPath = contentPath.substring(0, contentPath.lastIndexOf('/'));
+            contentPath = contentPath.substring(0, contentPath.lastIndexOf("/"));
 
             const parentType = document.getElementById("id_parent_type").options;
 
@@ -199,11 +199,12 @@ document.addEventListener("DOMContentLoaded", () => {
         const reactionUrlField = document.getElementById("id_reaction_url");
         const contentTypeSelect = document.getElementById("id_content_type");
         const reactionContainer = document.getElementById("reaction-container");
+        const reactionReactTo = document.getElementById("reaction-react-to");
         const reactionMarkdown = document.getElementById("reaction-markdown");
 
         // handle paste into reactionUrlField
-        reactionUrlField.addEventListener('paste', (event) => {
-            const pastedText = (event.clipboardData || window.clipboardData).getData('text');
+        reactionUrlField.addEventListener("paste", (event) => {
+            const pastedText = (event.clipboardData || window.clipboardData).getData("text");
             let match = pastedText.match(/^https:\/\/([^/]+)\/@(\w+)\/(\d+)$/);
             let originalDomain, name, id;
 
@@ -220,15 +221,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 fetch(`https://${originalDomain}/api/v1/statuses/${id}`)
                     .then(response => {
                         if (!response.ok) {
-                            throw new Error('Network response was not ok');
+                            throw new Error("Network response was not ok");
                         }
                         return response.json();
                     })
                     .then(data => {
-                        updateContentMeta('json', data);
-                        updateContentMeta('url', data["url"]);
-                        document.getElementById("reaction-react-to").classList.remove('hide');
-                        document.getElementById("reaction-react-to").innerHTML = data["content"];
+                        updateContentMeta("json", data);
+                        updateContentMeta("url", data["url"]);
+                        reactionReactTo.classList.remove("hide");
+                        reactionReactTo.innerHTML = data["content"];
                     })
                     .catch(() => {
                         alert("Error fetching status");
@@ -238,35 +239,49 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
 
+        // handle clearing the reaction url
+        reactionUrlField.addEventListener("input", (event) => {
+            if (reactionUrlField.value === "") {
+                reactionReactTo.classList.add("hide");
+                reactionReactTo.innerHTML = "";
+                reactionMarkdown.value = "";
+                updateContentMeta("json", "");
+                updateContentMeta("url", "");
+                updateContentMeta("markdown", "");
+                updateContentMeta("html", "");
+            }
+        });
+
         // handle change on contentTypeSelect
         const updateReplyText = function() {
             const markdown = reactionMarkdown.value;
             const html = marked.parse(markdown);
-            updateContentMeta('markdown', markdown);
-            updateContentMeta('html', html);
+            updateContentMeta("markdown", markdown);
+            updateContentMeta("html", html);
         };
 
-        contentTypeSelect.addEventListener('change', () => {
+        contentTypeSelect.addEventListener("change", () => {
             const contentType = contentTypeSelect.value;
-            reactionMarkdown.removeEventListener('keyup', updateReplyText);
+            reactionMarkdown.removeEventListener("keyup", updateReplyText);
 
             switch (contentType) {
                 case "like":
                 case "repost":
-                    reactionContainer.classList.add('hide');
-                    reactionMarkdown.value = '';
-                    updateContentMeta('markdown', '');
-                    updateContentMeta('html', '');
+                    reactionContainer.classList.add("hide");
+                    reactionMarkdown.value = "";
+                    updateContentMeta("markdown", "");
+                    updateContentMeta("html", "");
                     break;
                 case "reply":
-                    reactionContainer.classList.remove('hide');
+                    reactionContainer.classList.remove("hide");
                     if (contentMetaValue.json && contentMetaValue.json.account) {
                         const { acct, url } = contentMetaValue.json.account;
                         if (!reactionMarkdown.value.startsWith(`<span class="hide"><a href="${url}">@${acct}</a> </span>`)) {
                             reactionMarkdown.value = `<span class="hide"><a href="${url}">@${acct}</a> </span>` + reactionMarkdown.value;
                         }
                     }
-                    reactionMarkdown.addEventListener('keyup', updateReplyText);
+                    updateReplyText();
+                    reactionMarkdown.addEventListener("keyup", updateReplyText);
                     break;
                 default:
                     break;

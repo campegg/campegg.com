@@ -276,8 +276,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     reactionContainer.classList.remove("hide");
                     if (contentMetaValue.json && contentMetaValue.json.account) {
                         const { acct, url } = contentMetaValue.json.account;
-                        if (!reactionMarkdown.value.startsWith(`<span class="hide"><a href="${url}">@${acct}</a> </span>`)) {
-                            reactionMarkdown.value = `<span class="hide"><a href="${url}">@${acct}</a> </span>` + reactionMarkdown.value;
+                        if (!reactionMarkdown.value.startsWith(`<span class="hide"><a href="${url}">@${acct}</a><a class="u-in-reply-to" href="${reactionUrlField.value}"></a></span>`)) {
+                            reactionMarkdown.value = `<span class="hide"><a href="${url}">@${acct}</a><a class="u-in-reply-to" href="${reactionUrlField.value}"></a></span>` + reactionMarkdown.value;
                         }
                     }
                     updateReplyText();

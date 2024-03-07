@@ -16,6 +16,7 @@ from content.views import (
     CoreContent,
     Home,
     Like,
+    LikeList,
     Page,
     Reaction,
 )
@@ -41,6 +42,7 @@ urlpatterns = [
     ),
     path("activities.html", Activities.as_view(), name="activities"),
     path("activities/<path:slug>.html", Activity.as_view(), name="activity"),
+    path("likes.html", LikeList.as_view(), name="likelist"),
     path("likes/<path:slug>.html", Like.as_view(), name="like"),
     path("blogroll.html", Blogroll.as_view(), name="blogroll"),
     path("blogroll/subscriptions.opml", BlogrollOPML.as_view(), name="blogroll_opml"),

@@ -1,0 +1,10 @@
+{% regroup items by date_only as grouped_items %}
+
+{% for group in grouped_items %}
+    <h3>{{ group.grouper|date:"F j, Y" }}</h3>
+    <ul>
+    {% for item in group.list %}
+        <li><span class="date reaction-date">{{ item.create_date|date:"g:ia"|cut:"." }}</span>: Liked <a class="u-like-of" href="{{ item.content_meta.json.url }}">a post</a> by <a href="{{ item.content_meta.json.account.url }}">@{{ item.content_meta.json.account.acct }}</a></li>
+    {% endfor %}
+    </ul>
+{% endfor %}

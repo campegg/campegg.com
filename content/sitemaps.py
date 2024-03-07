@@ -51,7 +51,7 @@ class ContentSitemap(Sitemap):
 
         if obj.content_type in ["note", "photo", "post", "reply", "repost"]:
             return reverse(
-                "dispatcher",
+                "content",
                 args=[
                     obj.publish_date.year,
                     f"{obj.publish_date.month:02d}",
@@ -77,7 +77,7 @@ class ContentSitemap(Sitemap):
 
 class StaticViewSitemap(Sitemap):
     def items(self):
-        return ["home", "archive"]
+        return ["home", "archive", "likelist"]
 
     def location(self, obj):
         return reverse(obj)

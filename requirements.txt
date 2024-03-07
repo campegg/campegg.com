@@ -6,7 +6,7 @@ certifi==2023.11.17
 charset-normalizer==3.3.2
 decorator==5.1.1
 Django==5.0.2
-django-admin-interface==0.28.3
+django-admin-interface==0.28.6
 django-colorfield==0.11.0
 django-csp==3.7
 django-modeladmin-reorder @ git+https://github.com/bloodwithmilk25/django-modeladmin-reorder.git@6cc5060dec2fe1e894c3ba17aeb703b56737c3e8

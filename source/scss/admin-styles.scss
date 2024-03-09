@@ -25,6 +25,8 @@
             border-bottom: 1px solid transparent;
             padding-block-start: calc(var(--s-base-margin) / 8);
             padding-block-end: calc(var(--s-base-margin) / 8);
+            margin-inline-start: calc(var(--s-base-margin) / -6);
+            margin-inline-end: calc(var(--s-base-margin) / -6);
 
             &:hover {
                 background: var(--c-background-alt);

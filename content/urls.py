@@ -2,8 +2,9 @@
 
 from django.urls import path
 from django.contrib.sitemaps.views import sitemap
+from mentions.helpers import mentions_path
 
-
+from content.models import Content
 from content.views import (
     Activities,
     Activity,
@@ -35,10 +36,17 @@ urlpatterns = [
         DayArchive.as_view(),
         name="archive_day",
     ),
-    path(
+    mentions_path(
         "<int:year>/<int:month>/<int:day>/<path:slug>.html",
         CoreContent.as_view(),
         name="content",
+        model_class=Content,
+        model_filter_map={
+            "year": "publish_date__year",
+            "month": "publish_date__month",
+            "day": "publish_date__day",
+            "slug": "content_path",
+        },
     ),
     path("activities.html", Activities.as_view(), name="activities"),
     path("activities/<path:slug>.html", Activity.as_view(), name="activity"),

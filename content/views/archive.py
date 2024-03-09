@@ -33,9 +33,7 @@ class BaseArchiveView:
 
     def get_archive_text(self, object):
 
-        if object.content_type in ["reply", "repost"] and object.content_meta.get(
-            "json"
-        ):
+        if object.content_type == "repost" and object.content_meta.get("json"):
             html_content = object.content_meta.get("json").get("content", "")
         else:
             html_content = object.content_meta.get("html", "")

@@ -213,6 +213,14 @@ article {
 
 b, strong {
     font-weight: var(--f-weight-bold);
+
+    i, em {
+        text-transform: uppercase;
+        font-size: 80%;
+        font-style: normal;
+        font-weight:var(--f-weight-semi);
+        letter-spacing: -0.05em;
+    }
 }
 
 blockquote {
@@ -277,6 +285,14 @@ i, em {
 
     i, em {
         font-style: normal;
+    }
+
+    b, strong {
+        text-transform: uppercase;
+        font-size: 80%;
+        font-style: normal;
+        font-weight:var(--f-weight-semi);
+        letter-spacing: -0.05em;
     }
 }
 

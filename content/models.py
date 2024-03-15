@@ -1,10 +1,12 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.conf import settings
 from django.template.defaultfilters import slugify
 from mentions.models.mixins import MentionableMixin
 from bs4 import BeautifulSoup
 from datetime import datetime
+import pytz
 
 
 # Create your models here.
@@ -45,7 +47,8 @@ class Content(MentionableMixin, models.Model):
 
     def save(self, *args, **kwargs):
         # handle all the dates
-        savetime = timezone.now().replace(microsecond=0)
+        local_tz = pytz.timezone(settings.TIME_ZONE)
+        savetime = timezone.now().astimezone(local_tz).replace(microsecond=0)
         if self.pk:
             self.update_date = savetime
             if not self.publish_date:

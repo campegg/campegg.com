@@ -25,7 +25,7 @@ class ContentFeed(Feed):
         content_types = ["note", "post", "photo"]
         items = (
             Content.objects.filter(content_type__in=content_types)
-            .filter(publish_date__lte=datetime.now() + timedelta(minutes=5))
+            .filter(publish_date__lte=timezone.now() + timedelta(minutes=5))
             .order_by("-publish_date")
         )[:20]
         return items
@@ -43,10 +43,10 @@ class ContentFeed(Feed):
         return timezone.make_aware(item.publish_date)
 
     def item_updateddate(self, item):
-        if item.update_date != item.publish_date:
-            return timezone.make_aware(item.publish_date)
-        else:
+        if item.update_date is not None:
             return timezone.make_aware(item.update_date)
+        else:
+            return timezone.make_aware(item.publish_date)
 
     def item_link(self, item):
         return item.get_absolute_url()

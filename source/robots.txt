@@ -1,5 +1,5 @@
 # here's the sitemap:
-Sitemap: /sitemap.xml
+Sitemap: https://campegg.com/sitemap.xml
 
 # let the internet archive go nuts
 User-Agent: ia_archiver

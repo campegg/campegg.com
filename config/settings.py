@@ -258,6 +258,7 @@ CSP_IMG_SRC = (
 )
 CSP_STYLE_SRC = (
     "'self'",
+    "'unsafe-inline'",
     "nonce",
 )
 CSP_SCRIPT_SRC = (

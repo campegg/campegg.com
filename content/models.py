@@ -1,12 +1,10 @@
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
-from django.conf import settings
 from django.template.defaultfilters import slugify
 from mentions.models.mixins import MentionableMixin
 from bs4 import BeautifulSoup
 from datetime import datetime
-import pytz
 
 
 # Create your models here.
@@ -47,8 +45,7 @@ class Content(MentionableMixin, models.Model):
 
     def save(self, *args, **kwargs):
         # handle all the dates
-        local_tz = pytz.timezone(settings.TIME_ZONE)
-        savetime = timezone.now().astimezone(local_tz).replace(microsecond=0)
+        savetime = timezone.now().replace(microsecond=0)
         if self.pk:
             self.update_date = savetime
             if not self.publish_date:
@@ -148,4 +145,32 @@ class Content(MentionableMixin, models.Model):
         db_table = "cp_content"
         verbose_name = "Item"
         verbose_name_plural = "Items"
+        ordering = ["-create_date"]
+
+
+class Files(models.Model):
+    CONTENT_TYPES = (
+        ("file", "File"),
+        ("photo", "Photo"),
+    )
+
+    id = models.AutoField(primary_key=True, unique=True, verbose_name="File ID")
+    file_type = models.CharField(
+        max_length=50, choices=CONTENT_TYPES, verbose_name="File type"
+    )
+    file_url = models.CharField(max_length=500, verbose_name="File URL")
+    upload_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Create date"
+    )
+    create_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Publish date"
+    )
+    create_date = models.DateTimeField(
+        null=True, blank=True, verbose_name="Update date"
+    )
+
+    class Meta:
+        db_table = "cp_files"
+        verbose_name = "File"
+        verbose_name_plural = "Files"
         ordering = ["-create_date"]

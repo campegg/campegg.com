@@ -8,7 +8,7 @@
                     <input id="preview-title" class="admin-preview-ui-fields-text" type="text" placeholder="Title (optional)" value="{{ object.content_meta.title }}">
                 </div>
                 <div>
-                    <input id="preview-publish-date" class="admin-preview-ui-fields-datetime" type="datetime-local" id="post-entry-ui-fields-date" name="post-entry-ui-fields-date"{% if object.publish_date %}value="{{ object.publish_date|date:'Y-m-d\TH:i:s' }}"{% endif %}>
+                    {{ form.publish_date|placeholder:"YYYY-MM-DD HH:MM:SS (optional)" }}
                 </div>
             </div>
             <div class="admin-preview-ui-fields-meta">
@@ -40,10 +40,6 @@
         <div>
             <label for="{{ form.content_path.id_for_label }}">Content path</label>
             {{ form.content_path }}
-        </div>
-        <div>
-            <label for="{{ form.publish_date.id_for_label }}">Publish date</label>
-            {{ form.publish_date }}
         </div>
     </div>
     <div class="admin-action">

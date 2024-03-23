@@ -118,26 +118,6 @@ document.addEventListener("DOMContentLoaded", () => {
             contentWebmentions.addEventListener("change", handleSyndication);
         }
 
-        // handle date input
-        const dateInput = document.getElementById("preview-publish-date");
-        const dateField = document.getElementById("id_publish_date");
-
-        if (dateInput) {
-            dateInput.addEventListener("change", () => {
-                let dateValue = dateInput.value;
-                if (dateValue) {
-                    let dateTimeParts = dateValue.split("T");
-                    if (dateTimeParts.length === 2) {
-                        let timeParts = dateTimeParts[1].split(":");
-                        if (timeParts.length === 2) {
-                            dateValue = dateTimeParts[0] + "T" + dateTimeParts[1] + ":00";
-                        }
-                    }
-                    dateField.value = dateValue.replace("T", " ");
-                }
-            });
-        }
-
         updatePreview();
     }
 

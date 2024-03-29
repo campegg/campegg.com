@@ -31,7 +31,7 @@ def get_mentions(content_id):
 
         if "likes/" in mention.source_url or mention.post_type == "like":
             mention.action = "liked"
-        elif "/activity" in mention.source_url or mention.post_type == "repost":
+        elif mention.post_type == "repost":
             mention.action = "reposted"
         elif mention.post_type == "bookmark":
             mention.action = "bookmarked"

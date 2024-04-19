@@ -419,6 +419,8 @@ pre, code {
 }
 
 pre {
+    max-width: 100%;
+    
     code {
         padding-block-start: 0;
         padding-block-end: 0;
@@ -625,7 +627,7 @@ form {
 
 
 /* ---------- tables ---------- */
-.table-container, .codehilite {
+.table-container, .codehilite, pre {
     overflow-x: auto;
     -ms-scroll-snap-type: inline mandatory;
     scroll-snap-type: inline mandatory;

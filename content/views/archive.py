@@ -32,7 +32,6 @@ class BaseArchiveView:
         ).order_by("-publish_date")
 
     def get_archive_text(self, object):
-
         if object.content_type == "repost" and object.content_meta.get("json"):
             html_content = object.content_meta.get("json").get("content", "")
         else:

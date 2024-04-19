@@ -25,6 +25,7 @@ utilities/scripts
 .nova
 .config.codekit3
 *.pem
+.ruff_cache
 
 
 # ---------- Python ----------
